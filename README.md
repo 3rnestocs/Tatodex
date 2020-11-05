@@ -7,3 +7,10 @@
 
 ## NOTA
 > Los servicios necesarios estarán expuestos bajo el siguiente dominio: [POKE API](https://pokeapi.co/)
+
+## First commit
+* Storyboard eliminado
+* rootViewController asignado a navController en SceneDelegate
+* Añadida extension que convierte colores hexadecimales a rgb)
+* Configuraciones iniciales del CollectionViewController (Tatodex) y del NavigationController (navController)
+

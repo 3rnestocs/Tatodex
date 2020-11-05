@@ -1,0 +1,376 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D95F2553714000FF6ADA /* AppDelegate.swift */; };
+		8DE9D9622553714000FF6ADA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D9612553714000FF6ADA /* SceneDelegate.swift */; };
+		8DE9D9692553714400FF6ADA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DE9D9682553714400FF6ADA /* Assets.xcassets */; };
+		8DE9D96C2553714400FF6ADA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DE9D96A2553714400FF6ADA /* LaunchScreen.storyboard */; };
+		8DE9D97A2553719200FF6ADA /* TatodexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D9792553719200FF6ADA /* TatodexController.swift */; };
+		8DE9D97F255371FD00FF6ADA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D97E255371FD00FF6ADA /* Colors.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8DE9D95C2553714000FF6ADA /* Tatodex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tatodex.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DE9D95F2553714000FF6ADA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8DE9D9612553714000FF6ADA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8DE9D9682553714400FF6ADA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8DE9D96B2553714400FF6ADA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8DE9D96D2553714400FF6ADA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DE9D9792553719200FF6ADA /* TatodexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatodexController.swift; sourceTree = "<group>"; };
+		8DE9D97E255371FD00FF6ADA /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DE9D9592553714000FF6ADA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8DE9D9532553714000FF6ADA = {
+			isa = PBXGroup;
+			children = (
+				8DE9D95E2553714000FF6ADA /* Tatodex */,
+				8DE9D95D2553714000FF6ADA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8DE9D95D2553714000FF6ADA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DE9D95C2553714000FF6ADA /* Tatodex.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8DE9D95E2553714000FF6ADA /* Tatodex */ = {
+			isa = PBXGroup;
+			children = (
+				8DE9D95F2553714000FF6ADA /* AppDelegate.swift */,
+				8DE9D9612553714000FF6ADA /* SceneDelegate.swift */,
+				8DE9D96D2553714400FF6ADA /* Info.plist */,
+				8DE9D9772553716400FF6ADA /* Model */,
+				8DE9D9762553716000FF6ADA /* View */,
+				8DE9D9752553715C00FF6ADA /* Controller */,
+				8DE9D9742553715600FF6ADA /* Resources */,
+			);
+			path = Tatodex;
+			sourceTree = "<group>";
+		};
+		8DE9D9742553715600FF6ADA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8DE9D9682553714400FF6ADA /* Assets.xcassets */,
+				8DE9D96A2553714400FF6ADA /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8DE9D9752553715C00FF6ADA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8DE9D9792553719200FF6ADA /* TatodexController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8DE9D9762553716000FF6ADA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8DE9D97D255371EF00FF6ADA /* CustomStuff */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8DE9D9772553716400FF6ADA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8DE9D97D255371EF00FF6ADA /* CustomStuff */ = {
+			isa = PBXGroup;
+			children = (
+				8DE9D97E255371FD00FF6ADA /* Colors.swift */,
+			);
+			path = CustomStuff;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DE9D95B2553714000FF6ADA /* Tatodex */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DE9D9702553714400FF6ADA /* Build configuration list for PBXNativeTarget "Tatodex" */;
+			buildPhases = (
+				8DE9D9582553714000FF6ADA /* Sources */,
+				8DE9D9592553714000FF6ADA /* Frameworks */,
+				8DE9D95A2553714000FF6ADA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tatodex;
+			productName = Tatodex;
+			productReference = 8DE9D95C2553714000FF6ADA /* Tatodex.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8DE9D9542553714000FF6ADA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					8DE9D95B2553714000FF6ADA = {
+						CreatedOnToolsVersion = 12.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 8DE9D9572553714000FF6ADA /* Build configuration list for PBXProject "Tatodex" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8DE9D9532553714000FF6ADA;
+			productRefGroup = 8DE9D95D2553714000FF6ADA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DE9D95B2553714000FF6ADA /* Tatodex */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DE9D95A2553714000FF6ADA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DE9D96C2553714400FF6ADA /* LaunchScreen.storyboard in Resources */,
+				8DE9D9692553714400FF6ADA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DE9D9582553714000FF6ADA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DE9D97A2553719200FF6ADA /* TatodexController.swift in Sources */,
+				8DE9D97F255371FD00FF6ADA /* Colors.swift in Sources */,
+				8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */,
+				8DE9D9622553714000FF6ADA /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		8DE9D96A2553714400FF6ADA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8DE9D96B2553714400FF6ADA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8DE9D96E2553714400FF6ADA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8DE9D96F2553714400FF6ADA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8DE9D9712553714400FF6ADA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Tatodex/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.3rnestocs.Tatodex;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8DE9D9722553714400FF6ADA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = Tatodex/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.3rnestocs.Tatodex;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8DE9D9572553714000FF6ADA /* Build configuration list for PBXProject "Tatodex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DE9D96E2553714400FF6ADA /* Debug */,
+				8DE9D96F2553714400FF6ADA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8DE9D9702553714400FF6ADA /* Build configuration list for PBXNativeTarget "Tatodex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DE9D9712553714400FF6ADA /* Debug */,
+				8DE9D9722553714400FF6ADA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8DE9D9542553714000FF6ADA /* Project object */;
+}
