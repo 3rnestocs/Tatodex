@@ -7,15 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D790AEF255488D20089D069 /* TatodexCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AEE255488D20089D069 /* TatodexCell.swift */; };
+		8D790AF225549D010089D069 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AF125549D010089D069 /* Extensions.swift */; };
 		8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D95F2553714000FF6ADA /* AppDelegate.swift */; };
 		8DE9D9622553714000FF6ADA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D9612553714000FF6ADA /* SceneDelegate.swift */; };
 		8DE9D9692553714400FF6ADA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DE9D9682553714400FF6ADA /* Assets.xcassets */; };
 		8DE9D96C2553714400FF6ADA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DE9D96A2553714400FF6ADA /* LaunchScreen.storyboard */; };
 		8DE9D97A2553719200FF6ADA /* TatodexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D9792553719200FF6ADA /* TatodexController.swift */; };
-		8DE9D97F255371FD00FF6ADA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D97E255371FD00FF6ADA /* Colors.swift */; };
+		EBDC5134ECE236269B0128CF /* Pods_Tatodex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4549A059EB0941DCEE601A6A /* Pods_Tatodex.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4549A059EB0941DCEE601A6A /* Pods_Tatodex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tatodex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6393FCA3FCDC41BFB6F30009 /* Pods-Tatodex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tatodex.release.xcconfig"; path = "Target Support Files/Pods-Tatodex/Pods-Tatodex.release.xcconfig"; sourceTree = "<group>"; };
+		8D790AEE255488D20089D069 /* TatodexCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatodexCell.swift; sourceTree = "<group>"; };
+		8D790AF125549D010089D069 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8DE9D95C2553714000FF6ADA /* Tatodex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tatodex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DE9D95F2553714000FF6ADA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DE9D9612553714000FF6ADA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -23,7 +29,7 @@
 		8DE9D96B2553714400FF6ADA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8DE9D96D2553714400FF6ADA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DE9D9792553719200FF6ADA /* TatodexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatodexController.swift; sourceTree = "<group>"; };
-		8DE9D97E255371FD00FF6ADA /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		BB8FB4107566E1DC450135B3 /* Pods-Tatodex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tatodex.debug.xcconfig"; path = "Target Support Files/Pods-Tatodex/Pods-Tatodex.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +37,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBDC5134ECE236269B0128CF /* Pods_Tatodex.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DA2029C895208532C89D20E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BB8FB4107566E1DC450135B3 /* Pods-Tatodex.debug.xcconfig */,
+				6393FCA3FCDC41BFB6F30009 /* Pods-Tatodex.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		32E3CC78A3E6D0429DF08FF5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4549A059EB0941DCEE601A6A /* Pods_Tatodex.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8DE9D9532553714000FF6ADA = {
 			isa = PBXGroup;
 			children = (
 				8DE9D95E2553714000FF6ADA /* Tatodex */,
 				8DE9D95D2553714000FF6ADA /* Products */,
+				0DA2029C895208532C89D20E /* Pods */,
+				32E3CC78A3E6D0429DF08FF5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,6 +97,7 @@
 		8DE9D9742553715600FF6ADA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8D790AF125549D010089D069 /* Extensions.swift */,
 				8DE9D9682553714400FF6ADA /* Assets.xcassets */,
 				8DE9D96A2553714400FF6ADA /* LaunchScreen.storyboard */,
 			);
@@ -87,7 +115,6 @@
 		8DE9D9762553716000FF6ADA /* View */ = {
 			isa = PBXGroup;
 			children = (
-				8DE9D97D255371EF00FF6ADA /* CustomStuff */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -95,16 +122,9 @@
 		8DE9D9772553716400FF6ADA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8D790AEE255488D20089D069 /* TatodexCell.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		8DE9D97D255371EF00FF6ADA /* CustomStuff */ = {
-			isa = PBXGroup;
-			children = (
-				8DE9D97E255371FD00FF6ADA /* Colors.swift */,
-			);
-			path = CustomStuff;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -114,9 +134,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8DE9D9702553714400FF6ADA /* Build configuration list for PBXNativeTarget "Tatodex" */;
 			buildPhases = (
+				29C7562C19A28347CAAB14E4 /* [CP] Check Pods Manifest.lock */,
 				8DE9D9582553714000FF6ADA /* Sources */,
 				8DE9D9592553714000FF6ADA /* Frameworks */,
 				8DE9D95A2553714000FF6ADA /* Resources */,
+				56BB595852D5BE0A954F9DD2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -171,15 +193,58 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		29C7562C19A28347CAAB14E4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tatodex-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		56BB595852D5BE0A954F9DD2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tatodex/Pods-Tatodex-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tatodex/Pods-Tatodex-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tatodex/Pods-Tatodex-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8DE9D9582553714000FF6ADA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				8DE9D97A2553719200FF6ADA /* TatodexController.swift in Sources */,
-				8DE9D97F255371FD00FF6ADA /* Colors.swift in Sources */,
 				8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */,
 				8DE9D9622553714000FF6ADA /* SceneDelegate.swift in Sources */,
+				8D790AEF255488D20089D069 /* TatodexCell.swift in Sources */,
+				8D790AF225549D010089D069 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +380,7 @@
 		};
 		8DE9D9712553714400FF6ADA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB8FB4107566E1DC450135B3 /* Pods-Tatodex.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -333,6 +399,7 @@
 		};
 		8DE9D9722553714400FF6ADA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6393FCA3FCDC41BFB6F30009 /* Pods-Tatodex.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
