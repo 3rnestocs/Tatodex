@@ -6,22 +6,31 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 //  This is a reusable cell identifier to minimize human error while using it
 private let reuseIdentifier = "TatodexCell"
 
 class TatodexController: UICollectionViewController {
     
+    //MARK: - Properties
+    var pokemon = [Pokemon]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureViewStuff()
+        fetchPokemons()
+        
+        
     }
 }
 
 extension TatodexController {
 
     //MARK: - View settings
+    
     func configureViewStuff() {
         
         collectionView.backgroundColor = .white
@@ -40,20 +49,21 @@ extension TatodexController {
         print("1 2 3")
     }
 
-    //MARK: - View disposure
+    //MARK: - Cell disposure
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 32
+        return pokemon.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TatodexCell
         
-        cell.backgroundColor = Colors.softRed
+        cell.pokemon = pokemon[indexPath.item]
         
         return cell
     }
 }
 
+//MARK: - View disposure
 extension TatodexController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

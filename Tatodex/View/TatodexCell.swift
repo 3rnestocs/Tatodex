@@ -9,8 +9,16 @@ import UIKit
 
 class TatodexCell: UICollectionViewCell {
     
-//MARK: - Cell properties
-    let imageView: UIImageView = {
+//MARK: - Properties
+    
+    var pokemon: Pokemon? {
+        didSet {
+            nameLabel.text = pokemon?.name?.capitalized
+            imageView.image = pokemon?.image
+        }
+    }
+    
+    var imageView: UIImageView = {
         
         let imageView = UIImageView()
         imageView.backgroundColor = Colors.myGray
@@ -30,12 +38,12 @@ class TatodexCell: UICollectionViewCell {
         return nameView
     }()
     
-    let nameLabel: UILabel = {
+    var nameLabel: UILabel = {
        
         let pokeLabel = UILabel()
         pokeLabel.text = "Lucario"
         pokeLabel.textColor = Colors.myWhite
-        pokeLabel.font = UIFont.systemFont(ofSize: 16, weight: .thin)
+        pokeLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         
         return pokeLabel
         
@@ -57,13 +65,12 @@ class TatodexCell: UICollectionViewCell {
     func configureViewComponents() {
         
         addSubview(imageView)
-        self.layer.cornerRadius = self.frame.width / 3
+        self.layer.cornerRadius = self.frame.width / 2
         self.clipsToBounds = true
         
         imageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: self.frame.height - 32)
         
         addSubview(nameContainerView)
-        nameContainerView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 32)
-        
+        nameContainerView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: 0, height: 32)
     }
 }

@@ -3,12 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		8D790AEF255488D20089D069 /* TatodexCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AEE255488D20089D069 /* TatodexCell.swift */; };
 		8D790AF225549D010089D069 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AF125549D010089D069 /* Extensions.swift */; };
+		8DE743932555628400D37A8E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE743922555628400D37A8E /* Service.swift */; };
+		8DE7439625556F7F00D37A8E /* PokeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE7439525556F7F00D37A8E /* PokeData.swift */; };
 		8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D95F2553714000FF6ADA /* AppDelegate.swift */; };
 		8DE9D9622553714000FF6ADA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D9612553714000FF6ADA /* SceneDelegate.swift */; };
 		8DE9D9692553714400FF6ADA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DE9D9682553714400FF6ADA /* Assets.xcassets */; };
@@ -22,6 +24,8 @@
 		6393FCA3FCDC41BFB6F30009 /* Pods-Tatodex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tatodex.release.xcconfig"; path = "Target Support Files/Pods-Tatodex/Pods-Tatodex.release.xcconfig"; sourceTree = "<group>"; };
 		8D790AEE255488D20089D069 /* TatodexCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatodexCell.swift; sourceTree = "<group>"; };
 		8D790AF125549D010089D069 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		8DE743922555628400D37A8E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		8DE7439525556F7F00D37A8E /* PokeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeData.swift; sourceTree = "<group>"; };
 		8DE9D95C2553714000FF6ADA /* Tatodex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tatodex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DE9D95F2553714000FF6ADA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DE9D9612553714000FF6ADA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,7 +54,6 @@
 				BB8FB4107566E1DC450135B3 /* Pods-Tatodex.debug.xcconfig */,
 				6393FCA3FCDC41BFB6F30009 /* Pods-Tatodex.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -115,6 +118,7 @@
 		8DE9D9762553716000FF6ADA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8D790AEE255488D20089D069 /* TatodexCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -122,7 +126,8 @@
 		8DE9D9772553716400FF6ADA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8D790AEE255488D20089D069 /* TatodexCell.swift */,
+				8DE743922555628400D37A8E /* Service.swift */,
+				8DE7439525556F7F00D37A8E /* PokeData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -242,9 +247,11 @@
 			files = (
 				8DE9D97A2553719200FF6ADA /* TatodexController.swift in Sources */,
 				8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */,
+				8DE7439625556F7F00D37A8E /* PokeData.swift in Sources */,
 				8DE9D9622553714000FF6ADA /* SceneDelegate.swift in Sources */,
 				8D790AEF255488D20089D069 /* TatodexCell.swift in Sources */,
 				8D790AF225549D010089D069 /* Extensions.swift in Sources */,
+				8DE743932555628400D37A8E /* Service.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
