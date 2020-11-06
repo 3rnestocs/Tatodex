@@ -7,7 +7,6 @@
 
 import UIKit
 import Alamofire
-import SwiftyJSON
 
 //  This is a reusable cell identifier to minimize human error while using it
 private let reuseIdentifier = "TatodexCell"
