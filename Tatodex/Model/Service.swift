@@ -82,7 +82,5 @@ extension TatodexController {
                 self.collectionView.reloadData()
             }
         }
-        
     }
-    
 }
