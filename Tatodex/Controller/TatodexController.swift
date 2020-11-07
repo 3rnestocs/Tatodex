@@ -40,7 +40,11 @@ class TatodexController: UICollectionViewController {
     
     //MARK: - Selectors
     @objc func searchTapped() {
-        configureSearchBar()
+        configureSearchBar(showSearch: true)
+    }
+    
+    @objc func handleDismissal() {
+        dismissInfoView(pokemon: nil)
     }
 }
 
@@ -65,25 +69,49 @@ extension TatodexController {
         visualEffectView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         visualEffectView.alpha = 0
         
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleDismissal))
+        visualEffectView.addGestureRecognizer(gesture)
+        
     }
     
-    func configureSearchBar() {
-        searchBar = UISearchBar()
-        searchBar.delegate = self
-        searchBar.sizeToFit()
-        searchBar.showsCancelButton = true
-        searchBar.becomeFirstResponder()
-        searchBar.tintColor = Colors.hardRed
-        searchBar.backgroundColor = Colors.myWhite
-        searchBar.placeholder = "Search your favorite pokemon"
+    func configureSearchBar(showSearch: Bool) {
         
-        navigationItem.rightBarButtonItem = nil
-        navigationItem.titleView = searchBar
+        //  This refactoring allows me to enable/disable the search button when the InfoView is showed up
+        if showSearch {
+            searchBar = UISearchBar()
+            searchBar.delegate = self
+            searchBar.sizeToFit()
+            searchBar.showsCancelButton = true
+            searchBar.becomeFirstResponder()
+            searchBar.tintColor = Colors.hardRed
+            searchBar.backgroundColor = Colors.myWhite
+            searchBar.placeholder = "Search your favorite pokemon"
+            
+            navigationItem.rightBarButtonItem = nil
+            navigationItem.titleView = searchBar
+        } else {
+            navigationItem.titleView = nil
+            configureSearchBarButton()
+            inSearchMode = false
+            collectionView.reloadData()
+        }
+        
     }
     
     func configureSearchBarButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchTapped))
         navigationItem.rightBarButtonItem?.tintColor = Colors.myWhite
+    }
+    
+    func dismissInfoView(pokemon: Pokemon?) {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.visualEffectView.alpha = 0
+            self.infoView.alpha = 0
+            self.infoView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        }) { (_) in
+            self.infoView.removeFromSuperview()
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        }
     }
 }
     
@@ -122,10 +150,7 @@ extension TatodexController: UICollectionViewDelegateFlowLayout {
 extension TatodexController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        navigationItem.titleView = nil
-        configureSearchBarButton()
-        inSearchMode = false
-        collectionView.reloadData()
+        configureSearchBar(showSearch: false)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -146,6 +171,9 @@ extension TatodexController: UISearchBarDelegate {
 extension TatodexController: TatodexCellDelegate {
     
     func presentInfoView(withPokemon pokemon: Pokemon) {
+        
+        configureSearchBar(showSearch: false)
+        navigationItem.rightBarButtonItem?.isEnabled = false
         
         view.addSubview(infoView)
         infoView.configureViewComponents()
