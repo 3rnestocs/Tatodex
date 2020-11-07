@@ -18,6 +18,19 @@ class TatodexController: UICollectionViewController {
     var searchBar: UISearchBar!
     var inSearchMode = false
     
+    let infoView: InfoView = {
+        let view = InfoView()
+        view.layer.cornerRadius = 5
+        return view
+    }()
+    
+    let visualEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let view = UIVisualEffectView(effect: blurEffect)
+        return view
+    }()
+    
+    //MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,9 +44,9 @@ class TatodexController: UICollectionViewController {
     }
 }
 
+//MARK: - Helper functions
 extension TatodexController {
 
-    //MARK: - Helper functions
     func configureViewStuff() {
         
         collectionView.backgroundColor = .white
@@ -47,6 +60,11 @@ extension TatodexController {
         configureSearchBarButton()
 
         collectionView.register(TatodexCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
+        view.addSubview(visualEffectView)
+        visualEffectView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        visualEffectView.alpha = 0
+        
     }
     
     func configureSearchBar() {
@@ -55,7 +73,8 @@ extension TatodexController {
         searchBar.sizeToFit()
         searchBar.showsCancelButton = true
         searchBar.becomeFirstResponder()
-        searchBar.tintColor = .white
+        searchBar.tintColor = Colors.hardRed
+        searchBar.backgroundColor = Colors.myWhite
         searchBar.placeholder = "Search your favorite pokemon"
         
         navigationItem.rightBarButtonItem = nil
@@ -68,9 +87,9 @@ extension TatodexController {
     }
 }
     
+//MARK: - CollectionView DataSource/Delegate
 extension TatodexController {
         
-    //MARK: - CollectionView DataSource/Delegate
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return inSearchMode ? filteredPokemon.count : pokemon.count
     }
@@ -79,14 +98,28 @@ extension TatodexController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TatodexCell
         
         cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        cell.delegate = self
         
         return cell
     }
 }
 
-extension TatodexController: UISearchBarDelegate {
+//MARK: - CollectionViewDelegateFlowLayout
+extension TatodexController: UICollectionViewDelegateFlowLayout {
     
-    //MARK: UISearchBar delegate
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 32, left: 12, bottom: 32, right: 12)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let width = (view.frame.width - 36) / 2
+        return CGSize(width: width, height: width)
+    }
+}
+
+//MARK: SearchBar delegate
+extension TatodexController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         navigationItem.titleView = nil
@@ -109,18 +142,29 @@ extension TatodexController: UISearchBarDelegate {
     }
 }
 
-//MARK: - View disposure
-extension TatodexController: UICollectionViewDelegateFlowLayout {
+//MARK: - InfoViewlDelegate
+extension TatodexController: TatodexCellDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 32, left: 12, bottom: 32, right: 12)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func presentInfoView(withPokemon pokemon: Pokemon) {
         
-        let width = (view.frame.width - 36) / 2
-        return CGSize(width: width, height: width)
+        view.addSubview(infoView)
+        infoView.configureViewComponents()
+        infoView.pokemon = pokemon
+        infoView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 64, height: 350)
+        infoView.layer.cornerRadius = view.frame.width / 6
+        infoView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        infoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40).isActive = true
+        
+        infoView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        infoView.alpha = 0
+        
+        UIView.animate(withDuration: 0.3) {
+            self.visualEffectView.alpha = 1
+            self.infoView.alpha = 1
+            self.infoView.transform = .identity
+        }
     }
 }
+
 
 

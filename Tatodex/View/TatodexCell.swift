@@ -7,9 +7,14 @@
 
 import UIKit
 
+protocol TatodexCellDelegate {
+    func presentInfoView(withPokemon pokemon: Pokemon)
+}
+
 class TatodexCell: UICollectionViewCell {
     
-//MARK: - Properties
+    //MARK: - Properties
+    var delegate: TatodexCellDelegate?
     
     var pokemon: Pokemon? {
         didSet {
@@ -25,7 +30,6 @@ class TatodexCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFit
         
         return imageView
-        
     }()
     
     lazy var nameContainerView: UIView = {
@@ -46,11 +50,9 @@ class TatodexCell: UICollectionViewCell {
         pokeLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         
         return pokeLabel
-        
     }()
     
     //MARK: - Init stuff
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -59,6 +61,14 @@ class TatodexCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Selectors
+    @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            guard let pokemon = self.pokemon else { return }
+            delegate?.presentInfoView(withPokemon: pokemon)
+        }
     }
     
     //MARK: - Configure views
@@ -72,5 +82,8 @@ class TatodexCell: UICollectionViewCell {
         
         addSubview(nameContainerView)
         nameContainerView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 32)
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        self.addGestureRecognizer(longPressGestureRecognizer)
     }
 }
