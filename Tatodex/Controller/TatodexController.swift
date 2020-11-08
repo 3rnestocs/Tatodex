@@ -178,7 +178,7 @@ extension TatodexController: TatodexCellDelegate {
         view.addSubview(infoView)
         infoView.configureViewComponents()
         infoView.pokemon = pokemon
-        infoView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 64, height: 350)
+        infoView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 64, height: 380)
         infoView.layer.cornerRadius = view.frame.width / 6
         infoView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         infoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40).isActive = true
