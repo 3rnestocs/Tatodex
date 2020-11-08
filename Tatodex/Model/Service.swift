@@ -23,7 +23,7 @@ class Service {
 
                 guard let pokeFetched = response.value as? [AnyObject] else { return }
                 
-                print("You have \(pokeFetched.count) pokemon listed by now.")
+                print("You have \(pokeFetched.count - 1) pokemon listed by now.")
 
                 //  Get all the elements of the pokemon objects
                 for (key, result) in pokeFetched.enumerated() {

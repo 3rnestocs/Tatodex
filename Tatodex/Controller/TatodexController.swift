@@ -24,6 +24,7 @@ class TatodexController: UICollectionViewController {
         return view
     }()
     
+    //  This blurs the CollectionView when InfoView shows up
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
@@ -69,6 +70,7 @@ extension TatodexController {
         visualEffectView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         visualEffectView.alpha = 0
         
+        //  Allows to dismiss the InfoView tapping outside
         let gesture = UITapGestureRecognizer(target: self, action: #selector(handleDismissal))
         visualEffectView.addGestureRecognizer(gesture)
         
@@ -76,7 +78,7 @@ extension TatodexController {
     
     func configureSearchBar(showSearch: Bool) {
         
-        //  This refactoring allows me to enable/disable the search stuff when InfoView shows up
+        //  This refactoring allows me to enable/disable the search button when InfoView shows up
         if showSearch {
             searchBar = UISearchBar()
             searchBar.delegate = self
@@ -87,6 +89,7 @@ extension TatodexController {
             searchBar.backgroundColor = Colors.myGray
             searchBar.placeholder = "Search your favorite pokemon"
             
+            //  The search button goes away when the search field appears
             navigationItem.rightBarButtonItem = nil
             navigationItem.titleView = searchBar
         } else {
@@ -95,7 +98,6 @@ extension TatodexController {
             inSearchMode = false
             collectionView.reloadData()
         }
-        
     }
     
     func configureSearchBarButton() {
@@ -142,6 +144,13 @@ extension TatodexController: UICollectionViewDelegateFlowLayout {
         
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let controller = InfoController()
+        controller.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 //MARK: SearchBar delegate
@@ -149,6 +158,8 @@ extension TatodexController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
+        //  This checks if the user search something, and if it does, filters the pokemon
+        //  in the CollectionView by name
         if searchText == "" || searchBar.text == nil {
             inSearchMode = false
             collectionView.reloadData()

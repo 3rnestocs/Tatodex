@@ -14,7 +14,6 @@ protocol InfoViewDelegate {
 class InfoView: UIView {
     
     // MARK: - Properties
-    
     var delegate: InfoViewDelegate?
     
     //  This whole block assigns the attributes that will be shown at the InfoView pop-up
@@ -106,7 +105,6 @@ class InfoView: UIView {
     }()
     
     // MARK: - Init
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -115,14 +113,14 @@ class InfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Helper Functions
-    
+    // MARK: - Layout settings
     func configureLabel(label: UILabel, title: String, details: String) {
         let attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.softRed!]))
         attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.gray]))
         label.attributedText = attributedText
     }
     
+    //MARK: - InfoView Layout
     func configureViewComponents() {
         
         backgroundColor = .white
@@ -160,6 +158,32 @@ class InfoView: UIView {
         
         addSubview(infoButton)
         infoButton.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0    , width: 0, height: 50)
+    }
+    
+    //MARK: - InfoController Layout
+    func configureViewForInfoController() {
+        addSubview(typeLabel)
+        typeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(pokedexIdLabel)
+        pokedexIdLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+
+        let separatorView = UIView()
+        separatorView.backgroundColor = Colors.myWhite
+        addSubview(separatorView)
+        separatorView.anchor(top: typeLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 1)
+        
+        addSubview(heightLabel)
+        heightLabel.anchor(top: separatorView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(weightLabel)
+        weightLabel.anchor(top: heightLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(defenseLabel)
+        defenseLabel.anchor(top: separatorView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        
+        addSubview(attackLabel)
+        attackLabel.anchor(top: defenseLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
     }
 }
 
