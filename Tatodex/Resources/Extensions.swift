@@ -10,9 +10,9 @@ import UIKit
 //MARK: - Custom Colors
 enum Colors {
     static let softBlue     = UIColor(hex: "#5eb7c1ff")
-    static let hardBlue     = UIColor(hex: "#358790ff")
-    static let softRed      = UIColor(hex: "#C52222ff")
-    static let hardRed      = UIColor(hex: "#903535ff")
+    static let hardBlue     = UIColor(hex: "#922A2Aff")
+    static let softRed      = UIColor(hex: "#DE3E3Eff")
+    static let hardRed      = UIColor(hex: "#BA3434ff")
     static let softGreen    = UIColor(hex: "#5EC163ff")
     static let hardGreen    = UIColor(hex: "#359040ff")
     static let myWhite      = UIColor(hex: "#F5F5F5ff")

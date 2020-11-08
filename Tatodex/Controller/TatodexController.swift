@@ -53,7 +53,7 @@ extension TatodexController {
 
     func configureViewStuff() {
         
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = Colors.hardRed
         
         navigationController?.navigationBar.barTintColor = Colors.softRed
         navigationController?.navigationBar.barStyle     = .black
@@ -76,7 +76,7 @@ extension TatodexController {
     
     func configureSearchBar(showSearch: Bool) {
         
-        //  This refactoring allows me to enable/disable the search button when the InfoView is showed up
+        //  This refactoring allows me to enable/disable the search stuff when InfoView shows up
         if showSearch {
             searchBar = UISearchBar()
             searchBar.delegate = self
@@ -84,7 +84,7 @@ extension TatodexController {
             searchBar.showsCancelButton = true
             searchBar.becomeFirstResponder()
             searchBar.tintColor = Colors.hardRed
-            searchBar.backgroundColor = Colors.myWhite
+            searchBar.backgroundColor = Colors.myGray
             searchBar.placeholder = "Search your favorite pokemon"
             
             navigationItem.rightBarButtonItem = nil
@@ -100,9 +100,10 @@ extension TatodexController {
     
     func configureSearchBarButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchTapped))
-        navigationItem.rightBarButtonItem?.tintColor = Colors.myWhite
+        navigationItem.rightBarButtonItem?.tintColor = Colors.myGray
     }
     
+    //  This allows me to click outside InfoView to dismiss that screen
     func dismissInfoView(pokemon: Pokemon?) {
         UIView.animate(withDuration: 0.5, animations: {
             self.visualEffectView.alpha = 0
@@ -115,9 +116,20 @@ extension TatodexController {
     }
 }
     
-//MARK: - CollectionView DataSource/Delegate
-extension TatodexController {
+extension TatodexController: UICollectionViewDelegateFlowLayout {
         
+    //MARK: - CollectionViewDelegateFlowLayout
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 32, left: 12, bottom: 32, right: 12)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let width = (view.frame.width - 36) / 2
+        return CGSize(width: width, height: width)
+    }
+
+    //MARK: - CollectionView DataSource/Delegate
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return inSearchMode ? filteredPokemon.count : pokemon.count
     }
@@ -132,26 +144,8 @@ extension TatodexController {
     }
 }
 
-//MARK: - CollectionViewDelegateFlowLayout
-extension TatodexController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 32, left: 12, bottom: 32, right: 12)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let width = (view.frame.width - 36) / 2
-        return CGSize(width: width, height: width)
-    }
-}
-
 //MARK: SearchBar delegate
 extension TatodexController: UISearchBarDelegate {
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        configureSearchBar(showSearch: false)
-    }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
@@ -165,6 +159,10 @@ extension TatodexController: UISearchBarDelegate {
             collectionView.reloadData()
         }
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        configureSearchBar(showSearch: false)
+    }
 }
 
 //MARK: - InfoViewlDelegate
@@ -172,13 +170,15 @@ extension TatodexController: TatodexCellDelegate {
     
     func presentInfoView(withPokemon pokemon: Pokemon) {
         
+        //  When the InfoView shows up, the search button goes off
         configureSearchBar(showSearch: false)
         navigationItem.rightBarButtonItem?.isEnabled = false
         
+        //  Setting up the InfoView disposure
         view.addSubview(infoView)
         infoView.configureViewComponents()
         infoView.pokemon = pokemon
-        infoView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 64, height: 380)
+        infoView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 64, height: 480)
         infoView.layer.cornerRadius = view.frame.width / 6
         infoView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         infoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40).isActive = true

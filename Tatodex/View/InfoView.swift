@@ -18,7 +18,7 @@ class InfoView: UIView {
     var delegate: InfoViewDelegate?
     
     //  This whole block assigns the attributes that will be shown at the InfoView pop-up
-    //  It makes the positioning of every element possible.
+    //  It makes the positioning of every element possible
     var pokemon: Pokemon? {
         didSet {
             guard let pokemon = self.pokemon else { return }
@@ -33,10 +33,10 @@ class InfoView: UIView {
             nameLabel.text = pokemon.name?.capitalized
             
             configureLabel(label: typeLabel, title: "Type", details: type)
-            configureLabel(label: defenseLabel, title: "Defense", details: "\(defense)")
-            configureLabel(label: heightLabel, title: "Height", details: "\(height)")
-            configureLabel(label: weightLabel, title: "Weight", details: "\(weight)")
             configureLabel(label: pokedexIdLabel, title: "Pokedex Id", details: "\(id)")
+            configureLabel(label: heightLabel, title: "Height", details: "\(height)")
+            configureLabel(label: defenseLabel, title: "Defense", details: "\(defense)")
+            configureLabel(label: weightLabel, title: "Weight", details: "\(weight)")
             configureLabel(label: attackLabel, title: "Base Attack", details: "\(attack)")
         }
     }
@@ -60,7 +60,7 @@ class InfoView: UIView {
         let label = UILabel()
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 24, weight: .thin)
-        label.text = "Charmander"
+        label.text = "Lucario"
         return label
     }()
     
@@ -132,7 +132,7 @@ class InfoView: UIView {
         nameContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
         
         addSubview(imageView)
-        imageView.anchor(top: nameContainerView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 24, paddingLeft: 12, paddingBottom: 24, paddingRight: 0, width: 100, height: 100)
+        imageView.anchor(top: nameContainerView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 12, paddingBottom: 16, paddingRight: 0, width: 200, height: 200)
         imageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         addSubview(typeLabel)
