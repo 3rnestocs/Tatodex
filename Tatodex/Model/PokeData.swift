@@ -57,3 +57,34 @@ struct Pokemon {
         }
     }
 }
+
+struct Pokemons: Codable {
+    let results: [Pokes]?
+}
+
+struct Pokes: Codable {
+    let name: String?
+    let url: String?
+}
+
+struct PokePage: Codable {
+    
+    let abilities: [Ability]?
+    let id: Int?
+    
+    init(abilities: [Ability], id: Int, name: String) {
+        self.abilities = abilities
+        self.id = id
+    }
+    
+}
+
+struct Ability: Codable {
+    let name: String?
+    let url: String?
+    
+    init(name: String, url: String) {
+        self.name = name
+        self.url = url
+    }
+}

@@ -10,11 +10,12 @@ import UIKit
 //  This is a reusable cell identifier to minimize human error while using it
 private let reuseIdentifier = "TatodexCell"
 
-class TatodexController: UICollectionViewController {
+class TatodexController: UICollectionViewController, InfoViewDelegate {
     
     //MARK: - Properties
     var pokemon = [Pokemon]()
     var filteredPokemon = [Pokemon]()
+    var pokeIds: Int?
     var searchBar: UISearchBar!
     var inSearchMode = false
     
@@ -105,6 +106,14 @@ extension TatodexController {
         navigationItem.rightBarButtonItem?.tintColor = Colors.myGray
     }
     
+    func showInfoController(withPoke pokemon: Pokemon) {
+        
+        let controller = InfoController()
+        controller.pokemon = pokemon
+        self.navigationController?.pushViewController(controller
+                                                      , animated: true)
+    }
+    
     //  This allows me to click outside InfoView to dismiss that screen
     func dismissInfoView(pokemon: Pokemon?) {
         UIView.animate(withDuration: 0.5, animations: {
@@ -114,6 +123,8 @@ extension TatodexController {
         }) { (_) in
             self.infoView.removeFromSuperview()
             self.navigationItem.rightBarButtonItem?.isEnabled = true
+            guard let pokemon = pokemon else { return }
+            self.showInfoController(withPoke: pokemon)
         }
     }
 }
@@ -142,14 +153,15 @@ extension TatodexController: UICollectionViewDelegateFlowLayout {
         cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
         cell.delegate = self
         
+        pokeIds = cell.pokemon!.id!
+        
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let controller = InfoController()
-        controller.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
-        navigationController?.pushViewController(controller, animated: true)
+        let poke = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        showInfoController(withPoke: poke)
     }
 }
 
@@ -188,6 +200,7 @@ extension TatodexController: TatodexCellDelegate {
         //  Setting up the InfoView disposure
         view.addSubview(infoView)
         infoView.configureViewComponents()
+        infoView.delegate = self
         infoView.pokemon = pokemon
         infoView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 64, height: 480)
         infoView.layer.cornerRadius = view.frame.width / 6

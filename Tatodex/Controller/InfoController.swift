@@ -10,6 +10,22 @@ import UIKit
 class InfoController: UIViewController {
     
     // MARK: - Properties
+    var controller = TatodexController()
+    var skills: String?
+    var ids: Int?
+    var abilities: [String]? {
+        didSet {
+ 
+            for skill in abilities! {
+                skills = skill.capitalized
+            }
+            
+            if controller.pokeIds == ids {
+                infoView.configureLabel(label: infoView.skillLabel, title: "Skills", details: "\(skills!)")
+            }
+        }
+    }
+    
     var pokemon: Pokemon? {
         didSet {
             navigationItem.title = pokemon?.name?.capitalized
@@ -75,6 +91,7 @@ class InfoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewComponents()
+        fetchAbilities()
     }
     
     // MARK: - Layout disposure
@@ -103,11 +120,11 @@ class InfoController: UIViewController {
         } else {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
             
-            evolutionView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 200, paddingRight: 0, width: 0, height: 50)
+            evolutionView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 100, paddingRight: 0, width: 0, height: 50)
 
-            firstEvoImageView.anchor(top: evolutionView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 130, height: 130)
+            firstEvoImageView.anchor(top: evolutionView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
             
-            secondEvoImageView.anchor(top: evolutionView.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 130, height: 130)
+            secondEvoImageView.anchor(top: evolutionView.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 30, height: 30)
             
             infoLabel.font = UIFont.systemFont(ofSize: 16)
             evoLabel.font = UIFont.systemFont(ofSize: 18)

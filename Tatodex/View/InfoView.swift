@@ -8,7 +8,7 @@
 import UIKit
 
 protocol InfoViewDelegate {
-    func dismissInfoView(withPokemon pokemon: Pokemon?)
+    func dismissInfoView(pokemon: Pokemon?)
 }
 
 class InfoView: UIView {
@@ -20,13 +20,13 @@ class InfoView: UIView {
     //  It makes the positioning of every element possible
     var pokemon: Pokemon? {
         didSet {
-            guard let pokemon = self.pokemon else { return }
-            guard let type = pokemon.type else { return }
-            guard let defense = pokemon.defense else { return }
-            guard let attack = pokemon.attack else { return }
-            guard let id = pokemon.id else { return }
-            guard let height = pokemon.height else { return }
-            guard let weight = pokemon.weight else { return }
+            guard let pokemon   = self.pokemon else { return }
+            guard let type      = pokemon.type else { return }
+            guard let defense   = pokemon.defense else { return }
+            guard let attack    = pokemon.attack else { return }
+            guard let id        = pokemon.id else { return }
+            guard let height    = pokemon.height else { return }
+            guard let weight    = pokemon.weight else { return }
             
             imageView.image = pokemon.image
             nameLabel.text = pokemon.name?.capitalized
@@ -39,6 +39,11 @@ class InfoView: UIView {
             configureLabel(label: attackLabel, title: "Base Attack", details: "\(attack)")
         }
     }
+    
+    let skillLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
     
     let imageView: UIImageView = {
         let iv = UIImageView()
@@ -99,6 +104,7 @@ class InfoView: UIView {
         button.setTitle("View More Info", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        button.addTarget(self, action: #selector(handleViewMoreInfo), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 5
         return button
@@ -111,6 +117,12 @@ class InfoView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Selectors
+    @objc func handleViewMoreInfo() {
+        guard let pokemon = self.pokemon else { return }
+        delegate?.dismissInfoView(pokemon: pokemon)
     }
     
     // MARK: - Layout settings
@@ -178,6 +190,9 @@ class InfoView: UIView {
         
         addSubview(weightLabel)
         weightLabel.anchor(top: heightLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(skillLabel)
+        skillLabel.anchor(top: weightLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         addSubview(defenseLabel)
         defenseLabel.anchor(top: separatorView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)

@@ -6,12 +6,14 @@
 //
 
 import Alamofire
+import SwiftyJSON
 import UIKit
 
 class Service {
     
     //MARK: - Main parsing
     let baseURL = "https://pokedex-bb36f.firebaseio.com/pokemon.json"
+    let skillPokes = "https://pokeapi.co/api/v2/pokemon?limit=151"
     static let shared = Service()
     
     func fetchPokes(handler: @escaping ([Pokemon]) -> Void) {
@@ -71,15 +73,71 @@ class Service {
     }
 }
 
+//MARK: - Skills parsing
+extension Service {
+    
+    func fetchSkills(handler: @escaping ([String], Int) -> Void) {
+        
+        AF.request(skillPokes).validate().response { (response) in
+            
+            do {
+                guard let pokeList = response.data else { return }
+                
+                let decoded = try JSONDecoder().decode(Pokemons.self, from: pokeList)
+                let pokeResults = decoded.results
+                
+                for poke in pokeResults! {
+                    
+                    let pokeEndpoint = poke.url!
+                    
+                    AF.request(pokeEndpoint).responseJSON { (response) in
+                        
+                        do {
+                            guard let urlData = response.data else { return }
+                            
+                            let json = try JSON(data: urlData)
+                            let ids = json["id"].intValue
+                            let abilities = json["abilities"].arrayValue.map {$0["ability"]["name"].stringValue}
+                            
+                            handler(abilities, ids)
+                            
+                        } catch {
+                            print(error)
+                        }
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }.resume()
+    }
+}
+
 extension TatodexController {
     
     //MARK: - Fetching
     func fetchPokemons() {
-        
         Service.shared.fetchPokes { (pokemon) in
             DispatchQueue.main.async {
                 self.pokemon = pokemon
                 self.collectionView.reloadData()
+            }
+        }
+    }
+}
+
+extension InfoController {
+    
+    func fetchAbilities() {
+        Service.shared.fetchSkills { (skill, id) in
+            
+            if skill.isEmpty {
+                
+                print("There was an error, the skills didn't make it.")
+            } else {
+                
+                self.abilities = skill
+                self.ids = id
             }
         }
     }
