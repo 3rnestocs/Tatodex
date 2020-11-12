@@ -73,9 +73,8 @@ extension TatodexController {
         visualEffectView.alpha = 0
         
         //  Allows to dismiss the InfoView tapping outside
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleDismissal))
-        visualEffectView.addGestureRecognizer(gesture)
-        
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(self.handleDismissal))
+            self.visualEffectView.addGestureRecognizer(gesture)
     }
     
     func configureSearchBar(showSearch: Bool) {

@@ -12,6 +12,7 @@ class Service: Codable {
     var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=151"
     var secondAPI = "https://pokedex-bb36f.firebaseio.com/pokemon.json"
     
+    // MARK: - MainAPI call
     func fetchPokes(handler: @escaping (Pokemon) -> Void) {
         
         var pokeUrls = [String]()
@@ -37,6 +38,7 @@ class Service: Codable {
         }.resume()
     }
     
+    // MARK: - SecondAPI call
     func getOtherPokes(handler: @escaping ([Pokemon]) -> Void) {
         
         var pokemonArray = [Pokemon]()
@@ -44,7 +46,6 @@ class Service: Codable {
         AF.request(secondAPI).responseJSON { (response) in
    
             do {
-
                 guard let pokeFetched = response.value as? [AnyObject] else { return }
                 
                 print("You have \(pokeFetched.count - 1) pokemon listed by now.")
@@ -52,45 +53,19 @@ class Service: Codable {
                 //  Get all the elements of the pokemon objects
                 for (key, result) in pokeFetched.enumerated() {
                     if let dictionary = result as? [String: AnyObject] {
-                        var pokemon = Pokemon(id: key, dictionary: dictionary)
+                        let pokemon = Pokemon(id: key, dictionary: dictionary)
                         
-                        guard let imageURL = pokemon.imageURL else { return }
-                        
-                        self.fetchImages(withUrl: imageURL) { (img) in
-                            
-                            pokemon.image = img.pngData()
-
                             pokemonArray.append(pokemon)
                             
 //                              Sort the pokemons on the view by id-order
                             pokemonArray.sort { (poke1, poke2) -> Bool in
                                 return poke1.id! < poke2.id!
-                            }
-                                handler(pokemonArray)
                         }
+                        handler(pokemonArray)
                     }
                 }
             } catch {
                 print("There was an error: \(error)")
-            }
-        }.resume()
-    }
-    
-    //MARK: - Image parsing
-    private func fetchImages(withUrl urlString: String, handler: @escaping(UIImage) -> Void) {
-        
-        //  Get a url as a parameter, so I can use it on fetchPokes
-        guard let url = URL(string: urlString) else { return }
-        
-        AF.request(url).response { (response) in
-            
-            guard let data = response.data else { return }
-            guard let image = UIImage(data: data) else { return }
-            
-            handler(image)
-            
-            if let error = response.error {
-                print("There was an error downloading the image. Check it out: \n \(error)")
             }
         }.resume()
     }

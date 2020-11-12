@@ -13,20 +13,13 @@ class InfoController: UIViewController {
     var controller = TatodexController()
     var pokemon: Pokemon? {
         didSet {
+            guard let pokemon = pokemon, let imageUrl = pokemon.imageURL else { return }
             
-            guard let id = pokemon?.id, let data = pokemon?.image else { return }
-            
-            let skills = pokemon?.skillName
-
-            navigationItem.title = pokemon?.name?.capitalized
-            infoLabel.text = pokemon?.description!
-            infoView.pokemon = pokemon!
-
+            navigationItem.title = pokemon.name?.capitalized
+            infoLabel.text = pokemon.description!
+            infoView.pokemon = pokemon
             DispatchQueue.main.async {
-                if id == self.pokemon?.id {
-                    self.imageView.image = UIImage(data: data)
-                    self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: "\(skills ?? "Test")")
-                }
+                self.imageView.kf.setImage(with: URL(string: imageUrl))
             }
         }
     }
@@ -50,37 +43,24 @@ class InfoController: UIViewController {
         return view
     }()
     
-    lazy var evolutionView: UIView = {
+    lazy var endView: UIView = {
         let view = UIView()
         view.backgroundColor = Colors.softRed
         
-        view.addSubview(evoLabel)
-        evoLabel.translatesAutoresizingMaskIntoConstraints = false
-        evoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        evoLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        view.addSubview(endLabel)
+        endLabel.translatesAutoresizingMaskIntoConstraints = false
+        endLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        endLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
         return view
     }()
     
-    let evoLabel: UILabel = {
+    let endLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.text = "Next Evolution: Charmeleon"
+        label.text = "Thanks for watching"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         return label
-    }()
-    
-    let firstEvoImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.backgroundColor = Colors.hardRed
-        return iv
-    }()
-    
-    let secondEvoImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.backgroundColor = Colors.hardRed
-        return iv
     }()
     
     // MARK: - Init
@@ -88,13 +68,14 @@ class InfoController: UIViewController {
         super.viewDidLoad()
         configureViewComponents()
         
-        fetchPokemons { (names) in
-            guard let skillName = names as? String else { return }
-            
-            self.pokemon?.skillName = skillName
-            
-            print(skillName)
-            
+        fetchPokemons { (names, statNum) in
+            self.pokemon?.skillName = names
+            self.pokemon?.statNum = statNum
+            self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: names)
+            self.infoView.configureLabel(label: self.infoView.hpLabel, title: "HP", details: "\(statNum[0])")
+            self.infoView.configureLabel(label: self.infoView.speedLabel, title: "Speed", details: "\(statNum[5])")
+            self.infoView.configureLabel(label: self.infoView.specialAttackLabel, title: "Special-Attack", details: "\(statNum[3])")
+            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel, title: "Special-Defense", details: "\(statNum[4])")
         }
     }
     
@@ -104,35 +85,21 @@ class InfoController: UIViewController {
         navigationController?.navigationBar.tintColor = .white
         
         view.addSubview(imageView)
-        view.addSubview(evolutionView)
-        view.addSubview(firstEvoImageView)
-        view.addSubview(secondEvoImageView)
+        view.addSubview(endView)
                 
         //  Set up for small devices (Height < 700pts)
         if view.frame.height <= 700 {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
             
-            evolutionView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 166, paddingRight: 0, width: 0, height: 30)
-            
-            firstEvoImageView.anchor(top: evolutionView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 120, height: 120)
-            
-            secondEvoImageView.anchor(top: evolutionView.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 120, height: 120)
-            
-            infoLabel.font = UIFont.systemFont(ofSize: 14)
-            evoLabel.font = UIFont.systemFont(ofSize: 15)
+            infoLabel.font = UIFont.systemFont(ofSize: 15)
             
         } else {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
-            
-            evolutionView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 100, paddingRight: 0, width: 0, height: 50)
 
-            firstEvoImageView.anchor(top: evolutionView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 32, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
-            
-            secondEvoImageView.anchor(top: evolutionView.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 32, width: 30, height: 30)
-            
-            infoLabel.font = UIFont.systemFont(ofSize: 16)
-            evoLabel.font = UIFont.systemFont(ofSize: 18)
+            infoLabel.font = UIFont.systemFont(ofSize: 17)
         }
+        
+        endView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
         
         view.addSubview(infoLabel)
         infoLabel.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
@@ -142,14 +109,16 @@ class InfoController: UIViewController {
         infoView.anchor(top: infoLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
-    func fetchPokemons(handler: @escaping (String) -> Void) {
+    func fetchPokemons(handler: @escaping (String, [Int]) -> Void) {
         controller.service.fetchPokes { (poke) in
+            guard poke.id == self.pokemon?.id else { return }
             self.pokemon? = poke
-                
-            guard let skills = poke.abilities else { return }
-            let names = skills.compactMap { $0.ability?.name?.capitalized }.joined(separator: ", ")
+            let names = poke.abilities?.compactMap { $0.ability?.name?.capitalized }.joined(separator: ", ")
             
-            handler(names)
+            guard let stats = poke.stats else { return }
+            let statNum = stats.compactMap { $0.baseStat }
+            
+            handler(names ?? "-", statNum)
         }
     }
 }

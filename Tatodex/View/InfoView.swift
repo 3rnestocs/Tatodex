@@ -20,17 +20,17 @@ class InfoView: UIView {
     //  It makes the positioning of every element possible
     var pokemon: Pokemon? {
         didSet {
-            guard let pokemon   = self.pokemon else { return }
-            guard let type      = pokemon.type else { return }
-            guard let defense   = pokemon.defense else { return }
-            guard let attack    = pokemon.attack else { return }
-            guard let id        = pokemon.id else { return }
-            guard let height    = pokemon.height else { return }
-            guard let weight    = pokemon.weight else { return }
-            guard let data      = pokemon.image else { return }
+            guard let pokemon   = self.pokemon,
+                  let type      = pokemon.type,
+                  let defense   = pokemon.defense,
+                  let attack    = pokemon.attack,
+                  let id        = pokemon.id,
+                  let height    = pokemon.height,
+                  let weight    = pokemon.weight,
+                  let imageUrl  = pokemon.imageURL else { return }
             
             if id == pokemon.id {
-                imageView.image = UIImage(data: data)
+                imageView.kf.setImage(with: URL(string: imageUrl))
             }
             nameLabel.text = pokemon.name?.capitalized
             
@@ -97,6 +97,26 @@ class InfoView: UIView {
     }()
     
     let weightLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let hpLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let speedLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let specialAttackLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let specialDefenseLabel: UILabel = {
         let label = UILabel()
         return label
     }()
@@ -197,11 +217,24 @@ class InfoView: UIView {
         addSubview(skillLabel)
         skillLabel.anchor(top: weightLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        //MARK: - Stats
         addSubview(defenseLabel)
         defenseLabel.anchor(top: separatorView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
         
         addSubview(attackLabel)
         attackLabel.anchor(top: defenseLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        
+        addSubview(hpLabel)
+        hpLabel.anchor(top: skillLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        
+        addSubview(speedLabel)
+        speedLabel.anchor(top: hpLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        
+        addSubview(specialAttackLabel)
+        specialAttackLabel.anchor(top: skillLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(specialDefenseLabel)
+        specialDefenseLabel.anchor(top: specialAttackLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
 }
 

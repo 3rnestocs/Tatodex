@@ -13,12 +13,13 @@ struct Pokemon: Codable {
     var abilities: [Ability]?
     var height, weight: Int?
     var imageURL: String?
-    var image: Data?
+//    var image: Data?
     var description: String?
-    var evolutionChain: [EvolutionChain]?
     var id, attack, defense: Int?
     var name, type: String?
     var skillName: String?
+    var stats: [Stat]?
+    var statNum: [Int]?
     
     init(id: Int, dictionary: [String: AnyObject]) {
         
@@ -42,6 +43,10 @@ struct Pokemon: Codable {
         
         if let weight = dictionary["weight"] as? Int {
             self.weight = weight
+        }
+        
+        if let statNum = dictionary["statNum"] as? [Int] {
+            self.statNum = statNum
         }
         
         if let height = dictionary["height"] as? Int {
@@ -73,7 +78,13 @@ struct Species: Codable {
     let url: String?
 }
 
-// MARK: - EvolutionChain
-struct EvolutionChain: Codable {
-    let id, name: String?
+// MARK: - Stats
+struct Stat: Codable {
+    let baseStat, effort: Int?
+    let stat: Species?
+
+    enum CodingKeys: String, CodingKey {
+        case baseStat = "base_stat"
+        case effort, stat
+    }
 }
