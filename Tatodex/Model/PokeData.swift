@@ -7,18 +7,19 @@
 
 import UIKit
 
-struct Pokemon {
-    
-    var name: String?
-    var imageUrl: String?
-    var image: UIImage?
-    var id: Int?
-    var weight: Int?
-    var height: Int?
-    var defense: Int?
-    var attack: Int?
+// MARK: - Pokemons
+struct Pokemon: Codable {
+    var results: [Species]?
+    var abilities: [Ability]?
+    var height, weight: Int?
+    var imageURL: String?
+//    var image: Data?
     var description: String?
-    var type: String?
+    var id, attack, defense: Int?
+    var name, type: String?
+    var skillName: String?
+    var stats: [Stat]?
+    var statNum: [Int]?
     
     init(id: Int, dictionary: [String: AnyObject]) {
         
@@ -28,12 +29,24 @@ struct Pokemon {
             self.name = name
         }
         
+        if let skillName = dictionary["skillName"] as? String {
+            self.skillName = skillName
+        }
+        
         if let imageUrl = dictionary["imageUrl"] as? String {
-            self.imageUrl = imageUrl
+            self.imageURL = imageUrl
+        }
+        
+        if let description = dictionary["description"] as? String {
+            self.description = description
         }
         
         if let weight = dictionary["weight"] as? Int {
             self.weight = weight
+        }
+        
+        if let statNum = dictionary["statNum"] as? [Int] {
+            self.statNum = statNum
         }
         
         if let height = dictionary["height"] as? Int {
@@ -48,12 +61,30 @@ struct Pokemon {
             self.attack = attack
         }
         
-        if let description = dictionary["description"] as? String {
-            self.description = description
-        }
-        
         if let type = dictionary["type"] as? String {
             self.type = type.capitalized
         }
+    }
+}
+
+// MARK: - Ability
+struct Ability: Codable {
+    let ability: Species?
+}
+
+// MARK: - Species
+struct Species: Codable {
+    let name: String?
+    let url: String?
+}
+
+// MARK: - Stats
+struct Stat: Codable {
+    let baseStat, effort: Int?
+    let stat: Species?
+
+    enum CodingKeys: String, CodingKey {
+        case baseStat = "base_stat"
+        case effort, stat
     }
 }

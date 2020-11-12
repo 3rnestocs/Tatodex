@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol TatodexCellDelegate {
     func presentInfoView(withPokemon pokemon: Pokemon)
@@ -18,8 +19,14 @@ class TatodexCell: UICollectionViewCell {
     
     var pokemon: Pokemon? {
         didSet {
+            guard let id = pokemon?.id else { return }
+            guard let imageUrl = pokemon?.imageURL else { return }
+            
+            if id == pokemon?.id {
+                imageView.kf.indicatorType = .activity
+                imageView.kf.setImage(with: URL(string: imageUrl))
+            }
             nameLabel.text = pokemon?.name?.capitalized
-            imageView.image = pokemon?.image
         }
     }
     

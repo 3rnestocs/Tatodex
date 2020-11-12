@@ -8,28 +8,30 @@
 import UIKit
 
 protocol InfoViewDelegate {
-    func dismissInfoView(withPokemon pokemon: Pokemon?)
+    func dismissInfoView(pokemon: Pokemon?)
 }
 
 class InfoView: UIView {
     
     // MARK: - Properties
-    
     var delegate: InfoViewDelegate?
     
     //  This whole block assigns the attributes that will be shown at the InfoView pop-up
     //  It makes the positioning of every element possible
     var pokemon: Pokemon? {
         didSet {
-            guard let pokemon = self.pokemon else { return }
-            guard let type = pokemon.type else { return }
-            guard let defense = pokemon.defense else { return }
-            guard let attack = pokemon.attack else { return }
-            guard let id = pokemon.id else { return }
-            guard let height = pokemon.height else { return }
-            guard let weight = pokemon.weight else { return }
+            guard let pokemon   = self.pokemon,
+                  let type      = pokemon.type,
+                  let defense   = pokemon.defense,
+                  let attack    = pokemon.attack,
+                  let id        = pokemon.id,
+                  let height    = pokemon.height,
+                  let weight    = pokemon.weight,
+                  let imageUrl  = pokemon.imageURL else { return }
             
-            imageView.image = pokemon.image
+            if id == pokemon.id {
+                imageView.kf.setImage(with: URL(string: imageUrl))
+            }
             nameLabel.text = pokemon.name?.capitalized
             
             configureLabel(label: typeLabel, title: "Type", details: type)
@@ -40,6 +42,11 @@ class InfoView: UIView {
             configureLabel(label: attackLabel, title: "Base Attack", details: "\(attack)")
         }
     }
+    
+    let skillLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
     
     let imageView: UIImageView = {
         let iv = UIImageView()
@@ -94,19 +101,39 @@ class InfoView: UIView {
         return label
     }()
     
+    let hpLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let speedLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let specialAttackLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    let specialDefenseLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
     let infoButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = Colors.softRed
         button.setTitle("View More Info", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        button.addTarget(self, action: #selector(handleViewMoreInfo), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 5
         return button
     }()
     
     // MARK: - Init
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -115,14 +142,20 @@ class InfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Helper Functions
+    //MARK: - Selectors
+    @objc func handleViewMoreInfo() {
+        guard let pokemon = self.pokemon else { return }
+        delegate?.dismissInfoView(pokemon: pokemon)
+    }
     
+    // MARK: - Layout settings
     func configureLabel(label: UILabel, title: String, details: String) {
         let attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.softRed!]))
         attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.gray]))
         label.attributedText = attributedText
     }
     
+    //MARK: - InfoView Layout
     func configureViewComponents() {
         
         backgroundColor = .white
@@ -160,6 +193,48 @@ class InfoView: UIView {
         
         addSubview(infoButton)
         infoButton.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0    , width: 0, height: 50)
+    }
+    
+    //MARK: - InfoController Layout
+    func configureViewForInfoController() {
+        addSubview(typeLabel)
+        typeLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(pokedexIdLabel)
+        pokedexIdLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+
+        let separatorView = UIView()
+        separatorView.backgroundColor = Colors.myWhite
+        addSubview(separatorView)
+        separatorView.anchor(top: typeLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 1)
+        
+        addSubview(heightLabel)
+        heightLabel.anchor(top: separatorView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(weightLabel)
+        weightLabel.anchor(top: heightLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(skillLabel)
+        skillLabel.anchor(top: weightLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        //MARK: - Stats
+        addSubview(defenseLabel)
+        defenseLabel.anchor(top: separatorView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        
+        addSubview(attackLabel)
+        attackLabel.anchor(top: defenseLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        
+        addSubview(hpLabel)
+        hpLabel.anchor(top: skillLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        
+        addSubview(speedLabel)
+        speedLabel.anchor(top: hpLabel.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        
+        addSubview(specialAttackLabel)
+        specialAttackLabel.anchor(top: skillLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(specialDefenseLabel)
+        specialDefenseLabel.anchor(top: specialAttackLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
 }
 

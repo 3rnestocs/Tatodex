@@ -10,11 +10,13 @@ import UIKit
 //  This is a reusable cell identifier to minimize human error while using it
 private let reuseIdentifier = "TatodexCell"
 
-class TatodexController: UICollectionViewController {
+class TatodexController: UICollectionViewController, InfoViewDelegate {
     
     //MARK: - Properties
-    var pokemon = [Pokemon]()
+    var pokemon: Pokemon?
+    var pokemons = [Pokemon]()
     var filteredPokemon = [Pokemon]()
+    let service = Service()
     var searchBar: UISearchBar!
     var inSearchMode = false
     
@@ -24,6 +26,7 @@ class TatodexController: UICollectionViewController {
         return view
     }()
     
+    //  This blurs the CollectionView when InfoView shows up
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
@@ -69,14 +72,14 @@ extension TatodexController {
         visualEffectView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         visualEffectView.alpha = 0
         
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleDismissal))
-        visualEffectView.addGestureRecognizer(gesture)
-        
+        //  Allows to dismiss the InfoView tapping outside
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(self.handleDismissal))
+            self.visualEffectView.addGestureRecognizer(gesture)
     }
     
     func configureSearchBar(showSearch: Bool) {
         
-        //  This refactoring allows me to enable/disable the search stuff when InfoView shows up
+        //  This refactoring allows me to enable/disable the search button when InfoView shows up
         if showSearch {
             searchBar = UISearchBar()
             searchBar.delegate = self
@@ -87,6 +90,7 @@ extension TatodexController {
             searchBar.backgroundColor = Colors.myGray
             searchBar.placeholder = "Search your favorite pokemon"
             
+            //  The search button goes away when the search field appears
             navigationItem.rightBarButtonItem = nil
             navigationItem.titleView = searchBar
         } else {
@@ -95,12 +99,19 @@ extension TatodexController {
             inSearchMode = false
             collectionView.reloadData()
         }
-        
     }
     
     func configureSearchBarButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchTapped))
         navigationItem.rightBarButtonItem?.tintColor = Colors.myGray
+    }
+    
+    func showInfoController(withPoke pokemon: Pokemon) {
+        
+        let controller = InfoController()
+        controller.pokemon = pokemon
+        self.navigationController?.pushViewController(controller
+                                                      , animated: true)
     }
     
     //  This allows me to click outside InfoView to dismiss that screen
@@ -112,6 +123,24 @@ extension TatodexController {
         }) { (_) in
             self.infoView.removeFromSuperview()
             self.navigationItem.rightBarButtonItem?.isEnabled = true
+            guard let pokemon = pokemon else { return }
+            self.showInfoController(withPoke: pokemon)
+        }
+    }
+    
+    func fetchPokemons() {
+        service.fetchPokes { (poke) in
+            DispatchQueue.main.async {
+                self.pokemon = poke
+                self.collectionView.reloadData()
+            }
+        }
+        
+        service.getOtherPokes { (pokes) in
+            DispatchQueue.main.async {
+                self.pokemons = pokes
+                self.collectionView.reloadData()
+            }
         }
     }
 }
@@ -131,16 +160,22 @@ extension TatodexController: UICollectionViewDelegateFlowLayout {
 
     //MARK: - CollectionView DataSource/Delegate
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return inSearchMode ? filteredPokemon.count : pokemon.count
+        return inSearchMode ? filteredPokemon.count : pokemons.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TatodexCell
         
-        cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
         cell.delegate = self
         
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let poke = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
+        showInfoController(withPoke: poke)
     }
 }
 
@@ -149,13 +184,15 @@ extension TatodexController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
+        //  This checks if the user search something, and if it does, filters the pokemon
+        //  in the CollectionView by name
         if searchText == "" || searchBar.text == nil {
             inSearchMode = false
             collectionView.reloadData()
             view.endEditing(true)
         } else {
             inSearchMode = true
-            filteredPokemon = pokemon.filter({ $0.name?.range(of: searchText.lowercased()) != nil })
+            filteredPokemon = pokemons.filter({ $0.name?.range(of: searchText.lowercased()) != nil })
             collectionView.reloadData()
         }
     }
@@ -177,6 +214,7 @@ extension TatodexController: TatodexCellDelegate {
         //  Setting up the InfoView disposure
         view.addSubview(infoView)
         infoView.configureViewComponents()
+        infoView.delegate = self
         infoView.pokemon = pokemon
         infoView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width - 64, height: 480)
         infoView.layer.cornerRadius = view.frame.width / 6
