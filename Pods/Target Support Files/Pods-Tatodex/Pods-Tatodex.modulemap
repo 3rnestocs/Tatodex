@@ -1,0 +1,6 @@
+framework module Pods_Tatodex {
+  umbrella header "Pods-Tatodex-umbrella.h"
+
+  export *
+  module * { export * }
+}
