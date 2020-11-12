@@ -6,20 +6,42 @@
 //
 
 import Alamofire
-import SwiftyJSON
-import UIKit
 
-class Service {
+class Service: Codable {
     
-    //MARK: - Main parsing
-    let baseURL = "https://pokedex-bb36f.firebaseio.com/pokemon.json"
-    let skillPokes = "https://pokeapi.co/api/v2/pokemon?limit=151"
-    static let shared = Service()
+    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=151"
+    var secondAPI = "https://pokedex-bb36f.firebaseio.com/pokemon.json"
     
-    func fetchPokes(handler: @escaping ([Pokemon]) -> Void) {
+    func fetchPokes(handler: @escaping (Pokemon) -> Void) {
+        
+        var pokeUrls = [String]()
+        
+        AF.request(mainAPI).validate().responsePokemon { (response) in
+            
+            let data = response.value
+            let results = data?.results
+            
+            for poke in results! {
+                pokeUrls.append(poke.url!)
+            }
+            
+            for url in pokeUrls {
+                
+                AF.request(url).validate().responsePokemon { (pokes) in
+                    
+                    guard let pokeData = pokes.value else { return }
+
+                    handler(pokeData)
+                }
+            }
+        }.resume()
+    }
+    
+    func getOtherPokes(handler: @escaping ([Pokemon]) -> Void) {
+        
         var pokemonArray = [Pokemon]()
         
-        AF.request(baseURL).responseJSON { (response) in
+        AF.request(secondAPI).responseJSON { (response) in
    
             do {
 
@@ -32,23 +54,24 @@ class Service {
                     if let dictionary = result as? [String: AnyObject] {
                         var pokemon = Pokemon(id: key, dictionary: dictionary)
                         
-                        guard let imageURL = pokemon.imageUrl else { return }
+                        guard let imageURL = pokemon.imageURL else { return }
                         
-                        self.fetchImages(withUrl: imageURL) { (image) in
-                            pokemon.image = image
+                        self.fetchImages(withUrl: imageURL) { (img) in
+                            
+                            pokemon.image = img.pngData()
+
                             pokemonArray.append(pokemon)
                             
-                            //  Sort the pokemons on the view by id-order
+//                              Sort the pokemons on the view by id-order
                             pokemonArray.sort { (poke1, poke2) -> Bool in
                                 return poke1.id! < poke2.id!
                             }
-                            
-                            handler(pokemonArray)
+                                handler(pokemonArray)
                         }
                     }
                 }
             } catch {
-                print(error)
+                print("There was an error: \(error)")
             }
         }.resume()
     }
@@ -73,72 +96,12 @@ class Service {
     }
 }
 
-//MARK: - Skills parsing
-extension Service {
-    
-    func fetchSkills(handler: @escaping ([String], Int) -> Void) {
-        
-        AF.request(skillPokes).validate().response { (response) in
-            
-            do {
-                guard let pokeList = response.data else { return }
-                
-                let decoded = try JSONDecoder().decode(Pokemons.self, from: pokeList)
-                let pokeResults = decoded.results
-                
-                for poke in pokeResults! {
-                    
-                    let pokeEndpoint = poke.url!
-                    
-                    AF.request(pokeEndpoint).responseJSON { (response) in
-                        
-                        do {
-                            guard let urlData = response.data else { return }
-                            
-                            let json = try JSON(data: urlData)
-                            let ids = json["id"].intValue
-                            let abilities = json["abilities"].arrayValue.map {$0["ability"]["name"].stringValue}
-                            
-                            handler(abilities, ids)
-                            
-                        } catch {
-                            print(error)
-                        }
-                    }
-                }
-            } catch {
-                print(error)
-            }
-        }.resume()
-    }
-}
+// MARK: - Alamofire response handlers
 
-extension TatodexController {
-    
-    //MARK: - Fetching
-    func fetchPokemons() {
-        Service.shared.fetchPokes { (pokemon) in
-            DispatchQueue.main.async {
-                self.pokemon = pokemon
-                self.collectionView.reloadData()
-            }
-        }
-    }
-}
+extension DataRequest {
 
-extension InfoController {
-    
-    func fetchAbilities() {
-        Service.shared.fetchSkills { (skill, id) in
-            
-            if skill.isEmpty {
-                
-                print("There was an error, the skills didn't make it.")
-            } else {
-                
-                self.abilities = skill
-                self.ids = id
-            }
-        }
+    @discardableResult
+    func responsePokemon(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<Pokemon>) -> Void) -> Self {
+        return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
     }
 }

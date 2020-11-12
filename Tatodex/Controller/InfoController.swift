@@ -11,27 +11,23 @@ class InfoController: UIViewController {
     
     // MARK: - Properties
     var controller = TatodexController()
-    var skills: String?
-    var ids: Int?
-    var abilities: [String]? {
-        didSet {
- 
-            for skill in abilities! {
-                skills = skill.capitalized
-            }
-            
-            if controller.pokeIds == ids {
-                infoView.configureLabel(label: infoView.skillLabel, title: "Skills", details: "\(skills!)")
-            }
-        }
-    }
-    
     var pokemon: Pokemon? {
         didSet {
+            
+            guard let id = pokemon?.id, let data = pokemon?.image else { return }
+            
+            let skills = pokemon?.skillName
+
             navigationItem.title = pokemon?.name?.capitalized
-            imageView.image = pokemon?.image
-            infoLabel.text = pokemon?.description
-            infoView.pokemon = pokemon
+            infoLabel.text = pokemon?.description!
+            infoView.pokemon = pokemon!
+
+            DispatchQueue.main.async {
+                if id == self.pokemon?.id {
+                    self.imageView.image = UIImage(data: data)
+                    self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: "\(skills ?? "Test")")
+                }
+            }
         }
     }
     
@@ -91,7 +87,15 @@ class InfoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewComponents()
-        fetchAbilities()
+        
+        fetchPokemons { (names) in
+            guard let skillName = names as? String else { return }
+            
+            self.pokemon?.skillName = skillName
+            
+            print(skillName)
+            
+        }
     }
     
     // MARK: - Layout disposure
@@ -136,5 +140,16 @@ class InfoController: UIViewController {
         
         view.addSubview(infoView)
         infoView.anchor(top: infoLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+    }
+    
+    func fetchPokemons(handler: @escaping (String) -> Void) {
+        controller.service.fetchPokes { (poke) in
+            self.pokemon? = poke
+                
+            guard let skills = poke.abilities else { return }
+            let names = skills.compactMap { $0.ability?.name?.capitalized }.joined(separator: ", ")
+            
+            handler(names)
+        }
     }
 }

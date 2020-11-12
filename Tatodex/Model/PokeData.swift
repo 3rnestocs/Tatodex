@@ -7,18 +7,18 @@
 
 import UIKit
 
-struct Pokemon {
-    
-    var name: String?
-    var imageUrl: String?
-    var image: UIImage?
-    var id: Int?
-    var weight: Int?
-    var height: Int?
-    var defense: Int?
-    var attack: Int?
+// MARK: - Pokemons
+struct Pokemon: Codable {
+    var results: [Species]?
+    var abilities: [Ability]?
+    var height, weight: Int?
+    var imageURL: String?
+    var image: Data?
     var description: String?
-    var type: String?
+    var evolutionChain: [EvolutionChain]?
+    var id, attack, defense: Int?
+    var name, type: String?
+    var skillName: String?
     
     init(id: Int, dictionary: [String: AnyObject]) {
         
@@ -28,8 +28,16 @@ struct Pokemon {
             self.name = name
         }
         
+        if let skillName = dictionary["skillName"] as? String {
+            self.skillName = skillName
+        }
+        
         if let imageUrl = dictionary["imageUrl"] as? String {
-            self.imageUrl = imageUrl
+            self.imageURL = imageUrl
+        }
+        
+        if let description = dictionary["description"] as? String {
+            self.description = description
         }
         
         if let weight = dictionary["weight"] as? Int {
@@ -48,43 +56,24 @@ struct Pokemon {
             self.attack = attack
         }
         
-        if let description = dictionary["description"] as? String {
-            self.description = description
-        }
-        
         if let type = dictionary["type"] as? String {
             self.type = type.capitalized
         }
     }
 }
 
-struct Pokemons: Codable {
-    let results: [Pokes]?
-}
-
-struct Pokes: Codable {
-    let name: String?
-    let url: String?
-}
-
-struct PokePage: Codable {
-    
-    let abilities: [Ability]?
-    let id: Int?
-    
-    init(abilities: [Ability], id: Int, name: String) {
-        self.abilities = abilities
-        self.id = id
-    }
-    
-}
-
+// MARK: - Ability
 struct Ability: Codable {
+    let ability: Species?
+}
+
+// MARK: - Species
+struct Species: Codable {
     let name: String?
     let url: String?
-    
-    init(name: String, url: String) {
-        self.name = name
-        self.url = url
-    }
+}
+
+// MARK: - EvolutionChain
+struct EvolutionChain: Codable {
+    let id, name: String?
 }

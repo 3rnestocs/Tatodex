@@ -13,9 +13,10 @@ private let reuseIdentifier = "TatodexCell"
 class TatodexController: UICollectionViewController, InfoViewDelegate {
     
     //MARK: - Properties
-    var pokemon = [Pokemon]()
+    var pokemon: Pokemon?
+    var pokemons = [Pokemon]()
     var filteredPokemon = [Pokemon]()
-    var pokeIds: Int?
+    let service = Service()
     var searchBar: UISearchBar!
     var inSearchMode = false
     
@@ -127,6 +128,22 @@ extension TatodexController {
             self.showInfoController(withPoke: pokemon)
         }
     }
+    
+    func fetchPokemons() {
+        service.fetchPokes { (poke) in
+            DispatchQueue.main.async {
+                self.pokemon = poke
+                self.collectionView.reloadData()
+            }
+        }
+        
+        service.getOtherPokes { (pokes) in
+            DispatchQueue.main.async {
+                self.pokemons = pokes
+                self.collectionView.reloadData()
+            }
+        }
+    }
 }
     
 extension TatodexController: UICollectionViewDelegateFlowLayout {
@@ -144,23 +161,21 @@ extension TatodexController: UICollectionViewDelegateFlowLayout {
 
     //MARK: - CollectionView DataSource/Delegate
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return inSearchMode ? filteredPokemon.count : pokemon.count
+        return inSearchMode ? filteredPokemon.count : pokemons.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TatodexCell
         
-        cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
         cell.delegate = self
-        
-        pokeIds = cell.pokemon!.id!
         
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let poke = inSearchMode ? filteredPokemon[indexPath.row] : pokemon[indexPath.row]
+        let poke = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
         showInfoController(withPoke: poke)
     }
 }
@@ -178,7 +193,7 @@ extension TatodexController: UISearchBarDelegate {
             view.endEditing(true)
         } else {
             inSearchMode = true
-            filteredPokemon = pokemon.filter({ $0.name?.range(of: searchText.lowercased()) != nil })
+            filteredPokemon = pokemons.filter({ $0.name?.range(of: searchText.lowercased()) != nil })
             collectionView.reloadData()
         }
     }

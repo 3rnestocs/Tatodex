@@ -18,8 +18,13 @@ class TatodexCell: UICollectionViewCell {
     
     var pokemon: Pokemon? {
         didSet {
+            guard let id = pokemon?.id else { return }
+            guard let data = pokemon?.image else { return }
+            
+            if id == pokemon?.id {
+                    imageView.image = UIImage(data: data)
+            }
             nameLabel.text = pokemon?.name?.capitalized
-            imageView.image = pokemon?.image
         }
     }
     

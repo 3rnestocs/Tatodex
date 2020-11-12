@@ -27,8 +27,11 @@ class InfoView: UIView {
             guard let id        = pokemon.id else { return }
             guard let height    = pokemon.height else { return }
             guard let weight    = pokemon.weight else { return }
+            guard let data      = pokemon.image else { return }
             
-            imageView.image = pokemon.image
+            if id == pokemon.id {
+                imageView.image = UIImage(data: data)
+            }
             nameLabel.text = pokemon.name?.capitalized
             
             configureLabel(label: typeLabel, title: "Type", details: type)
