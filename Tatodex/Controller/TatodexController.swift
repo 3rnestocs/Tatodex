@@ -13,7 +13,7 @@ private let reuseIdentifier = "TatodexCell"
 class TatodexController: UICollectionViewController, InfoViewDelegate {
     
     //MARK: - Properties
-    var pokemon: Pokemon?
+//    var pokemon: Pokemon?
     var pokemons = [Pokemon]()
     var filteredPokemon = [Pokemon]()
     let service = Service()
@@ -131,17 +131,19 @@ extension TatodexController {
     func fetchPokemons() {
         service.fetchPokes { (poke) in
             DispatchQueue.main.async {
-                self.pokemon = poke
+                self.pokemons.append(poke)
                 self.collectionView.reloadData()
             }
         }
         
-        service.getOtherPokes { (pokes) in
-            DispatchQueue.main.async {
-                self.pokemons = pokes
-                self.collectionView.reloadData()
-            }
-        }
+//        service.getOtherPokes { (pokes) in
+//            DispatchQueue.main.async {
+//                self.pokemons = pokes
+//                self.collectionView.reloadData()
+//
+////                print(self.pokemons)
+//            }
+//        }
     }
 }
     

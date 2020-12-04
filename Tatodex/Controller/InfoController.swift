@@ -13,13 +13,12 @@ class InfoController: UIViewController {
     var controller = TatodexController()
     var pokemon: Pokemon? {
         didSet {
-            guard let pokemon = pokemon, let imageUrl = pokemon.imageURL else { return }
+            guard let pokemon = pokemon, let sprites = pokemon.sprites?.front else { return }
             
             navigationItem.title = pokemon.name?.capitalized
-            infoLabel.text = pokemon.description!
             infoView.pokemon = pokemon
             DispatchQueue.main.async {
-                self.imageView.kf.setImage(with: URL(string: imageUrl))
+                self.imageView.kf.setImage(with: URL(string: sprites))
             }
         }
     }
@@ -69,7 +68,6 @@ class InfoController: UIViewController {
         configureViewComponents()
         
         fetchPokemons { (names, statNum) in
-            self.pokemon?.skillName = names
             self.pokemon?.statNum = statNum
             self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: names)
             self.infoView.configureLabel(label: self.infoView.hpLabel, title: "HP", details: "\(statNum[0])")
@@ -91,15 +89,17 @@ class InfoController: UIViewController {
         if view.frame.height <= 700 {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
             
+            endView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+            
             infoLabel.font = UIFont.systemFont(ofSize: 15)
             
         } else {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
 
             infoLabel.font = UIFont.systemFont(ofSize: 17)
+            
+            endView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
         }
-        
-        endView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
         
         view.addSubview(infoLabel)
         infoLabel.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
@@ -109,6 +109,7 @@ class InfoController: UIViewController {
         infoView.anchor(top: infoLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
+    /// Fetching pokemon abilities
     func fetchPokemons(handler: @escaping (String, [Int]) -> Void) {
         controller.service.fetchPokes { (poke) in
             guard poke.id == self.pokemon?.id else { return }

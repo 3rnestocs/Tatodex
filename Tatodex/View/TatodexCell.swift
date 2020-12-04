@@ -20,7 +20,7 @@ class TatodexCell: UICollectionViewCell {
     var pokemon: Pokemon? {
         didSet {
             guard let id = pokemon?.id else { return }
-            guard let imageUrl = pokemon?.imageURL else { return }
+            guard let imageUrl = pokemon?.sprites?.front else { return }
             
             if id == pokemon?.id {
                 imageView.kf.indicatorType = .activity

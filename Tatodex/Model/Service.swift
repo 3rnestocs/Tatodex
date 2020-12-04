@@ -9,8 +9,7 @@ import Alamofire
 
 class Service: Codable {
     
-    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=151"
-    var secondAPI = "https://pokedex-bb36f.firebaseio.com/pokemon.json"
+    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=800"
     
     // MARK: - MainAPI call
     func fetchPokes(handler: @escaping (Pokemon) -> Void) {
@@ -20,9 +19,11 @@ class Service: Codable {
         AF.request(mainAPI).validate().responsePokemon { (response) in
             
             let data = response.value
-            let results = data?.results
+            guard let results = data?.results else { return }
             
-            for poke in results! {
+            print("You've got \(results.count) pokemons successfully")
+            
+            for poke in results {
                 pokeUrls.append(poke.url!)
             }
             
@@ -34,38 +35,6 @@ class Service: Codable {
 
                     handler(pokeData)
                 }
-            }
-        }.resume()
-    }
-    
-    // MARK: - SecondAPI call
-    func getOtherPokes(handler: @escaping ([Pokemon]) -> Void) {
-        
-        var pokemonArray = [Pokemon]()
-        
-        AF.request(secondAPI).responseJSON { (response) in
-   
-            do {
-                guard let pokeFetched = response.value as? [AnyObject] else { return }
-                
-                print("You have \(pokeFetched.count - 1) pokemon listed by now.")
-
-                //  Get all the elements of the pokemon objects
-                for (key, result) in pokeFetched.enumerated() {
-                    if let dictionary = result as? [String: AnyObject] {
-                        let pokemon = Pokemon(id: key, dictionary: dictionary)
-                        
-                            pokemonArray.append(pokemon)
-                            
-//                              Sort the pokemons on the view by id-order
-                            pokemonArray.sort { (poke1, poke2) -> Bool in
-                                return poke1.id! < poke2.id!
-                        }
-                        handler(pokemonArray)
-                    }
-                }
-            } catch {
-                print("There was an error: \(error)")
             }
         }.resume()
     }

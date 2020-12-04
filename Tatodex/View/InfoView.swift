@@ -21,20 +21,20 @@ class InfoView: UIView {
     var pokemon: Pokemon? {
         didSet {
             guard let pokemon   = self.pokemon,
-                  let type      = pokemon.type,
+                  let type      = pokemon.types,
                   let defense   = pokemon.defense,
                   let attack    = pokemon.attack,
                   let id        = pokemon.id,
                   let height    = pokemon.height,
                   let weight    = pokemon.weight,
-                  let imageUrl  = pokemon.imageURL else { return }
+                  let imageUrl  = pokemon.sprites?.front else { return }
             
             if id == pokemon.id {
                 imageView.kf.setImage(with: URL(string: imageUrl))
             }
             nameLabel.text = pokemon.name?.capitalized
             
-            configureLabel(label: typeLabel, title: "Type", details: type)
+            configureLabel(label: typeLabel, title: "Type", details: "\(type[0].type?.name!) and \(type[1].type?.name!)")
             configureLabel(label: pokedexIdLabel, title: "Pokedex Id", details: "\(id)")
             configureLabel(label: heightLabel, title: "Height", details: "\(height)")
             configureLabel(label: defenseLabel, title: "Defense", details: "\(defense)")
