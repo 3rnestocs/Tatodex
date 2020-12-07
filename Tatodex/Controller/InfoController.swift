@@ -13,13 +13,25 @@ class InfoController: UIViewController {
     var controller = TatodexController()
     var pokemon: Pokemon? {
         didSet {
-            guard let pokemon = pokemon, let sprites = pokemon.sprites?.front else { return }
+            guard let pokemon   = pokemon,
+                  let sprites   = pokemon.sprites?.front,
+                  let stats     = pokemon.stats,
+                  let names     = pokemon.abilities?.compactMap({ $0.ability?.name?.capitalized }).joined(separator: ", ")
+            else { return }
+            
+            let statNum = stats.compactMap { $0.baseStat }
             
             navigationItem.title = pokemon.name?.capitalized
             infoView.pokemon = pokemon
             DispatchQueue.main.async {
                 self.imageView.kf.setImage(with: URL(string: sprites))
             }
+            
+            self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: names)
+            self.infoView.configureLabel(label: self.infoView.hpLabel, title: "HP", details: "\(statNum[0])")
+            self.infoView.configureLabel(label: self.infoView.speedLabel, title: "Speed", details: "\(statNum[5])")
+            self.infoView.configureLabel(label: self.infoView.specialAttackLabel, title: "Special-Attack", details: "\(statNum[3])")
+            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel, title: "Special-Defense", details: "\(statNum[4])")
         }
     }
     
@@ -66,15 +78,6 @@ class InfoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewComponents()
-        
-        fetchPokemons { (names, statNum) in
-            self.pokemon?.statNum = statNum
-            self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: names)
-            self.infoView.configureLabel(label: self.infoView.hpLabel, title: "HP", details: "\(statNum[0])")
-            self.infoView.configureLabel(label: self.infoView.speedLabel, title: "Speed", details: "\(statNum[5])")
-            self.infoView.configureLabel(label: self.infoView.specialAttackLabel, title: "Special-Attack", details: "\(statNum[3])")
-            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel, title: "Special-Defense", details: "\(statNum[4])")
-        }
     }
     
     // MARK: - Layout disposure
@@ -107,19 +110,5 @@ class InfoController: UIViewController {
         
         view.addSubview(infoView)
         infoView.anchor(top: infoLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-    }
-    
-    /// Fetching pokemon abilities
-    func fetchPokemons(handler: @escaping (String, [Int]) -> Void) {
-        controller.service.fetchPokes { (poke) in
-            guard poke.id == self.pokemon?.id else { return }
-            self.pokemon? = poke
-            let names = poke.abilities?.compactMap { $0.ability?.name?.capitalized }.joined(separator: ", ")
-            
-            guard let stats = poke.stats else { return }
-            let statNum = stats.compactMap { $0.baseStat }
-            
-            handler(names ?? "-", statNum)
-        }
     }
 }

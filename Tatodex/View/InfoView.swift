@@ -22,8 +22,10 @@ class InfoView: UIView {
         didSet {
             guard let pokemon   = self.pokemon,
                   let type      = pokemon.types,
-                  let defense   = pokemon.defense,
-                  let attack    = pokemon.attack,
+                  let type1     = type[0].type?.name?.capitalized,
+                  let stats     = pokemon.stats,
+                  let attack    = stats[1].baseStat,
+                  let defense   = stats[2].baseStat,
                   let id        = pokemon.id,
                   let height    = pokemon.height,
                   let weight    = pokemon.weight,
@@ -32,9 +34,16 @@ class InfoView: UIView {
             if id == pokemon.id {
                 imageView.kf.setImage(with: URL(string: imageUrl))
             }
-            nameLabel.text = pokemon.name?.capitalized
             
-            configureLabel(label: typeLabel, title: "Type", details: "\(type[0].type?.name!) and \(type[1].type?.name!)")
+            if type.count == 1 {
+                configureLabel(label: typeLabel, title: "Type", details: "\(type1)")
+            } else {
+                guard let type2 = type[1].type?.name?.capitalized else { return }
+                configureLabel(label: typeLabel, title: "Type", details: "\(type1) and \(type2)")
+            }
+            
+            nameLabel.text = pokemon.name?.capitalized
+
             configureLabel(label: pokedexIdLabel, title: "Pokedex Id", details: "\(id)")
             configureLabel(label: heightLabel, title: "Height", details: "\(height)")
             configureLabel(label: defenseLabel, title: "Defense", details: "\(defense)")
@@ -169,7 +178,7 @@ class InfoView: UIView {
         imageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         
         addSubview(typeLabel)
-        typeLabel.anchor(top: imageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        typeLabel.anchor(top: imageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 190, height: 0)
         
         addSubview(pokedexIdLabel)
         pokedexIdLabel.anchor(top: imageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)

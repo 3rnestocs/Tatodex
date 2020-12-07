@@ -11,9 +11,8 @@ import UIKit
 struct Pokemon: Codable {
     var results: [Custom]?
     var abilities: [Ability]?
-    var height, weight: Int?
+    var height, weight, id: Int?
     var sprites: Sprite?
-    var id, attack, defense: Int?
     var name: String?
     var types: [Type]?
     var stats: [Stat]?
