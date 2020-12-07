@@ -14,8 +14,6 @@ class Service: Codable {
     // MARK: - MainAPI call
     func fetchPokes(handler: @escaping (Pokemon) -> Void) {
         
-        var pokeUrls = [String]()
-        
         AF.request(mainAPI).validate().responsePokemon { (response) in
             
             let data = response.value
@@ -23,13 +21,11 @@ class Service: Codable {
             
             print("You've got \(results.count) pokemons successfully")
             
-            for poke in results {
-                pokeUrls.append(poke.url!)
-            }
-            
-            for url in pokeUrls {
+            for url in results {
                 
-                AF.request(url).validate().responsePokemon { (pokes) in
+                guard let pokeUrl = url.url else { return }
+                
+                AF.request(pokeUrl).validate().responsePokemon { (pokes) in
                     
                     guard let pokeData = pokes.value else { return }
 

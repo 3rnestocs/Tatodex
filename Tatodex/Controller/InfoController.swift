@@ -11,6 +11,7 @@ class InfoController: UIViewController {
     
     // MARK: - Properties
     var controller = TatodexController()
+    var pressedButton = true
     var pokemon: Pokemon? {
         didSet {
             guard let pokemon   = pokemon,
@@ -54,24 +55,14 @@ class InfoController: UIViewController {
         return view
     }()
     
-    lazy var endView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.softRed
-        
-        view.addSubview(endLabel)
-        endLabel.translatesAutoresizingMaskIntoConstraints = false
-        endLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        endLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        return view
-    }()
-    
-    let endLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.text = "Thanks for watching"
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        return label
+    var shinyButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = Colors.softRed
+        button.tintColor = Colors.myWhite
+        button.addTarget(self, action: #selector(shinyButtonClicked), for: .touchUpInside)
+        button.setTitle("See it's shiny version!", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .semibold)
+        return button
     }()
     
     // MARK: - Init
@@ -80,19 +71,37 @@ class InfoController: UIViewController {
         configureViewComponents()
     }
     
+    @objc func shinyButtonClicked() {
+        
+        pressedButton = !pressedButton
+        
+        guard let shiny = self.pokemon?.sprites?.shiny else { return }
+        guard let frontSprite = self.pokemon?.sprites?.front else { return }
+
+        if pressedButton {
+            self.imageView.kf.setImage(with: URL(string: shiny))
+            shinyButton.setTitle("Return to it's normal version!", for: .normal)
+            print("Hi there, shiny!")
+        } else {
+            self.imageView.kf.setImage(with: URL(string: frontSprite))
+            shinyButton.setTitle("See it's shiny version!", for: .normal)
+            print("Image returned!")
+        }
+    }
+    
     // MARK: - Layout disposure
     func configureViewComponents() {
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = .white
         
         view.addSubview(imageView)
-        view.addSubview(endView)
+        view.addSubview(shinyButton)
                 
         //  Set up for small devices (Height < 700pts)
         if view.frame.height <= 700 {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
             
-            endView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+            shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
             
             infoLabel.font = UIFont.systemFont(ofSize: 15)
             
@@ -101,7 +110,7 @@ class InfoController: UIViewController {
 
             infoLabel.font = UIFont.systemFont(ofSize: 17)
             
-            endView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
+            shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
         }
         
         view.addSubview(infoLabel)
