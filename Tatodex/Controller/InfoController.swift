@@ -11,16 +11,28 @@ class InfoController: UIViewController {
     
     // MARK: - Properties
     var controller = TatodexController()
+    var pressedButton = true
     var pokemon: Pokemon? {
         didSet {
-            guard let pokemon = pokemon, let imageUrl = pokemon.imageURL else { return }
+            guard let pokemon   = pokemon,
+                  let sprites   = pokemon.sprites?.front,
+                  let stats     = pokemon.stats,
+                  let names     = pokemon.abilities?.compactMap({ $0.ability?.name?.capitalized }).joined(separator: ", ")
+            else { return }
+            
+            let statNum = stats.compactMap { $0.baseStat }
             
             navigationItem.title = pokemon.name?.capitalized
-            infoLabel.text = pokemon.description!
             infoView.pokemon = pokemon
             DispatchQueue.main.async {
-                self.imageView.kf.setImage(with: URL(string: imageUrl))
+                self.imageView.kf.setImage(with: URL(string: sprites))
             }
+            
+            self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: names)
+            self.infoView.configureLabel(label: self.infoView.hpLabel, title: "HP", details: "\(statNum[0])")
+            self.infoView.configureLabel(label: self.infoView.speedLabel, title: "Speed", details: "\(statNum[5])")
+            self.infoView.configureLabel(label: self.infoView.specialAttackLabel, title: "Special-Attack", details: "\(statNum[3])")
+            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel, title: "Special-Defense", details: "\(statNum[4])")
         }
     }
     
@@ -43,39 +55,37 @@ class InfoController: UIViewController {
         return view
     }()
     
-    lazy var endView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.softRed
-        
-        view.addSubview(endLabel)
-        endLabel.translatesAutoresizingMaskIntoConstraints = false
-        endLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        endLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        return view
-    }()
-    
-    let endLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .white
-        label.text = "Thanks for watching"
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        return label
+    var shinyButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = Colors.softRed
+        button.tintColor = Colors.myWhite
+        button.addTarget(self, action: #selector(shinyButtonClicked), for: .touchUpInside)
+        button.setTitle("See it's shiny version!", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .semibold)
+        return button
     }()
     
     // MARK: - Init
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewComponents()
+    }
+    
+    @objc func shinyButtonClicked() {
         
-        fetchPokemons { (names, statNum) in
-            self.pokemon?.skillName = names
-            self.pokemon?.statNum = statNum
-            self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: names)
-            self.infoView.configureLabel(label: self.infoView.hpLabel, title: "HP", details: "\(statNum[0])")
-            self.infoView.configureLabel(label: self.infoView.speedLabel, title: "Speed", details: "\(statNum[5])")
-            self.infoView.configureLabel(label: self.infoView.specialAttackLabel, title: "Special-Attack", details: "\(statNum[3])")
-            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel, title: "Special-Defense", details: "\(statNum[4])")
+        pressedButton = !pressedButton
+        
+        guard let shiny = self.pokemon?.sprites?.shiny else { return }
+        guard let frontSprite = self.pokemon?.sprites?.front else { return }
+
+        if pressedButton {
+            self.imageView.kf.setImage(with: URL(string: shiny))
+            shinyButton.setTitle("Return to it's normal version!", for: .normal)
+            print("Hi there, shiny!")
+        } else {
+            self.imageView.kf.setImage(with: URL(string: frontSprite))
+            shinyButton.setTitle("See it's shiny version!", for: .normal)
+            print("Image returned!")
         }
     }
     
@@ -85,11 +95,13 @@ class InfoController: UIViewController {
         navigationController?.navigationBar.tintColor = .white
         
         view.addSubview(imageView)
-        view.addSubview(endView)
+        view.addSubview(shinyButton)
                 
         //  Set up for small devices (Height < 700pts)
         if view.frame.height <= 700 {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
+            
+            shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
             
             infoLabel.font = UIFont.systemFont(ofSize: 15)
             
@@ -97,9 +109,9 @@ class InfoController: UIViewController {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
 
             infoLabel.font = UIFont.systemFont(ofSize: 17)
+            
+            shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
         }
-        
-        endView.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
         
         view.addSubview(infoLabel)
         infoLabel.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
@@ -107,18 +119,5 @@ class InfoController: UIViewController {
         
         view.addSubview(infoView)
         infoView.anchor(top: infoLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-    }
-    
-    func fetchPokemons(handler: @escaping (String, [Int]) -> Void) {
-        controller.service.fetchPokes { (poke) in
-            guard poke.id == self.pokemon?.id else { return }
-            self.pokemon? = poke
-            let names = poke.abilities?.compactMap { $0.ability?.name?.capitalized }.joined(separator: ", ")
-            
-            guard let stats = poke.stats else { return }
-            let statNum = stats.compactMap { $0.baseStat }
-            
-            handler(names ?? "-", statNum)
-        }
     }
 }
