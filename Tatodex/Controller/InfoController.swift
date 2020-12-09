@@ -6,33 +6,42 @@
 //
 
 import UIKit
+import Alamofire
+
+var controller      = TatodexController()
+var infoController  = InfoController()
 
 class InfoController: UIViewController {
     
     // MARK: - Properties
-    var controller = TatodexController()
-    var pressedButton = true
+
+    var pressedButton   = true
     var pokemon: Pokemon? {
         didSet {
-            guard let pokemon   = pokemon,
-                  let sprites   = pokemon.sprites?.front,
-                  let stats     = pokemon.stats,
-                  let names     = pokemon.abilities?.compactMap({ $0.ability?.name?.capitalized }).joined(separator: ", ")
+            guard let pokemon  = pokemon,
+                  let sprites  = pokemon.sprites?.front,
+                  let stats    = pokemon.stats,
+                  let names    = pokemon.abilities?.compactMap({ $0.ability?.name?.capitalized }).joined(separator: ", ")
             else { return }
             
             let statNum = stats.compactMap { $0.baseStat }
             
-            navigationItem.title = pokemon.name?.capitalized
-            infoView.pokemon = pokemon
+            navigationItem.title    = pokemon.name?.capitalized
+            infoView.pokemon        = pokemon
             DispatchQueue.main.async {
                 self.imageView.kf.setImage(with: URL(string: sprites))
             }
             
-            self.infoView.configureLabel(label: self.infoView.skillLabel, title: "Skills", details: names)
-            self.infoView.configureLabel(label: self.infoView.hpLabel, title: "HP", details: "\(statNum[0])")
-            self.infoView.configureLabel(label: self.infoView.speedLabel, title: "Speed", details: "\(statNum[5])")
-            self.infoView.configureLabel(label: self.infoView.specialAttackLabel, title: "Special-Attack", details: "\(statNum[3])")
-            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel, title: "Special-Defense", details: "\(statNum[4])")
+            self.infoView.configureLabel(label: self.infoView.skillLabel,
+                                         title: "Skills",           details: names)
+            self.infoView.configureLabel(label: self.infoView.hpLabel,
+                                         title: "HP",               details: "\(statNum[0])")
+            self.infoView.configureLabel(label: self.infoView.speedLabel,
+                                         title: "Speed",            details: "\(statNum[5])")
+            self.infoView.configureLabel(label: self.infoView.specialAttackLabel,
+                                         title: "Special-Attack",   details: "\(statNum[3])")
+            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel,
+                                         title: "Special-Defense",  details: "\(statNum[4])")
         }
     }
     
@@ -57,11 +66,11 @@ class InfoController: UIViewController {
     
     var shinyButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.softRed
-        button.tintColor = Colors.myWhite
+        button.backgroundColor  = Colors.softRed
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .semibold)
+        button.tintColor        = Colors.myWhite
         button.addTarget(self, action: #selector(shinyButtonClicked), for: .touchUpInside)
         button.setTitle("See it's shiny version!", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .semibold)
         return button
     }()
     
@@ -69,14 +78,22 @@ class InfoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewComponents()
+        
+        guard let url = pokemon?.species?.url else { return }
+        
+        service.getSpecies(url: url) { (description) in
+            
+            self.infoLabel.text = description
+            
+        }
     }
     
     @objc func shinyButtonClicked() {
         
         pressedButton = !pressedButton
         
-        guard let shiny = self.pokemon?.sprites?.shiny else { return }
-        guard let frontSprite = self.pokemon?.sprites?.front else { return }
+        guard let shiny         = self.pokemon?.sprites?.shiny,
+              let frontSprite   = self.pokemon?.sprites?.front else { return }
 
         if pressedButton {
             self.imageView.kf.setImage(with: URL(string: shiny))
@@ -108,9 +125,9 @@ class InfoController: UIViewController {
         } else {
             imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
 
-            infoLabel.font = UIFont.systemFont(ofSize: 17)
-            
             shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
+
+            infoLabel.font = UIFont.systemFont(ofSize: 17)
         }
         
         view.addSubview(infoLabel)
@@ -121,3 +138,5 @@ class InfoController: UIViewController {
         infoView.anchor(top: infoLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
 }
+
+

@@ -9,13 +9,13 @@ import UIKit
 
 //  This is a reusable cell identifier to minimize human error while using it
 private let reuseIdentifier = "TatodexCell"
+let service = Service()
 
 class TatodexController: UICollectionViewController, InfoViewDelegate {
     
     //MARK: - Properties
     var pokemons = [Pokemon]()
     var filteredPokemon = [Pokemon]()
-    let service = Service()
     var searchBar: UISearchBar!
     var inSearchMode = false
     
