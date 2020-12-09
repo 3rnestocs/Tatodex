@@ -67,10 +67,14 @@ class InfoController: UIViewController {
     var shinyButton: UIButton = {
         let button = UIButton()
         button.backgroundColor  = Colors.softRed
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .semibold)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25,
+                                                    weight: .semibold)
         button.tintColor        = Colors.myWhite
-        button.addTarget(self, action: #selector(shinyButtonClicked), for: .touchUpInside)
-        button.setTitle("See it's shiny version!", for: .normal)
+        button.addTarget(self,
+                         action: #selector(shinyButtonClicked),
+                         for: .touchUpInside)
+        button.setTitle("See it's shiny version!",
+                        for: .normal)
         return button
     }()
     
@@ -84,7 +88,6 @@ class InfoController: UIViewController {
         service.getSpecies(url: url) { (description) in
             
             self.infoLabel.text = description
-            
         }
     }
     
@@ -93,15 +96,18 @@ class InfoController: UIViewController {
         pressedButton = !pressedButton
         
         guard let shiny         = self.pokemon?.sprites?.shiny,
-              let frontSprite   = self.pokemon?.sprites?.front else { return }
+              let frontSprite   = self.pokemon?.sprites?.front
+        else { return }
 
         if pressedButton {
             self.imageView.kf.setImage(with: URL(string: shiny))
-            shinyButton.setTitle("Return to it's normal version!", for: .normal)
+            shinyButton.setTitle("Return to it's normal version!",
+                                 for: .normal)
             print("Hi there, shiny!")
         } else {
             self.imageView.kf.setImage(with: URL(string: frontSprite))
-            shinyButton.setTitle("See it's shiny version!", for: .normal)
+            shinyButton.setTitle("See it's shiny version!",
+                                 for: .normal)
             print("Image returned!")
         }
     }

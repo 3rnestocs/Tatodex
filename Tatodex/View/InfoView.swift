@@ -36,19 +36,21 @@ class InfoView: UIView {
             }
             
             if type.count == 1 {
-                configureLabel(label: typeLabel, title: "Type", details: "\(type1)")
+                configureLabel(label: typeLabel, title: "Type", details: type1)
             } else {
                 guard let type2 = type[1].type?.name?.capitalized else { return }
-                configureLabel(label: typeLabel, title: "Type", details: "\(type1) and \(type2)")
+                let myTypes = "\(type1) and \(type2)"
+
+                configureLabel(label: typeLabel, title: "Type", details: myTypes)
             }
             
             nameLabel.text = pokemon.name?.capitalized
 
-            configureLabel(label: pokedexIdLabel, title: "Pokedex Id", details: "\(id)")
-            configureLabel(label: heightLabel, title: "Height", details: "\(height)")
-            configureLabel(label: defenseLabel, title: "Defense", details: "\(defense)")
-            configureLabel(label: weightLabel, title: "Weight", details: "\(weight)")
-            configureLabel(label: attackLabel, title: "Base Attack", details: "\(attack)")
+            configureLabel(label: pokedexIdLabel,   title: "Pokedex Id",    details: "\(id)")
+            configureLabel(label: heightLabel,      title: "Height",        details: "\(height)")
+            configureLabel(label: defenseLabel,     title: "Defense",       details: "\(defense)")
+            configureLabel(label: weightLabel,      title: "Weight",        details: "\(weight)")
+            configureLabel(label: attackLabel,      title: "Base Attack",   details: "\(attack)")
         }
     }
     
@@ -65,9 +67,9 @@ class InfoView: UIView {
     
     lazy var nameContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.softRed
-        view.addSubview(nameLabel)
+        view.backgroundColor    = Colors.softRed
         view.layer.cornerRadius = 5
+        view.addSubview(nameLabel)
         nameLabel.center(inView: view)
         return view
     }()
@@ -75,8 +77,9 @@ class InfoView: UIView {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 24, weight: .thin)
-        label.text = "Lucario"
+        label.font      = UIFont.systemFont(ofSize: 24,
+                                            weight: .thin)
+        label.text      = "Lucario"
         return label
     }()
     
@@ -131,14 +134,18 @@ class InfoView: UIView {
     }()
     
     let infoButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = Colors.softRed
-        button.setTitle("View More Info", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        button.addTarget(self, action: #selector(handleViewMoreInfo), for: .touchUpInside)
+        let button                  = UIButton(type: .system)
+        button.backgroundColor      = Colors.softRed
+        button.titleLabel?.font     = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        button.layer.cornerRadius   = 5
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 5
+        button.setTitleColor(.white,
+                             for: .normal)
+        button.setTitle("View More Info",
+                        for: .normal)
+        button.addTarget(self,
+                         action: #selector(handleViewMoreInfo),
+                         for: .touchUpInside)
         return button
     }()
     
@@ -160,15 +167,17 @@ class InfoView: UIView {
     // MARK: - Layout settings
     func configureLabel(label: UILabel, title: String, details: String) {
         let attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.softRed!]))
-        attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
+        attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
         label.attributedText = attributedText
     }
     
     //MARK: - InfoView Layout
     func configureViewComponents() {
         
-        backgroundColor = .white
-        self.layer.masksToBounds = true
+        backgroundColor             = .white
+        self.layer.masksToBounds    = true
         
         addSubview(nameContainerView)
         nameContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
@@ -183,8 +192,8 @@ class InfoView: UIView {
         addSubview(pokedexIdLabel)
         pokedexIdLabel.anchor(top: imageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         
-        let separatorView = UIView()
-        separatorView.backgroundColor = Colors.myWhite
+        let separatorView               = UIView()
+        separatorView.backgroundColor   = Colors.myWhite
         addSubview(separatorView)
         separatorView.anchor(top: typeLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 1)
         
@@ -212,8 +221,8 @@ class InfoView: UIView {
         addSubview(pokedexIdLabel)
         pokedexIdLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
 
-        let separatorView = UIView()
-        separatorView.backgroundColor = Colors.myWhite
+        let separatorView               = UIView()
+        separatorView.backgroundColor   = Colors.myWhite
         addSubview(separatorView)
         separatorView.anchor(top: typeLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 1)
         

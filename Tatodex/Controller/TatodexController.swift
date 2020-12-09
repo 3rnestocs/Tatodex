@@ -7,7 +7,7 @@
 
 import UIKit
 
-//  This is a reusable cell identifier to minimize human error while using it
+///  This is a reusable cell identifier to minimize human error while using it
 private let reuseIdentifier = "TatodexCell"
 let service = Service()
 
@@ -25,7 +25,7 @@ class TatodexController: UICollectionViewController, InfoViewDelegate {
         return view
     }()
     
-    //  This blurs the CollectionView when InfoView shows up
+    ///  This blurs the CollectionView when InfoView shows up
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
@@ -55,70 +55,74 @@ extension TatodexController {
 
     func configureViewStuff() {
         
-        collectionView.backgroundColor = Colors.hardRed
-        
-        navigationController?.navigationBar.barTintColor = Colors.softRed
-        navigationController?.navigationBar.barStyle     = .black
-        navigationController?.navigationBar.isTranslucent = false
-        
-        navigationItem.title = "Tatodex"
+        collectionView.backgroundColor                      = Colors.hardRed
+        navigationController?.navigationBar.barTintColor    = Colors.softRed
+        navigationController?.navigationBar.barStyle        = .black
+        navigationController?.navigationBar.isTranslucent   = false
+        navigationItem.title                                = "Tatodex"
         
         configureSearchBarButton()
 
-        collectionView.register(TatodexCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.register(TatodexCell.self,
+                                forCellWithReuseIdentifier: reuseIdentifier)
         
         view.addSubview(visualEffectView)
-        visualEffectView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        visualEffectView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor,
+                                right: view.rightAnchor, paddingTop: 0, paddingLeft: 0,
+                                paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         visualEffectView.alpha = 0
         
-        //  Allows to dismiss the InfoView tapping outside
-            let gesture = UITapGestureRecognizer(target: self, action: #selector(self.handleDismissal))
+        ///  This gestureRecognizer allows to dismiss the InfoView tapping outside
+            let gesture = UITapGestureRecognizer(target: self,
+                                                 action: #selector(self.handleDismissal))
             self.visualEffectView.addGestureRecognizer(gesture)
     }
     
     func configureSearchBar(showSearch: Bool) {
         
-        //  This refactoring allows me to enable/disable the search button when InfoView shows up
+        ///  This disables the Search button when InfoView show's up. It turns on again when that view is dismissed.
         if showSearch {
             searchBar = UISearchBar()
-            searchBar.delegate = self
-            searchBar.sizeToFit()
             searchBar.showsCancelButton = true
+            searchBar.backgroundColor   = Colors.myGray
+            searchBar.placeholder       = "Search your favorite pokemon"
+            searchBar.tintColor         = Colors.hardRed
+            searchBar.delegate          = self
+            searchBar.sizeToFit()
             searchBar.becomeFirstResponder()
-            searchBar.tintColor = Colors.hardRed
-            searchBar.backgroundColor = Colors.myGray
-            searchBar.placeholder = "Search your favorite pokemon"
             
-            //  The search button goes away when the search field appears
-            navigationItem.rightBarButtonItem = nil
-            navigationItem.titleView = searchBar
+            ///  This hides the search button when it's clicked, and the Search bar appears
+            navigationItem.rightBarButtonItem   = nil
+            navigationItem.titleView            = searchBar
         } else {
-            navigationItem.titleView = nil
+            navigationItem.titleView    = nil
+            inSearchMode                = false
             configureSearchBarButton()
-            inSearchMode = false
             collectionView.reloadData()
         }
     }
     
     func configureSearchBarButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
+                                                            target: self,
+                                                            action: #selector(searchTapped))
         navigationItem.rightBarButtonItem?.tintColor = Colors.myGray
     }
     
     func showInfoController(withPoke pokemon: Pokemon) {
         
-        let controller = InfoController()
-        controller.pokemon = pokemon
-        self.navigationController?.pushViewController(controller
-                                                      , animated: true)
+        let controller      = InfoController()
+        controller.pokemon  = pokemon
+        self.navigationController?.pushViewController(controller,
+                                                      animated: true)
     }
-    
-    //  This allows me to click outside InfoView to dismiss that screen
+
     func dismissInfoView(pokemon: Pokemon?) {
         UIView.animate(withDuration: 0.5, animations: {
             self.visualEffectView.alpha = 0
-            self.infoView.alpha = 0
-            self.infoView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.infoView.alpha         = 0
+            self.infoView.transform     = CGAffineTransform(scaleX: 1.3,
+                                                            y: 1.3)
         }) { (_) in
             self.infoView.removeFromSuperview()
             self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -134,7 +138,6 @@ extension TatodexController {
                 self.pokemons.sort { (poke1, poke2) -> Bool in
                     return poke1.name! < poke2.name!
                 }
-                
                 self.collectionView.reloadData()
             }
         }
@@ -180,8 +183,8 @@ extension TatodexController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        //  This checks if the user search something, and if it does, filters the pokemon
-        //  in the CollectionView by name
+        ///  This checks if the user search something, and if it does, filters the pokemon
+        ///  in the CollectionView by name
         if searchText == "" || searchBar.text == nil {
             inSearchMode = false
             collectionView.reloadData()
@@ -203,11 +206,11 @@ extension TatodexController: TatodexCellDelegate {
     
     func presentInfoView(withPokemon pokemon: Pokemon) {
         
-        //  When the InfoView shows up, the search button goes off
+        ///  When the InfoView shows up, the search button goes off
         configureSearchBar(showSearch: false)
         navigationItem.rightBarButtonItem?.isEnabled = false
         
-        //  Setting up the InfoView disposure
+        ///  Setting up the InfoView disposure
         view.addSubview(infoView)
         infoView.configureViewComponents()
         infoView.delegate = self

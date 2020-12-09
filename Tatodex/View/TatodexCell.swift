@@ -19,8 +19,9 @@ class TatodexCell: UICollectionViewCell {
     
     var pokemon: Pokemon? {
         didSet {
-            guard let id = pokemon?.id else { return }
-            guard let imageUrl = pokemon?.sprites?.front else { return }
+            guard let id = pokemon?.id,
+                  let imageUrl = pokemon?.sprites?.front
+            else { return }
             
             if id == pokemon?.id {
                 imageView.kf.indicatorType = .activity
@@ -32,16 +33,16 @@ class TatodexCell: UICollectionViewCell {
     
     var imageView: UIImageView = {
         
-        let imageView = UIImageView()
-        imageView.backgroundColor = Colors.myGray
-        imageView.contentMode = .scaleAspectFit
+        let imageView               = UIImageView()
+        imageView.backgroundColor   = Colors.myGray
+        imageView.contentMode       = .scaleAspectFit
         
         return imageView
     }()
     
     lazy var nameContainerView: UIView = {
         
-       let nameView = UIView()
+       let nameView              = UIView()
         nameView.backgroundColor = Colors.softRed
         nameView.addSubview(nameLabel)
         nameLabel.center(inView: nameView)
@@ -51,10 +52,11 @@ class TatodexCell: UICollectionViewCell {
     
     var nameLabel: UILabel = {
        
-        let pokeLabel = UILabel()
-        pokeLabel.text = "Lucario"
+        let pokeLabel       = UILabel()
+        pokeLabel.text      = "Lucario"
         pokeLabel.textColor = Colors.myWhite
-        pokeLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        pokeLabel.font = UIFont.systemFont(ofSize: 12,
+                                           weight: .semibold)
         
         return pokeLabel
     }()

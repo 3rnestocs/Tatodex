@@ -29,58 +29,42 @@ class Service: Codable {
                     
                     guard let pokeData = pokes.value else { return }
                     
-                    handler(pokeData)
                     
+                    /// PokeData already has the JSON response according to the Pokemon model, and this handler pass every
+                    /// poke on the API call
+                    handler(pokeData)
                 }
             }
         }.resume()
     }
     
-//    func getSample() {
-//        let myUrl = "https://pokeapi.co/api/v2/pokemon-species/1/"
-//
-//        AF.request(myUrl).validate().responseSpecies { (response) in
-//            guard let data = response.value else { return }
-//
-//            print(data)
-//        }
-//    }
-    
     func getSpecies(url: String, handler: @escaping(String) -> Void) {
         
         AF.request(url).validate().responseSpecies { (response) in
             
-            guard let data = response.value,
-                  let descriptArray = data.description
-            else { return }
- 
-            for desc in descriptArray {
+            do {
+                guard let data          = response.value,
+                      let descriptArray = data.description
+                else { return }
                 
-                if desc.language?.name == "en" {
-                    guard let description = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]? else { return }
-                    let fullword = description!.joined(separator: " ")
-                    
-                    handler(fullword)
+                print("You've got \(descriptArray.count) species successfully")
+     
+                for desc in descriptArray {
                     
                     /// This doesn't have an else statement because it runs all the descriptArray, and it would print a DEBUG msg for
                     /// every wrong case. This way the console remains clean.
+                    
+                    if desc.language?.name == "en" {
+                        guard let description   = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]?
+                        else { return }
+                        let fullword            = description!.joined(separator: " ")
+                        
+                        handler(fullword)
+                    }
                 }
+            } catch {
+                print("DEBUG: Error with the description. \(error.localizedDescription) ")
             }
-        }
-    }
-}
-
-// MARK: - Alamofire response handlers
-
-extension DataRequest {
-
-    @discardableResult
-    func responsePokemon(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<Pokemon>) -> Void) -> Self {
-        return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
-    }
-    
-    @discardableResult
-    func responseSpecies(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<Species>) -> Void) -> Self {
-        return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
+        }.resume()
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 //MARK: - Custom Colors
 enum Colors {
@@ -103,5 +104,20 @@ extension String {
        }
        return newString
    }
+}
+
+// MARK: - Alamofire response handlers
+
+extension DataRequest {
+
+    @discardableResult
+    func responsePokemon(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<Pokemon>) -> Void) -> Self {
+        return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
+    }
+    
+    @discardableResult
+    func responseSpecies(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<Species>) -> Void) -> Self {
+        return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
+    }
 }
 
