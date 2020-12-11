@@ -11,13 +11,31 @@ import UIKit
 private let reuseIdentifier = "TatodexCell"
 let service = Service()
 
-class TatodexController: UICollectionViewController, InfoViewDelegate {
+class TatodexController: UIViewController, InfoViewDelegate {
     
     //MARK: - Properties
     var pokemons = [Pokemon]()
     var filteredPokemon = [Pokemon]()
     var searchBar: UISearchBar!
     var inSearchMode = false
+    
+    var viewBigScreen: UIView? = {
+        
+        let view = UIView()
+        view.backgroundColor = Colors.mainBlack
+        return view
+    }()
+    
+    var collectionViewPokemon: UICollectionView? = {
+
+        let layout = UICollectionViewFlowLayout()
+        let cv = UICollectionView(frame: .zero,
+                                  collectionViewLayout: layout)
+        cv.register(TatodexCell.self,
+                    forCellWithReuseIdentifier: reuseIdentifier)
+        cv.backgroundColor = Colors.hardGreen
+        return cv
+    }()
     
     let infoView: InfoView = {
         let view = InfoView()
@@ -38,6 +56,7 @@ class TatodexController: UICollectionViewController, InfoViewDelegate {
 
         configureViewStuff()
         fetchPokemons()
+        setViews()
     }
     
     //MARK: - Selectors
@@ -55,15 +74,15 @@ extension TatodexController {
 
     func configureViewStuff() {
         
-        collectionView.backgroundColor                      = Colors.hardRed
-        navigationController?.navigationBar.barTintColor    = Colors.softRed
+        collectionViewPokemon?.backgroundColor              = Colors.darkRed
+        navigationController?.navigationBar.barTintColor    = Colors.lightRed
         navigationController?.navigationBar.barStyle        = .black
         navigationController?.navigationBar.isTranslucent   = false
         navigationItem.title                                = "Tatodex"
         
         configureSearchBarButton()
 
-        collectionView.register(TatodexCell.self,
+        collectionViewPokemon?.register(TatodexCell.self,
                                 forCellWithReuseIdentifier: reuseIdentifier)
         
         view.addSubview(visualEffectView)
@@ -84,9 +103,9 @@ extension TatodexController {
         if showSearch {
             searchBar = UISearchBar()
             searchBar.showsCancelButton = true
-            searchBar.backgroundColor   = Colors.myGray
+            searchBar.backgroundColor   = Colors.mainGray
             searchBar.placeholder       = "Search your favorite pokemon"
-            searchBar.tintColor         = Colors.hardRed
+            searchBar.tintColor         = Colors.darkRed
             searchBar.delegate          = self
             searchBar.sizeToFit()
             searchBar.becomeFirstResponder()
@@ -98,7 +117,7 @@ extension TatodexController {
             navigationItem.titleView    = nil
             inSearchMode                = false
             configureSearchBarButton()
-            collectionView.reloadData()
+            collectionViewPokemon?.reloadData()
         }
     }
     
@@ -106,7 +125,7 @@ extension TatodexController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
                                                             target: self,
                                                             action: #selector(searchTapped))
-        navigationItem.rightBarButtonItem?.tintColor = Colors.myGray
+        navigationItem.rightBarButtonItem?.tintColor = Colors.mainGray
     }
     
     func showInfoController(withPoke pokemon: Pokemon) {
@@ -138,13 +157,15 @@ extension TatodexController {
                 self.pokemons.sort { (poke1, poke2) -> Bool in
                     return poke1.name! < poke2.name!
                 }
-                self.collectionView.reloadData()
+                self.collectionViewPokemon?.reloadData()
             }
         }
     }
 }
     
-extension TatodexController: UICollectionViewDelegateFlowLayout {
+extension TatodexController: UICollectionViewDelegateFlowLayout,
+                             UICollectionViewDataSource,
+                             UICollectionViewDelegate {
         
     //MARK: - CollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -158,11 +179,11 @@ extension TatodexController: UICollectionViewDelegateFlowLayout {
     }
 
     //MARK: - CollectionView DataSource/Delegate
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return inSearchMode ? filteredPokemon.count : pokemons.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TatodexCell
         
         cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
@@ -171,7 +192,7 @@ extension TatodexController: UICollectionViewDelegateFlowLayout {
         return cell
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let poke = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
         showInfoController(withPoke: poke)
@@ -187,12 +208,12 @@ extension TatodexController: UISearchBarDelegate {
         ///  in the CollectionView by name
         if searchText == "" || searchBar.text == nil {
             inSearchMode = false
-            collectionView.reloadData()
+            collectionViewPokemon?.reloadData()
             view.endEditing(true)
         } else {
             inSearchMode = true
             filteredPokemon = pokemons.filter({ $0.name?.range(of: searchText.lowercased()) != nil })
-            collectionView.reloadData()
+            collectionViewPokemon?.reloadData()
         }
     }
     

@@ -66,10 +66,10 @@ class InfoController: UIViewController {
     
     var shinyButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor  = Colors.softRed
+        button.backgroundColor  = Colors.lightRed
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25,
                                                     weight: .semibold)
-        button.tintColor        = Colors.myWhite
+        button.tintColor        = Colors.mainWhite
         button.addTarget(self,
                          action: #selector(shinyButtonClicked),
                          for: .touchUpInside)
@@ -110,38 +110,6 @@ class InfoController: UIViewController {
                                  for: .normal)
             print("Image returned!")
         }
-    }
-    
-    // MARK: - Layout disposure
-    func configureViewComponents() {
-        view.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = .white
-        
-        view.addSubview(imageView)
-        view.addSubview(shinyButton)
-                
-        //  Set up for small devices (Height < 700pts)
-        if view.frame.height <= 700 {
-            imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
-            
-            shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
-            
-            infoLabel.font = UIFont.systemFont(ofSize: 15)
-            
-        } else {
-            imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
-
-            shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
-
-            infoLabel.font = UIFont.systemFont(ofSize: 17)
-        }
-        
-        view.addSubview(infoLabel)
-        infoLabel.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
-        infoLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
-        
-        view.addSubview(infoView)
-        infoView.anchor(top: infoLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
 }
 

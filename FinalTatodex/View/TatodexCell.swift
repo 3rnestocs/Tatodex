@@ -34,19 +34,17 @@ class TatodexCell: UICollectionViewCell {
     var imageView: UIImageView = {
         
         let imageView               = UIImageView()
-        imageView.backgroundColor   = Colors.myGray
+        imageView.backgroundColor   = Colors.mainGray
         imageView.contentMode       = .scaleAspectFit
-        
         return imageView
     }()
     
     lazy var nameContainerView: UIView = {
         
        let nameView              = UIView()
-        nameView.backgroundColor = Colors.softRed
+        nameView.backgroundColor = Colors.lightRed
         nameView.addSubview(nameLabel)
         nameLabel.center(inView: nameView)
-        
         return nameView
     }()
     
@@ -54,17 +52,15 @@ class TatodexCell: UICollectionViewCell {
        
         let pokeLabel       = UILabel()
         pokeLabel.text      = "Lucario"
-        pokeLabel.textColor = Colors.myWhite
+        pokeLabel.textColor = Colors.mainWhite
         pokeLabel.font = UIFont.systemFont(ofSize: 12,
                                            weight: .semibold)
-        
         return pokeLabel
     }()
     
     //MARK: - Init stuff
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         configureViewComponents()
     }
     
@@ -85,7 +81,7 @@ class TatodexCell: UICollectionViewCell {
         
         addSubview(imageView)
         self.layer.cornerRadius = self.frame.width / 2
-        self.clipsToBounds = true
+        self.clipsToBounds      = true
         
         imageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: self.frame.height - 32)
         

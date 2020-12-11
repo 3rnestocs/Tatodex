@@ -16,8 +16,8 @@ class InfoView: UIView {
     // MARK: - Properties
     var delegate: InfoViewDelegate?
     
-    //  This whole block assigns the attributes that will be shown at the InfoView pop-up
-    //  It makes the positioning of every element possible
+    ///  This whole block assigns the attributes that will be shown at the InfoView pop-up
+    ///  It makes the positioning of every element possible
     var pokemon: Pokemon? {
         didSet {
             guard let pokemon   = self.pokemon,
@@ -67,7 +67,7 @@ class InfoView: UIView {
     
     lazy var nameContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor    = Colors.softRed
+        view.backgroundColor    = Colors.lightRed
         view.layer.cornerRadius = 5
         view.addSubview(nameLabel)
         nameLabel.center(inView: view)
@@ -135,7 +135,7 @@ class InfoView: UIView {
     
     let infoButton: UIButton = {
         let button                  = UIButton(type: .system)
-        button.backgroundColor      = Colors.softRed
+        button.backgroundColor      = Colors.lightRed
         button.titleLabel?.font     = UIFont.systemFont(ofSize: 20, weight: .semibold)
         button.layer.cornerRadius   = 5
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -166,7 +166,7 @@ class InfoView: UIView {
     
     // MARK: - Layout settings
     func configureLabel(label: UILabel, title: String, details: String) {
-        let attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.softRed!]))
+        let attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.lightRed!]))
         
         attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
         
@@ -193,7 +193,7 @@ class InfoView: UIView {
         pokedexIdLabel.anchor(top: imageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         
         let separatorView               = UIView()
-        separatorView.backgroundColor   = Colors.myWhite
+        separatorView.backgroundColor   = Colors.mainWhite
         addSubview(separatorView)
         separatorView.anchor(top: typeLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 1)
         
@@ -222,7 +222,7 @@ class InfoView: UIView {
         pokedexIdLabel.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
 
         let separatorView               = UIView()
-        separatorView.backgroundColor   = Colors.myWhite
+        separatorView.backgroundColor   = Colors.mainWhite
         addSubview(separatorView)
         separatorView.anchor(top: typeLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 4, paddingBottom: 0, paddingRight: 4, width: 0, height: 1)
         

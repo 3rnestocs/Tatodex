@@ -10,6 +10,7 @@
 		8D266B8B2558447B00387107 /* InfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D266B8A2558447B00387107 /* InfoController.swift */; };
 		8D790AEF255488D20089D069 /* TatodexCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AEE255488D20089D069 /* TatodexCell.swift */; };
 		8D790AF225549D010089D069 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AF125549D010089D069 /* Extensions.swift */; };
+		8DB1D52F2583075000CAE981 /* ControllerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB1D52E2583075000CAE981 /* ControllerViews.swift */; };
 		8DBEF5F325574D5000FF8CA9 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBEF5F225574D5000FF8CA9 /* InfoView.swift */; };
 		8DE743932555628400D37A8E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE743922555628400D37A8E /* Service.swift */; };
 		8DE7439625556F7F00D37A8E /* PokeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE7439525556F7F00D37A8E /* PokeData.swift */; };
@@ -27,6 +28,7 @@
 		8D266B8A2558447B00387107 /* InfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoController.swift; sourceTree = "<group>"; };
 		8D790AEE255488D20089D069 /* TatodexCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatodexCell.swift; sourceTree = "<group>"; };
 		8D790AF125549D010089D069 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		8DB1D52E2583075000CAE981 /* ControllerViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerViews.swift; sourceTree = "<group>"; };
 		8DBEF5F225574D5000FF8CA9 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		8DE743922555628400D37A8E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		8DE7439525556F7F00D37A8E /* PokeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeData.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 			children = (
 				8D790AEE255488D20089D069 /* TatodexCell.swift */,
 				8DBEF5F225574D5000FF8CA9 /* InfoView.swift */,
+				8DB1D52E2583075000CAE981 /* ControllerViews.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DBEF5F325574D5000FF8CA9 /* InfoView.swift in Sources */,
+				8DB1D52F2583075000CAE981 /* ControllerViews.swift in Sources */,
 				8DE9D97A2553719200FF6ADA /* TatodexController.swift in Sources */,
 				8D266B8B2558447B00387107 /* InfoController.swift in Sources */,
 				8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */,
