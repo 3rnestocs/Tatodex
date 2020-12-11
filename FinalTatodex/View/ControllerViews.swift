@@ -22,6 +22,12 @@ extension TatodexController {
         collectionViewPokemon.dataSource = self
         collectionViewPokemon.delegate   = self
         
+        navigationItem.title                                = "Tatodex"
+        collectionViewPokemon.backgroundColor               = Colors.darkRed
+        navigationController?.navigationBar.barTintColor    = Colors.lightRed
+        navigationController?.navigationBar.barStyle        = .black
+        navigationController?.navigationBar.isTranslucent   = false
+        
         viewBigScreen.anchor(top: view.topAnchor, paddingTop: 0, bottom: view.bottomAnchor,
                              paddingBottom: 0, left: view.leftAnchor, paddingLeft: 0,
                              right: view.rightAnchor, paddingRight: 0, width: 0, height: 0)
@@ -30,6 +36,13 @@ extension TatodexController {
                                      paddingBottom: 0, left: viewBigScreen.leftAnchor,
                                      paddingLeft: 0, right: viewBigScreen.rightAnchor,
                                      paddingRight: 0, width: 0, height: view.frame.height/1.5)
+        
+        viewBigScreen.addSubview(visualEffectView)
+        visualEffectView.anchor(top: viewBigScreen.topAnchor, left: viewBigScreen.leftAnchor,
+                                bottom: viewBigScreen.bottomAnchor, right: viewBigScreen.rightAnchor,
+                                paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+                                width: 0, height: 0)
+        visualEffectView.alpha = 0
     }
 }
 

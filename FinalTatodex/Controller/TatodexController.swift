@@ -74,22 +74,10 @@ extension TatodexController {
 
     func configureViewStuff() {
         
-        collectionViewPokemon?.backgroundColor              = Colors.darkRed
-        navigationController?.navigationBar.barTintColor    = Colors.lightRed
-        navigationController?.navigationBar.barStyle        = .black
-        navigationController?.navigationBar.isTranslucent   = false
-        navigationItem.title                                = "Tatodex"
-        
         configureSearchBarButton()
 
         collectionViewPokemon?.register(TatodexCell.self,
                                 forCellWithReuseIdentifier: reuseIdentifier)
-        
-        view.addSubview(visualEffectView)
-        visualEffectView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor,
-                                right: view.rightAnchor, paddingTop: 0, paddingLeft: 0,
-                                paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        visualEffectView.alpha = 0
         
         ///  This gestureRecognizer allows to dismiss the InfoView tapping outside
             let gesture = UITapGestureRecognizer(target: self,
