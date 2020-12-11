@@ -14,9 +14,38 @@ extension TatodexController {
         guard let viewBigScreen = viewBigScreen else { return }
         view.addSubview(viewBigScreen)
         
-        /// Create the CollectionView and add it inside the mainView safely
+        /// Create the theme switcher button and add it to the viewBigScreen safely
+        guard let buttonChangeTheme = buttonChangeTheme else { return }
+        viewBigScreen.addSubview(buttonChangeTheme)
+        
+        /// Create the language switcher button and add it to the viewBigScreen safely
+        guard let buttonChangeLanguage = buttonChangeLanguage else { return }
+        viewBigScreen.addSubview(buttonChangeLanguage)
+        
+        /// Create the CollectionView and add it inside the viewBigScreen safely
         guard let collectionViewPokemon  = collectionViewPokemon else { return }
         viewBigScreen.addSubview(collectionViewPokemon)
+
+        viewBigScreen.anchor(top: view.topAnchor, paddingTop: 0, bottom: view.bottomAnchor,
+                             paddingBottom: 0, left: view.leftAnchor, paddingLeft: 0,
+                             right: view.rightAnchor, paddingRight: 0, width: 0, height: 0)
+        
+        viewBigScreen.addSubview(visualEffectView)
+        visualEffectView.anchor(top: viewBigScreen.topAnchor, left: viewBigScreen.leftAnchor,
+                                bottom: viewBigScreen.bottomAnchor, right: viewBigScreen.rightAnchor,
+                                paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
+                                width: 0, height: 0)
+        visualEffectView.alpha = 0
+        
+        buttonChangeTheme.anchor(top: viewBigScreen.topAnchor, left: viewBigScreen.leftAnchor,
+                                 bottom: collectionViewPokemon.topAnchor, right: viewBigScreen.rightAnchor,
+                                 paddingTop: 30, paddingLeft: 0, paddingBottom: 30,
+                                 paddingRight: view.frame.width/2, width: 0, height: 70)
+        
+        buttonChangeLanguage.anchor(top: viewBigScreen.topAnchor, left: viewBigScreen.leftAnchor,
+                                 bottom: collectionViewPokemon.topAnchor, right: viewBigScreen.rightAnchor,
+                                 paddingTop: 30, paddingLeft: view.frame.width/2, paddingBottom: 30,
+                                 paddingRight: 0, width: 0, height: 70)
 
         collectionViewPokemon.frame      = viewBigScreen.bounds
         collectionViewPokemon.dataSource = self
@@ -28,21 +57,10 @@ extension TatodexController {
         navigationController?.navigationBar.barStyle        = .black
         navigationController?.navigationBar.isTranslucent   = false
         
-        viewBigScreen.anchor(top: view.topAnchor, paddingTop: 0, bottom: view.bottomAnchor,
-                             paddingBottom: 0, left: view.leftAnchor, paddingLeft: 0,
-                             right: view.rightAnchor, paddingRight: 0, width: 0, height: 0)
-        
         collectionViewPokemon.anchor(top: nil, paddingTop: 0, bottom: viewBigScreen.bottomAnchor,
                                      paddingBottom: 0, left: viewBigScreen.leftAnchor,
                                      paddingLeft: 0, right: viewBigScreen.rightAnchor,
                                      paddingRight: 0, width: 0, height: view.frame.height/1.5)
-        
-        viewBigScreen.addSubview(visualEffectView)
-        visualEffectView.anchor(top: viewBigScreen.topAnchor, left: viewBigScreen.leftAnchor,
-                                bottom: viewBigScreen.bottomAnchor, right: viewBigScreen.rightAnchor,
-                                paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0,
-                                width: 0, height: 0)
-        visualEffectView.alpha = 0
     }
 }
 

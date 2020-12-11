@@ -43,6 +43,28 @@ class TatodexController: UIViewController, InfoViewDelegate {
         return view
     }()
     
+    let buttonChangeTheme: UIButton? = {
+        let button = UIButton()
+        button.setTitle("Change to blue theme", for: .normal)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.layer.borderWidth = 3
+        button.layer.borderColor = Colors.mainBlack?.cgColor
+        button.backgroundColor = Colors.darkBlue
+        button.tintColor = Colors.mainWhite
+       return button
+    }()
+    
+    let buttonChangeLanguage: UIButton? = {
+        let button = UIButton()
+        button.setTitle("Switch to spanish", for: .normal)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.layer.borderWidth = 3
+        button.layer.borderColor = Colors.mainBlack?.cgColor
+        button.backgroundColor = Colors.darkRed
+        button.tintColor = Colors.mainWhite
+       return button
+    }()
+    
     ///  This blurs the CollectionView when InfoView shows up
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
