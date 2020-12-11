@@ -41,8 +41,8 @@ class TatodexCell: UICollectionViewCell {
     
     lazy var nameContainerView: UIView = {
         
-       let nameView              = UIView()
-        nameView.backgroundColor = Colors.lightRed
+        let nameView              = UIView()
+//        nameView.backgroundColor = Colors.lightRed
         nameView.addSubview(nameLabel)
         nameLabel.center(inView: nameView)
         return nameView

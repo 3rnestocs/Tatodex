@@ -14,10 +14,12 @@ let service = Service()
 class TatodexController: UIViewController, InfoViewDelegate {
     
     //MARK: - Properties
-    var pokemons = [Pokemon]()
     var filteredPokemon = [Pokemon]()
+    var pokemons        = [Pokemon]()
+    var tatodexCell     = TatodexCell()
+    var inSearchMode    = false
+    var pressedButton   = true
     var searchBar: UISearchBar!
-    var inSearchMode = false
     
     var viewBigScreen: UIView? = {
         
@@ -47,7 +49,10 @@ class TatodexController: UIViewController, InfoViewDelegate {
         let button = UIButton()
         button.setTitle("Change to blue theme", for: .normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.layer.borderWidth = 3
+        button.addTarget(self,
+                         action: #selector(changeThemeClicked),
+                         for: .touchUpInside)
+        button.layer.borderWidth = 5
         button.layer.borderColor = Colors.mainBlack?.cgColor
         button.backgroundColor = Colors.darkBlue
         button.tintColor = Colors.mainWhite
@@ -58,7 +63,10 @@ class TatodexController: UIViewController, InfoViewDelegate {
         let button = UIButton()
         button.setTitle("Switch to spanish", for: .normal)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.layer.borderWidth = 3
+        button.addTarget(self,
+                         action: #selector(changeLanguageClicked),
+                         for: .touchUpInside)
+        button.layer.borderWidth = 5
         button.layer.borderColor = Colors.mainBlack?.cgColor
         button.backgroundColor = Colors.darkRed
         button.tintColor = Colors.mainWhite
@@ -88,6 +96,37 @@ class TatodexController: UIViewController, InfoViewDelegate {
     
     @objc func handleDismissal() {
         dismissInfoView(pokemon: nil)
+    }
+    
+    @objc func changeThemeClicked() {
+    
+        pressedButton = !pressedButton
+        
+        if pressedButton {
+            
+            collectionViewPokemon?.backgroundColor = Colors.darkBlue
+            
+            navigationController?.navigationBar.barTintColor = Colors.lightBlue
+            collectionViewPokemon!.backgroundColor           = Colors.darkBlue
+            
+            buttonChangeTheme?.setTitle("Change to red theme", for: .normal)
+            buttonChangeTheme?.backgroundColor = Colors.darkRed
+            
+        } else {
+            
+            collectionViewPokemon?.backgroundColor        = Colors.darkRed
+            
+            navigationController?.navigationBar.barTintColor = Colors.lightRed
+            collectionViewPokemon!.backgroundColor           = Colors.darkRed
+            
+            buttonChangeTheme?.setTitle("Change to blue theme", for: .normal)
+            buttonChangeTheme?.backgroundColor = Colors.darkBlue
+        }
+    }
+    
+    @objc func changeLanguageClicked() {
+        
+        pressedButton = !pressedButton
     }
 }
 
@@ -195,10 +234,16 @@ extension TatodexController: UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TatodexCell
-        
+                
         cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
         cell.delegate = self
-        
+
+        if buttonChangeTheme?.backgroundColor == Colors.darkBlue {
+            cell.nameContainerView.backgroundColor = Colors.lightRed
+        } else {
+            cell.nameContainerView.backgroundColor = Colors.lightBlue
+        }
+    
         return cell
     }
     
