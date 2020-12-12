@@ -10,15 +10,20 @@ import Alamofire
 
 //MARK: - Custom Colors
 enum Colors {
-    static let softBlue     = UIColor(hex: "#5eb7c1ff")
-    static let hardBlue     = UIColor(hex: "#922A2Aff")
-    static let softRed      = UIColor(hex: "#DE3E3Eff")
-    static let hardRed      = UIColor(hex: "#BA3434ff")
+    /// Main color palette
+    static let mainWhite  = UIColor(hex: "#F5F5F5ff")
+    static let mainBlack  = UIColor(hex: "#1C1C1Cff")
+    static let lightRed   = UIColor(hex: "#DE3E3Eff")
+    static let mainGray   = UIColor(hex: "#F3ECE7ff")
+    static let darkRed    = UIColor(hex: "#BA3434ff")
+    
+    /// 1st optional color  palette
+    static let darkBlue     = UIColor(hex: "#3479BAff")
+    static let lightBlue    = UIColor(hex: "#3E8EDEff")
+    
     static let softGreen    = UIColor(hex: "#5EC163ff")
     static let hardGreen    = UIColor(hex: "#359040ff")
-    static let myWhite      = UIColor(hex: "#F5F5F5ff")
     static let mainOrange   = UIColor(hex: "#EDA266ff")
-    static let myGray       = UIColor(hex: "#F3ECE7ff")
 }
 
 extension UIColor {
@@ -104,6 +109,41 @@ extension String {
        }
        return newString
    }
+}
+
+//  MARK: - Quick layout
+extension UIView {
+    func anchor(top: NSLayoutYAxisAnchor?, paddingTop: CGFloat,
+                bottom: NSLayoutYAxisAnchor?, paddingBottom: CGFloat,
+                left: NSLayoutXAxisAnchor?, paddingLeft: CGFloat,
+                right: NSLayoutXAxisAnchor?, paddingRight: CGFloat,
+                width: CGFloat, height: CGFloat) {
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        if let top    = top {
+            topAnchor.constraint(equalTo    : top,
+                                 constant   : paddingTop).isActive = true
+        }
+        if let bottom = bottom {
+            bottomAnchor.constraint(equalTo : bottom,
+                                    constant: -paddingBottom).isActive = true
+        }
+        if let right  = right {
+            rightAnchor.constraint(equalTo  : right,
+                                   constant : -paddingRight).isActive = true
+        }
+        if let left   = left {
+            leftAnchor.constraint(equalTo   : left,
+                                  constant  : paddingLeft).isActive = true
+        }
+        if width  != 0 {
+            widthAnchor.constraint(equalToConstant  : width).isActive = true
+        }
+        if height != 0 {
+            heightAnchor.constraint(equalToConstant : height).isActive = true
+        }
+    }
 }
 
 // MARK: - Alamofire response handlers

@@ -1,4 +1,3 @@
-//
 //  Service.swift
 //  Tatodex
 //
@@ -16,8 +15,8 @@ class Service: Codable {
         
         AF.request(mainAPI).validate().responsePokemon { (response) in
             
-            let data = response.value
-            guard let results = data?.results else { return }
+            let data            = response.value
+            guard let results   = data?.results else { return }
             
             print("You've got \(results.count) pokemons successfully")
             

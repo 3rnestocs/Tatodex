@@ -8,9 +8,6 @@
 import UIKit
 import Alamofire
 
-var controller      = TatodexController()
-var infoController  = InfoController()
-
 class InfoController: UIViewController {
     
     // MARK: - Properties
@@ -32,15 +29,15 @@ class InfoController: UIViewController {
                 self.imageView.kf.setImage(with: URL(string: sprites))
             }
             
-            self.infoView.configureLabel(label: self.infoView.skillLabel,
+            self.configuresLabel(label: self.infoView.skillLabel,
                                          title: "Skills",           details: names)
-            self.infoView.configureLabel(label: self.infoView.hpLabel,
+            self.configuresLabel(label: self.infoView.hpLabel,
                                          title: "HP",               details: "\(statNum[0])")
-            self.infoView.configureLabel(label: self.infoView.speedLabel,
+            self.configuresLabel(label: self.infoView.speedLabel,
                                          title: "Speed",            details: "\(statNum[5])")
-            self.infoView.configureLabel(label: self.infoView.specialAttackLabel,
+            self.configuresLabel(label: self.infoView.specialAttackLabel,
                                          title: "Special-Attack",   details: "\(statNum[3])")
-            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel,
+            self.configuresLabel(label: self.infoView.specialDefenseLabel,
                                          title: "Special-Defense",  details: "\(statNum[4])")
         }
     }
@@ -66,10 +63,10 @@ class InfoController: UIViewController {
     
     var shinyButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor  = Colors.softRed
+        button.backgroundColor  = Colors.lightRed
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25,
                                                     weight: .semibold)
-        button.tintColor        = Colors.myWhite
+        button.tintColor        = Colors.mainWhite
         button.addTarget(self,
                          action: #selector(shinyButtonClicked),
                          for: .touchUpInside)
@@ -91,6 +88,27 @@ class InfoController: UIViewController {
         }
     }
     
+    private func configuresLabel(label: UILabel, title: String, details: String) {
+        
+        var attributedText = NSMutableAttributedString()
+        
+        if clickCheck {
+            attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkBlue!]))
+            
+            shinyButton.backgroundColor = Colors.darkBlue
+       } else {
+           attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkRed!]))
+        
+        shinyButton.backgroundColor = Colors.darkRed
+       }
+        
+        attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
+        label.attributedText = attributedText
+    }
+    
+    // MARK: - Selector
+    
     @objc func shinyButtonClicked() {
         
         pressedButton = !pressedButton
@@ -110,38 +128,6 @@ class InfoController: UIViewController {
                                  for: .normal)
             print("Image returned!")
         }
-    }
-    
-    // MARK: - Layout disposure
-    func configureViewComponents() {
-        view.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = .white
-        
-        view.addSubview(imageView)
-        view.addSubview(shinyButton)
-                
-        //  Set up for small devices (Height < 700pts)
-        if view.frame.height <= 700 {
-            imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
-            
-            shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
-            
-            infoLabel.font = UIFont.systemFont(ofSize: 15)
-            
-        } else {
-            imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
-
-            shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
-
-            infoLabel.font = UIFont.systemFont(ofSize: 17)
-        }
-        
-        view.addSubview(infoLabel)
-        infoLabel.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
-        infoLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
-        
-        view.addSubview(infoView)
-        infoView.anchor(top: infoLabel.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
 }
 

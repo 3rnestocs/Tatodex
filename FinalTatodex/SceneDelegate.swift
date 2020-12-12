@@ -25,8 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         //  Here we embed our CollectionViewController in a NavigationController
-        let layout = UICollectionViewFlowLayout()
-        let navController = UINavigationController(rootViewController: TatodexController(collectionViewLayout: layout))
+        let navController = UINavigationController(rootViewController: TatodexController())
         
         window?.rootViewController = navController
     }
