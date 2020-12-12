@@ -8,9 +8,6 @@
 import UIKit
 import Alamofire
 
-var controller      = TatodexController()
-var infoController  = InfoController()
-
 class InfoController: UIViewController {
     
     // MARK: - Properties
@@ -32,15 +29,15 @@ class InfoController: UIViewController {
                 self.imageView.kf.setImage(with: URL(string: sprites))
             }
             
-            self.infoView.configureLabel(label: self.infoView.skillLabel,
+            self.configuresLabel(label: self.infoView.skillLabel,
                                          title: "Skills",           details: names)
-            self.infoView.configureLabel(label: self.infoView.hpLabel,
+            self.configuresLabel(label: self.infoView.hpLabel,
                                          title: "HP",               details: "\(statNum[0])")
-            self.infoView.configureLabel(label: self.infoView.speedLabel,
+            self.configuresLabel(label: self.infoView.speedLabel,
                                          title: "Speed",            details: "\(statNum[5])")
-            self.infoView.configureLabel(label: self.infoView.specialAttackLabel,
+            self.configuresLabel(label: self.infoView.specialAttackLabel,
                                          title: "Special-Attack",   details: "\(statNum[3])")
-            self.infoView.configureLabel(label: self.infoView.specialDefenseLabel,
+            self.configuresLabel(label: self.infoView.specialDefenseLabel,
                                          title: "Special-Defense",  details: "\(statNum[4])")
         }
     }
@@ -90,6 +87,27 @@ class InfoController: UIViewController {
             self.infoLabel.text = description
         }
     }
+    
+    private func configuresLabel(label: UILabel, title: String, details: String) {
+        
+        var attributedText = NSMutableAttributedString()
+        
+        if clickCheck {
+            attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkBlue!]))
+            
+            shinyButton.backgroundColor = Colors.darkBlue
+       } else {
+           attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkRed!]))
+        
+        shinyButton.backgroundColor = Colors.darkRed
+       }
+        
+        attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
+        label.attributedText = attributedText
+    }
+    
+    // MARK: - Selector
     
     @objc func shinyButtonClicked() {
         

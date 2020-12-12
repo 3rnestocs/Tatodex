@@ -45,7 +45,7 @@ extension TatodexController {
         buttonChangeLanguage.anchor(top: viewBigScreen.topAnchor, left: viewBigScreen.leftAnchor,
                                  bottom: collectionViewPokemon.topAnchor, right: viewBigScreen.rightAnchor,
                                  paddingTop: 30, paddingLeft: view.frame.width/2, paddingBottom: 30,
-                                 paddingRight: 0, width: 0, height: 70)
+                                 paddingRight: 0, width: 0, height: buttonChangeTheme.frame.height)
 
         collectionViewPokemon.frame      = viewBigScreen.bounds
         collectionViewPokemon.dataSource = self

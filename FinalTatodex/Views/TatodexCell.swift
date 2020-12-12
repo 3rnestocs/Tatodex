@@ -42,7 +42,6 @@ class TatodexCell: UICollectionViewCell {
     lazy var nameContainerView: UIView = {
         
        let nameView              = UIView()
-        nameView.backgroundColor = Colors.lightRed
         nameView.addSubview(nameLabel)
         nameLabel.center(inView: nameView)
         return nameView
@@ -77,6 +76,7 @@ class TatodexCell: UICollectionViewCell {
     }
     
     //MARK: - Configure views
+    
     func configureViewComponents() {
         
         addSubview(imageView)
