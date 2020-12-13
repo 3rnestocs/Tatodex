@@ -35,22 +35,39 @@ class InfoView: UIView {
                 imageView.kf.setImage(with: URL(string: imageUrl))
             }
             
-            if type.count == 1 {
-                configureLabel(label: typeLabel, title: "Type", details: type1)
-            } else {
-                guard let type2 = type[1].type?.name?.capitalized else { return }
-                let myTypes     = "\(type1) and \(type2)"
-
-                configureLabel(label: typeLabel, title: "Type", details: myTypes)
-            }
-            
             nameLabel.text = pokemon.name?.capitalized
 
-            configureLabel(label: pokedexIdLabel,   title: "Pokedex Id",    details: "\(id)")
-            configureLabel(label: heightLabel,      title: "Height",        details: "\(height)")
-            configureLabel(label: defenseLabel,     title: "Defense",       details: "\(defense)")
-            configureLabel(label: weightLabel,      title: "Weight",        details: "\(weight)")
-            configureLabel(label: attackLabel,      title: "Base Attack",   details: "\(attack)")
+            if languageClickChecker {
+                if type.count == 1 {
+                    configureLabel(label: typeLabel, title: "Tipo", details: type1)
+                } else {
+                    guard let type2 = type[1].type?.name?.capitalized else { return }
+                    let myTypes     = "\(type1) and \(type2)"
+
+                    configureLabel(label: typeLabel, title: "Tipos", details: myTypes)
+                }
+                configureLabel(label: pokedexIdLabel, title: "ID del Pokedex", details: "\(id)")
+                configureLabel(label: heightLabel,    title: "Estatura",       details: "\(height)")
+                configureLabel(label: defenseLabel,   title: "Defensa",        details: "\(defense)")
+                configureLabel(label: weightLabel,    title: "Peso",           details: "\(weight)")
+                configureLabel(label: attackLabel,    title: "Ataque base",    details: "\(attack)")
+            } else {
+                
+                if type.count == 1 {
+                    configureLabel(label: typeLabel, title: "Type", details: type1)
+                } else {
+                    guard let type2 = type[1].type?.name?.capitalized else { return }
+                    let myTypes     = "\(type1) and \(type2)"
+
+                    configureLabel(label: typeLabel, title: "Types", details: myTypes)
+                }
+                
+                configureLabel(label: pokedexIdLabel,   title: "Pokedex Id",    details: "\(id)")
+                configureLabel(label: heightLabel,      title: "Height",        details: "\(height)")
+                configureLabel(label: defenseLabel,      title: "Defense",       details: "\(defense)")
+                configureLabel(label: weightLabel,      title: "Weight",        details: "\(weight)")
+                configureLabel(label: attackLabel,      title: "Base Attack",   details: "\(attack)")
+            }
         }
     }
     
