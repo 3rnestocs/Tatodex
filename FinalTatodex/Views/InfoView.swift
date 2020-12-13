@@ -39,7 +39,7 @@ class InfoView: UIView {
                 configureLabel(label: typeLabel, title: "Type", details: type1)
             } else {
                 guard let type2 = type[1].type?.name?.capitalized else { return }
-                let myTypes = "\(type1) and \(type2)"
+                let myTypes     = "\(type1) and \(type2)"
 
                 configureLabel(label: typeLabel, title: "Type", details: myTypes)
             }
@@ -53,11 +53,6 @@ class InfoView: UIView {
             configureLabel(label: attackLabel,      title: "Base Attack",   details: "\(attack)")
         }
     }
-    
-    let skillLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
     
     let imageView: UIImageView = {
         let iv = UIImageView()
@@ -83,69 +78,28 @@ class InfoView: UIView {
         return label
     }()
     
-    let typeLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let defenseLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let heightLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let pokedexIdLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let attackLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let weightLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let hpLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let speedLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let specialAttackLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
-    
-    let specialDefenseLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
+    let specialDefenseLabel = UILabel()
+    let specialAttackLabel  = UILabel()
+    let pokedexIdLabel      = UILabel()
+    let defenseLabel        = UILabel()
+    let heightLabel         = UILabel()
+    let weightLabel         = UILabel()
+    let attackLabel         = UILabel()
+    let skillLabel          = UILabel()
+    let speedLabel          = UILabel()
+    let typeLabel           = UILabel()
+    let hpLabel             = UILabel()
     
     let infoButton: UIButton = {
-        let button                  = UIButton(type: .system)
-        button.backgroundColor      = Colors.lightRed
-        button.titleLabel?.font     = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        button.layer.cornerRadius   = 5
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(handleViewMoreInfo), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.white,
-                             for: .normal)
-        button.setTitle("View More Info",
-                        for: .normal)
-        button.addTarget(self,
-                         action: #selector(handleViewMoreInfo),
-                         for: .touchUpInside)
+        button.setTitle("View More Info", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        
+        button.layer.cornerRadius = 5
+        button.titleLabel?.font   = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        button.backgroundColor    = Colors.lightRed
         return button
     }()
     
@@ -164,12 +118,12 @@ class InfoView: UIView {
         delegate?.dismissInfoView(pokemon: pokemon)
     }
     
-    // MARK: - Layout settings
+    // MARK: - Labels setup
     private func configureLabel(label: UILabel, title: String, details: String) {
         
         var attributedText = NSMutableAttributedString()
         
-        if clickCheck {
+        if themeClickCkecker {
              attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkBlue!]))
         } else {
             attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkRed!]))

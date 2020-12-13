@@ -39,22 +39,17 @@ extension TatodexController {
             searchBar = UISearchBar()
             searchBar.showsCancelButton = true
             searchBar.backgroundColor   = Colors.mainGray
-            searchBar.placeholder       = "Search your favorite pokemon"
-            if clickCheck {
-                searchBar.tintColor         = Colors.darkBlue
-            } else {
-                searchBar.tintColor         = Colors.darkRed
-            }
             searchBar.delegate          = self
             searchBar.sizeToFit()
             searchBar.becomeFirstResponder()
+            searchBarConditionals()
             
             ///  This hides the search button when it's clicked, and the Search bar appears
-            navigationItem.rightBarButtonItem   = nil
-            navigationItem.titleView            = searchBar
+            navigationItem.rightBarButtonItem = nil
+            navigationItem.titleView          = searchBar
         } else {
-            navigationItem.titleView    = nil
-            inSearchMode                = false
+            navigationItem.titleView = nil
+            inSearchMode             = false
             configureSearchBarButton()
             collectionViewPokemon?.reloadData()
         }

@@ -16,7 +16,8 @@ var infoController  = InfoController()
 let service = Service()
 
 /// Custom stuff
-var clickCheck = false
+var themeClickCkecker = false
+var languageClickChecker = false
 let tatodexCell = TatodexCell()
 let infoView = InfoView()
 

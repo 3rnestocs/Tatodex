@@ -92,7 +92,7 @@ class InfoController: UIViewController {
         
         var attributedText = NSMutableAttributedString()
         
-        if clickCheck {
+        if themeClickCkecker {
             attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkBlue!]))
             
             shinyButton.backgroundColor = Colors.darkBlue

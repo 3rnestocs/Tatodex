@@ -15,6 +15,7 @@
 		8D790AF225549D010089D069 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AF125549D010089D069 /* Extensions.swift */; };
 		8DB1D52F2583075000CAE981 /* ControllerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB1D52E2583075000CAE981 /* ControllerViews.swift */; };
 		8DBEF5F325574D5000FF8CA9 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DBEF5F225574D5000FF8CA9 /* InfoView.swift */; };
+		8DC8015E2586B354003757BE /* Conditionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC8015D2586B354003757BE /* Conditionals.swift */; };
 		8DE743932555628400D37A8E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE743922555628400D37A8E /* Service.swift */; };
 		8DE7439625556F7F00D37A8E /* PokeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE7439525556F7F00D37A8E /* PokeData.swift */; };
 		8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE9D95F2553714000FF6ADA /* AppDelegate.swift */; };
@@ -38,6 +39,7 @@
 		8D790AF125549D010089D069 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8DB1D52E2583075000CAE981 /* ControllerViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerViews.swift; sourceTree = "<group>"; };
 		8DBEF5F225574D5000FF8CA9 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		8DC8015D2586B354003757BE /* Conditionals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conditionals.swift; sourceTree = "<group>"; };
 		8DE743922555628400D37A8E /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		8DE7439525556F7F00D37A8E /* PokeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeData.swift; sourceTree = "<group>"; };
 		8DE9D95C2553714000FF6ADA /* FinalTatodex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalTatodex.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +90,7 @@
 				8D77534D25855F5D00045E44 /* Methods.swift */,
 				8D77535025855F9200045E44 /* Delegates.swift */,
 				8DFD05B02585616C00CAD8DE /* Selectors.swift */,
+				8DC8015D2586B354003757BE /* Conditionals.swift */,
 			);
 			path = TatodexController;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				8DB1D52F2583075000CAE981 /* ControllerViews.swift in Sources */,
 				8DE9D97A2553719200FF6ADA /* TatodexController.swift in Sources */,
 				8D266B8B2558447B00387107 /* InfoController.swift in Sources */,
+				8DC8015E2586B354003757BE /* Conditionals.swift in Sources */,
 				8D77534E25855F5D00045E44 /* Methods.swift in Sources */,
 				8DFD05BB2585633900CAD8DE /* Constants.swift in Sources */,
 				8DE9D9602553714000FF6ADA /* AppDelegate.swift in Sources */,

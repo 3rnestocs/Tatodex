@@ -19,14 +19,18 @@ extension TatodexController {
         dismissInfoView(pokemon: nil)
     }
 
-    //MARK: - Theme button
+    //MARK: - Buttons
+    @objc func langButtonClicked() {
+        
+        languageClickChecker = !languageClickChecker
+        languageButtonConditionals()
+    }
+    
     @objc func themeButtonClicked() {
         
-        clickCheck = !clickCheck
+        themeClickCkecker = !themeClickCkecker
         
-        guard let searchbar = searchBar else { return }
-        
-        if clickCheck {
+        if themeClickCkecker {
             navigationController?.navigationBar.barTintColor = Colors.lightBlue
             infoController.shinyButton.backgroundColor       = Colors.lightBlue
             
@@ -35,9 +39,9 @@ extension TatodexController {
             
             collectionViewPokemon?.backgroundColor = Colors.darkBlue
             buttonChangeLanguage?.backgroundColor  = Colors.darkBlue
-            
             buttonChangeTheme?.backgroundColor     = Colors.darkRed
-            buttonChangeTheme?.setTitle("Return to red theme", for: .normal)
+            trueThemeCheckConditionals()
+            
         } else {
             navigationController?.navigationBar.barTintColor = Colors.lightRed
             infoController.shinyButton.backgroundColor       = Colors.lightRed
@@ -49,7 +53,7 @@ extension TatodexController {
             buttonChangeLanguage?.backgroundColor  = Colors.darkRed
             
             buttonChangeTheme?.backgroundColor     = Colors.darkBlue
-            buttonChangeTheme?.setTitle("Change to blue theme", for: .normal)
+            falseThemeCheckConditionals()
         }
         collectionViewPokemon?.reloadData()
     }

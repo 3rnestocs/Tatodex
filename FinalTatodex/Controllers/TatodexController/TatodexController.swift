@@ -40,24 +40,19 @@ class TatodexController: UIViewController, InfoViewDelegate {
     
     let buttonChangeTheme: UIButton? = {
         let button = UIButton()
-        button.setTitle("Change to blue theme", for: .normal)
+        button.configureCustomButton()
+        button.setTitle("Load blue theme", for: .normal)
         button.addTarget(self, action: #selector(themeButtonClicked), for: .touchUpInside)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.layer.borderWidth = 3
-        button.layer.borderColor = Colors.mainBlack?.cgColor
         button.backgroundColor = Colors.darkBlue
-        button.tintColor = Colors.mainWhite
        return button
     }()
     
     let buttonChangeLanguage: UIButton? = {
         let button = UIButton()
-        button.setTitle("Switch to spanish", for: .normal)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.layer.borderWidth = 3
-        button.layer.borderColor = Colors.mainBlack?.cgColor
+        button.configureCustomButton()
+        button.setTitle("Cambiar a español", for: .normal)
+        button.addTarget(self, action: #selector(langButtonClicked), for: .touchUpInside)
         button.backgroundColor = Colors.darkRed
-        button.tintColor = Colors.mainWhite
        return button
     }()
     
@@ -104,7 +99,7 @@ extension TatodexController: UICollectionViewDelegateFlowLayout,
         cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
         cell.delegate = self
         
-        if clickCheck {
+        if themeClickCkecker {
             cell.nameContainerView.backgroundColor = Colors.lightBlue
         } else {
             cell.nameContainerView.backgroundColor = Colors.lightRed

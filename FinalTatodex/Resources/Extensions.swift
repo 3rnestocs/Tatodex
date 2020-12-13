@@ -111,6 +111,17 @@ extension String {
    }
 }
 
+// MARK: - Buttons
+
+extension UIButton {
+    func configureCustomButton() {
+        self.titleLabel?.adjustsFontSizeToFitWidth = true
+        self.layer.borderWidth = 3
+        self.layer.borderColor = Colors.mainBlack?.cgColor
+        self.tintColor = Colors.mainWhite
+    }
+}
+
 //  MARK: - Quick layout
 extension UIView {
     func anchor(top: NSLayoutYAxisAnchor?, paddingTop: CGFloat,
