@@ -15,30 +15,37 @@ class InfoController: UIViewController {
     var pressedButton   = true
     var pokemon: Pokemon? {
         didSet {
-            guard let pokemon  = pokemon,
-                  let sprites  = pokemon.sprites?.front,
-                  let stats    = pokemon.stats,
-                  let names    = pokemon.abilities?.compactMap({ $0.ability?.name?.capitalized }).joined(separator: ", ")
+            guard let pokemon = pokemon,
+                  let sprites = pokemon.sprites?.front,
+                  let stats   = pokemon.stats,
+                  let names   = pokemon.abilities?.compactMap({ $0.ability?.name?.capitalized }).joined(separator: ", ")
             else { return }
             
             let statNum = stats.compactMap { $0.baseStat }
             
-            navigationItem.title    = pokemon.name?.capitalized
-            infoView.pokemon        = pokemon
+            navigationItem.title = pokemon.name?.capitalized
+            infoView.pokemon     = pokemon
             DispatchQueue.main.async {
                 self.imageView.kf.setImage(with: URL(string: sprites))
             }
             
-            self.configuresLabel(label: self.infoView.skillLabel,
-                                         title: "Skills",           details: names)
-            self.configuresLabel(label: self.infoView.hpLabel,
-                                         title: "HP",               details: "\(statNum[0])")
-            self.configuresLabel(label: self.infoView.speedLabel,
-                                         title: "Speed",            details: "\(statNum[5])")
-            self.configuresLabel(label: self.infoView.specialAttackLabel,
-                                         title: "Special-Attack",   details: "\(statNum[3])")
-            self.configuresLabel(label: self.infoView.specialDefenseLabel,
-                                         title: "Special-Defense",  details: "\(statNum[4])")
+            if languageClickChecker {
+                configuresLabel(label: infoView.skillLabel, title: "Habilidades", details: names)
+                configuresLabel(label: infoView.hpLabel,    title: "HP", details: "\(statNum[0])")
+                configuresLabel(label: infoView.speedLabel, title: "Velocidad", details: "\(statNum[5])")
+                configuresLabel(label: infoView.specialAttackLabel,
+                                title: "Ataque especial",   details: "\(statNum[3])")
+                configuresLabel(label: infoView.specialDefenseLabel,
+                                title: "Defensa especial",  details: "\(statNum[4])")
+            } else {
+                configuresLabel(label: infoView.skillLabel, title: "Skills", details: names)
+                configuresLabel(label: infoView.hpLabel,    title: "HP", details: "\(statNum[0])")
+                configuresLabel(label: infoView.speedLabel, title: "Speed", details: "\(statNum[5])")
+                configuresLabel(label: infoView.specialAttackLabel,
+                                title: "Special-Attack",   details: "\(statNum[3])")
+                configuresLabel(label: infoView.specialDefenseLabel,
+                                title: "Special-Defense",  details: "\(statNum[4])")
+            }
         }
     }
     
@@ -70,8 +77,13 @@ class InfoController: UIViewController {
         button.addTarget(self,
                          action: #selector(shinyButtonClicked),
                          for: .touchUpInside)
-        button.setTitle("See it's shiny version!",
-                        for: .normal)
+        if !languageClickChecker {
+            button.setTitle("See it's shiny version!",
+                            for: .normal)
+        } else {
+            button.setTitle("Mira la version shiny!",
+                            for: .normal)
+        }
         return button
     }()
     
@@ -119,13 +131,26 @@ class InfoController: UIViewController {
 
         if pressedButton {
             self.imageView.kf.setImage(with: URL(string: shiny))
-            shinyButton.setTitle("Return to it's normal version!",
-                                 for: .normal)
+            
+            if languageClickChecker {
+                shinyButton.setTitle("Vuelve a ver al original!",
+                                     for: .normal)
+            } else {
+                shinyButton.setTitle("Return to it's normal version!",
+                                     for: .normal)
+            }
+            
             print("Hi there, shiny!")
         } else {
             self.imageView.kf.setImage(with: URL(string: frontSprite))
-            shinyButton.setTitle("See it's shiny version!",
-                                 for: .normal)
+            
+            if languageClickChecker {
+                shinyButton.setTitle("Mira la version shiny!",
+                                     for: .normal)
+            } else {
+                shinyButton.setTitle("See it's shiny version!",
+                                     for: .normal)
+            }
             print("Image returned!")
         }
     }

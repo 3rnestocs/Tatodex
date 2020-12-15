@@ -28,7 +28,6 @@ class Service: Codable {
                     
                     guard let pokeData = pokes.value else { return }
                     
-                    
                     /// PokeData already has the JSON response according to the Pokemon model, and this handler pass every
                     /// poke on the API call
                     handler(pokeData)
@@ -53,12 +52,22 @@ class Service: Codable {
                     /// This doesn't have an else statement because it runs all the descriptArray, and it would print a DEBUG msg for
                     /// every wrong case. This way the console remains clean.
                     
-                    if desc.language?.name == "en" {
-                        guard let description   = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]?
-                        else { return }
-                        let fullword            = description!.joined(separator: " ")
-                        
-                        handler(fullword)
+                    if languageClickChecker {
+                        if desc.language?.name == "es" {
+                            guard let description   = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]?
+                            else { return }
+                            let fullword            = description!.joined(separator: " ")
+                            
+                            handler(fullword)
+                        }
+                    } else {
+                        if desc.language?.name == "en" {
+                            guard let description   = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]?
+                            else { return }
+                            let fullword            = description!.joined(separator: " ")
+                            
+                            handler(fullword)
+                        }
                     }
                 }
             } catch {
