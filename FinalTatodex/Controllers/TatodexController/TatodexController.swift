@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TatodexController: UIViewController, InfoViewDelegate {
+class TatodexController: UIViewController, InfoViewDelegate, TatodexCellDelegate {
     
     //MARK: - Properties
     var pokemons = [Pokemon]()

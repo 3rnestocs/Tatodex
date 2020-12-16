@@ -97,7 +97,7 @@ class InfoController: UIViewController {
         service.getSpecies(url: url) { (description) in
             
             self.infoLabel.text = description
-        }
+        }  
     }
     
     private func configuresLabel(label: UILabel, title: String, details: String) {

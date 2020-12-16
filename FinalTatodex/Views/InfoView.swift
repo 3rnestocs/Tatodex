@@ -21,52 +21,36 @@ class InfoView: UIView {
     var pokemon: Pokemon? {
         didSet {
             guard let pokemon   = self.pokemon,
-                  let type      = pokemon.types,
-                  let type1     = type[0].type?.name?.capitalized,
+                  let typeUrl = pokemon.types?.compactMap({$0.type?.url!}),
+                  let imageUrl  = pokemon.sprites?.front,
                   let stats     = pokemon.stats,
                   let attack    = stats[1].baseStat,
                   let defense   = stats[2].baseStat,
-                  let id        = pokemon.id,
                   let height    = pokemon.height,
                   let weight    = pokemon.weight,
-                  let imageUrl  = pokemon.sprites?.front else { return }
+                  let id        = pokemon.id else { return }
             
             if id == pokemon.id {
                 imageView.kf.setImage(with: URL(string: imageUrl))
             }
             
+            getMytypes(typeUrl: typeUrl)
             nameLabel.text = pokemon.name?.capitalized
 
             if languageClickChecker {
-                if type.count == 1 {
-                    configureLabel(label: typeLabel, title: "Tipo", details: type1)
-                } else {
-                    guard let type2 = type[1].type?.name?.capitalized else { return }
-                    let myTypes     = "\(type1) and \(type2)"
-
-                    configureLabel(label: typeLabel, title: "Tipos", details: myTypes)
-                }
-                configureLabel(label: pokedexIdLabel, title: "ID del Pokedex", details: "\(id)")
-                configureLabel(label: heightLabel,    title: "Estatura",       details: "\(height)")
-                configureLabel(label: defenseLabel,   title: "Defensa",        details: "\(defense)")
-                configureLabel(label: weightLabel,    title: "Peso",           details: "\(weight)")
-                configureLabel(label: attackLabel,    title: "Ataque base",    details: "\(attack)")
+                
+                configureLabel(label: pokedexIdLabel, title: "ID Pokedex",  details: "\(id)")
+                configureLabel(label: heightLabel,    title: "Estatura",    details: "\(height)")
+                configureLabel(label: defenseLabel,   title: "Defensa",     details: "\(defense)")
+                configureLabel(label: weightLabel,    title: "Peso",        details: "\(weight)")
+                configureLabel(label: attackLabel,    title: "Ataque base", details: "\(attack)")
             } else {
                 
-                if type.count == 1 {
-                    configureLabel(label: typeLabel, title: "Type", details: type1)
-                } else {
-                    guard let type2 = type[1].type?.name?.capitalized else { return }
-                    let myTypes     = "\(type1) and \(type2)"
-
-                    configureLabel(label: typeLabel, title: "Types", details: myTypes)
-                }
-                
-                configureLabel(label: pokedexIdLabel,   title: "Pokedex Id",    details: "\(id)")
-                configureLabel(label: heightLabel,      title: "Height",        details: "\(height)")
-                configureLabel(label: defenseLabel,      title: "Defense",       details: "\(defense)")
-                configureLabel(label: weightLabel,      title: "Weight",        details: "\(weight)")
-                configureLabel(label: attackLabel,      title: "Base Attack",   details: "\(attack)")
+                configureLabel(label: pokedexIdLabel, title: "Pokedex ID",  details: "\(id)")
+                configureLabel(label: heightLabel,    title: "Height",      details: "\(height)")
+                configureLabel(label: defenseLabel,   title: "Defense",     details: "\(defense)")
+                configureLabel(label: weightLabel,    title: "Weight",      details: "\(weight)")
+                configureLabel(label: attackLabel,    title: "Base Attack", details: "\(attack)")
             }
         }
     }
@@ -89,8 +73,7 @@ class InfoView: UIView {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font      = UIFont.systemFont(ofSize: 24,
-                                            weight: .thin)
+        label.font      = UIFont.systemFont(ofSize: 24, weight: .thin)
         label.text      = "Lucario"
         return label
     }()
@@ -102,18 +85,16 @@ class InfoView: UIView {
     let heightLabel         = UILabel()
     let weightLabel         = UILabel()
     let attackLabel         = UILabel()
-    let skillLabel          = UILabel()
+    var skillLabel          = UILabel()
     let speedLabel          = UILabel()
-    let typeLabel           = UILabel()
+    var typeLabel           = UILabel()
     let hpLabel             = UILabel()
     
     let infoButton: UIButton = {
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(handleViewMoreInfo), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("View More Info", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 5
         button.titleLabel?.font   = UIFont.systemFont(ofSize: 20, weight: .semibold)
         button.backgroundColor    = Colors.lightRed
@@ -135,10 +116,16 @@ class InfoView: UIView {
         delegate?.dismissInfoView(pokemon: pokemon)
     }
     
-    // MARK: - Labels setup
+    // MARK: - Helper functions
     private func configureLabel(label: UILabel, title: String, details: String) {
         
         var attributedText = NSMutableAttributedString()
+        
+        if languageClickChecker {
+            infoButton.setTitle("Ver mas informacion", for: .normal)
+        } else {
+            infoButton.setTitle("View More Info", for: .normal)
+        }
         
         if themeClickCkecker {
              attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkBlue!]))
@@ -149,6 +136,48 @@ class InfoView: UIView {
         attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
         
         label.attributedText = attributedText
+    }
+    
+    func getMytypes(typeUrl: [String]) {
+        
+        for url in typeUrl {
+            service.getTypes(typesUrl: url) { [self] (names) in
+
+                for name in names {
+                    
+                    guard let types = name.name else { return }
+                    namArray.append(types)
+                    
+                    if languageClickChecker {
+                        if name.language?.name == "es" {
+                            guard let firstType = namArray[4] as String? else { return }
+                            if namArray.count > 6 {
+                                guard let secondType = namArray[11] as String? else { return }
+
+                                let myTypes     = "\(firstType) y \(secondType)"
+                                configureLabel(label: typeLabel,  title: "Tipos", details: myTypes)
+                            } else {
+                                configureLabel(label: typeLabel, title: "Tipo", details: firstType)
+                            }
+                        }
+                    } else {
+                        if name.language?.name == "en" {
+                            
+                            guard let firstType = namArray[6] as String? else { return }
+                            if namArray.count > 6 {
+                                guard let secondType = namArray.last else { return }
+                                if firstType == secondType {
+                                    configureLabel(label: typeLabel, title: "Type", details: firstType)
+                                } else {
+                                    let myTypes     = "\(firstType) and \(secondType)"
+                                    configureLabel(label: typeLabel,  title: "Types", details: myTypes)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     //MARK: - InfoView Layout

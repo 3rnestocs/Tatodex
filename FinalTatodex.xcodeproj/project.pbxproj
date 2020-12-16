@@ -89,8 +89,8 @@
 				8DE9D9792553719200FF6ADA /* TatodexController.swift */,
 				8D77534D25855F5D00045E44 /* Methods.swift */,
 				8D77535025855F9200045E44 /* Delegates.swift */,
-				8DFD05B02585616C00CAD8DE /* Selectors.swift */,
 				8DC8015D2586B354003757BE /* Conditionals.swift */,
+				8DFD05B02585616C00CAD8DE /* Selectors.swift */,
 			);
 			path = TatodexController;
 			sourceTree = "<group>";

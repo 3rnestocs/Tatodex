@@ -170,5 +170,10 @@ extension DataRequest {
     func responseSpecies(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<Species>) -> Void) -> Self {
         return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
     }
+    
+    @discardableResult
+    func responseTypes(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<TypesLanguage>) -> Void) -> Self {
+        return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
+    }
 }
 

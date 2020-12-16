@@ -31,7 +31,7 @@ extension TatodexController: UISearchBarDelegate {
 }
 
 //MARK: - InfoViewlDelegate
-extension TatodexController: TatodexCellDelegate {
+extension TatodexController {
     
     func presentInfoView(withPokemon pokemon: Pokemon) {
         

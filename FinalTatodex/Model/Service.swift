@@ -7,16 +7,16 @@
 import Alamofire
 
 class Service: Codable {
-    
-    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=800"
+
+    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=20"
     
     // MARK: - MainAPI call
     func fetchPokes(handler: @escaping (Pokemon) -> Void) {
         
         AF.request(mainAPI).validate().responsePokemon { (response) in
             
-            let data            = response.value
-            guard let results   = data?.results else { return }
+            guard let data            = response.value,
+                  let results   = data.results else { return }
             
             print("You've got \(results.count) pokemons successfully")
             
@@ -36,6 +36,19 @@ class Service: Codable {
         }.resume()
     }
     
+    func getTypes(typesUrl: String, handler: @escaping([CustomDescription]) -> Void) {
+        
+        namArray = []
+        
+        AF.request(typesUrl).validate().responseTypes { (types) in
+            
+            guard let typeData = types.value,
+                  let typeNames = typeData.names else { return }
+            
+            handler(typeNames)
+        }
+    }
+    
     func getSpecies(url: String, handler: @escaping(String) -> Void) {
         
         AF.request(url).validate().responseSpecies { (response) in
@@ -51,21 +64,15 @@ class Service: Codable {
                     
                     /// This doesn't have an else statement because it runs all the descriptArray, and it would print a DEBUG msg for
                     /// every wrong case. This way the console remains clean.
+                    guard let description = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]? else { return }
+                    let fullword = description!.joined(separator: " ")
                     
                     if languageClickChecker {
                         if desc.language?.name == "es" {
-                            guard let description   = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]?
-                            else { return }
-                            let fullword            = description!.joined(separator: " ")
-                            
                             handler(fullword)
                         }
                     } else {
                         if desc.language?.name == "en" {
-                            guard let description   = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]?
-                            else { return }
-                            let fullword            = description!.joined(separator: " ")
-                            
                             handler(fullword)
                         }
                     }

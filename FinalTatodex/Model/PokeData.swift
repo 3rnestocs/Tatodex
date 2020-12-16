@@ -10,22 +10,18 @@ import UIKit
 // MARK: - Pokemons
 struct Pokemon: Codable {
     var results: [Custom]?
-    var abilities: [Ability]?
+    var abilities, types: [AbilityAndType]?
     var height, weight, id: Int?
     var sprites: Sprite?
     var name: String?
-    var types: [Type]?
     var stats: [Stat]?
     var statNum: [Int]?
     var species: Custom?
 }
 
-// MARK: - Ability
-struct Ability: Codable {
+// MARK: - AbilityAndTypes
+struct AbilityAndType: Codable {
     let ability: Custom?
-}
-
-struct Type: Codable {
     let type: Custom?
 }
 
@@ -46,37 +42,40 @@ struct Custom: Codable {
 }
 
 struct Species: Codable {
-    let description: [Description]?
+    let description: [CustomDescription]?
     let generation: Custom?
-    let evoChain: EvolutionChain?
+//    let evoChain: EvolutionChain?
     
     enum CodingKeys: String, CodingKey {
         case description    = "flavor_text_entries"
-        case evoChain       = "evolution_chain"
+//        case evoChain       = "evolution_chain"
         case generation
     }
 }
 
-struct Description: Codable {
-    let text: String?
+struct TypesLanguage: Codable {
+    let names: [CustomDescription]?
+}
+
+struct CustomDescription: Codable {
+    let text, name: String?
     let language: Custom?
     
     enum CodingKeys: String, CodingKey {
         case text = "flavor_text"
-        case language
+        case language, name
     }
 }
-
-
-struct EvolutionChain: Codable {
-    let nextEvo: Custom?
-    let id: Int?
-    
-    enum CodingKeys: String, CodingKey {
-        case nextEvo = "evolves_to"
-        case id
-    }
-}
+//
+//struct EvolutionChain: Codable {
+//    let nextEvo: Custom?
+//    let id: Int?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case nextEvo = "evolves_to"
+//        case id
+//    }
+//}
 
 // MARK: - Stats
 struct Stat: Codable {
