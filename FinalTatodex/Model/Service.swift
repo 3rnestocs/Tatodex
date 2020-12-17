@@ -8,7 +8,7 @@ import Alamofire
 
 class Service: Codable {
 
-    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=20"
+    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=800"
     
     // MARK: - MainAPI call
     func fetchPokes(handler: @escaping (Pokemon) -> Void) {
@@ -36,16 +36,17 @@ class Service: Codable {
         }.resume()
     }
     
-    func getTypes(typesUrl: String, handler: @escaping([CustomDescription]) -> Void) {
+    func getTypesOrSkills(url: String, handler: @escaping([CustomDescription]) -> Void) {
         
-        namArray = []
+        typeNameArray = []
+        skillNameArray = []
         
-        AF.request(typesUrl).validate().responseTypes { (types) in
+        AF.request(url).validate().responseTypesOrSkills { (types) in
             
             guard let typeData = types.value,
-                  let typeNames = typeData.names else { return }
+                  let anyNames = typeData.names else { return }
             
-            handler(typeNames)
+            handler(anyNames)
         }
     }
     
@@ -58,7 +59,7 @@ class Service: Codable {
                       let descriptArray = data.description
                 else { return }
                 
-                print("You've got \(descriptArray.count) species successfully")
+                print("\(descriptArray.count) species for descriptions registered. All working.")
      
                 for desc in descriptArray {
                     

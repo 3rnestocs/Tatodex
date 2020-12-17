@@ -58,7 +58,6 @@ extension UIColor {
 extension UIView {
     
     func center(inView view: UIView) {
-        self.translatesAutoresizingMaskIntoConstraints = false
         self.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         self.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
@@ -172,7 +171,7 @@ extension DataRequest {
     }
     
     @discardableResult
-    func responseTypes(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<TypesLanguage>) -> Void) -> Self {
+    func responseTypesOrSkills(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<TypesAndSkillsLanguage>) -> Void) -> Self {
         return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
     }
 }

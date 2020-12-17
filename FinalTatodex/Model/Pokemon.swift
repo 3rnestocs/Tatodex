@@ -53,7 +53,7 @@ struct Species: Codable {
     }
 }
 
-struct TypesLanguage: Codable {
+struct TypesAndSkillsLanguage: Codable {
     let names: [CustomDescription]?
 }
 

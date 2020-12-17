@@ -17,8 +17,7 @@ class InfoController: UIViewController {
         didSet {
             guard let pokemon = pokemon,
                   let sprites = pokemon.sprites?.front,
-                  let stats   = pokemon.stats,
-                  let names   = pokemon.abilities?.compactMap({ $0.ability?.name?.capitalized }).joined(separator: ", ")
+                  let stats   = pokemon.stats
             else { return }
             
             let statNum = stats.compactMap { $0.baseStat }
@@ -30,7 +29,6 @@ class InfoController: UIViewController {
             }
             
             if languageClickChecker {
-                configuresLabel(label: infoView.skillLabel, title: "Habilidades", details: names)
                 configuresLabel(label: infoView.hpLabel,    title: "HP", details: "\(statNum[0])")
                 configuresLabel(label: infoView.speedLabel, title: "Velocidad", details: "\(statNum[5])")
                 configuresLabel(label: infoView.specialAttackLabel,
@@ -38,7 +36,6 @@ class InfoController: UIViewController {
                 configuresLabel(label: infoView.specialDefenseLabel,
                                 title: "Defensa especial",  details: "\(statNum[4])")
             } else {
-                configuresLabel(label: infoView.skillLabel, title: "Skills", details: names)
                 configuresLabel(label: infoView.hpLabel,    title: "HP", details: "\(statNum[0])")
                 configuresLabel(label: infoView.speedLabel, title: "Speed", details: "\(statNum[5])")
                 configuresLabel(label: infoView.specialAttackLabel,
@@ -92,12 +89,93 @@ class InfoController: UIViewController {
         super.viewDidLoad()
         configureViewComponents()
         
-        guard let url = pokemon?.species?.url else { return }
+        guard let url = pokemon?.species?.url,
+              let skillUrls = pokemon?.abilities?.compactMap({$0.ability?.url!}) else { return }
         
-        service.getSpecies(url: url) { (description) in
-            
-            self.infoLabel.text = description
-        }  
+        DispatchQueue.main.async {
+            self.getSkills(urls: skillUrls)
+            service.getSpecies(url: url) { (description) in
+                
+                self.infoLabel.text = description
+            }
+        }
+    }
+    
+    // MARK: - Helper functions
+    
+    private func getSkills(urls: [String]) {
+        
+        print("\(urls.count) skills registered. All working.")
+        
+        for url in urls {
+            service.getTypesOrSkills(url: url) { [self] (skills) in
+                
+                for skill in skills {
+                    
+                    guard let skillName = skill.name else { return }
+                    skillNameArray.append(skillName)
+                    
+                    /// COMENTARIO: Hay pokemones que tienen mas de 2 habilidades, debo crear el if-else que
+                    /// maneje ese caso y actualice el skillLabel con cada una de las habilidades. Verificar si puedo
+                    /// utilizar el compactMap con .joined(separatedBy: ", ") para registrarlos mas facil
+                    
+                    if languageClickChecker {
+                        if skill.language?.name == "es" {
+                            guard let skill1 = skillNameArray[5] as String? else { return }
+                            if skillNameArray.count > 9 && skillNameArray.count < 21 {
+                                guard let skill2 = skillNameArray[15] as String? else { return }
+                                let mySkills = "\(skill1) y \(skill2)"
+                                configuresLabel(label: infoView.skillLabel, title: "Habilidades", details: mySkills)
+                            } else {
+                                configuresLabel(label: infoView.skillLabel, title: "Habilidad", details: skill1)
+                            }
+                            if skillNameArray.count > 19 && skillNameArray.count < 31 {
+                                    guard let skill2 = skillNameArray[15] as String?,
+                                          let skill3 = skillNameArray[25] as String?
+                                    else { return }
+                                    let mySkills = "\(skill1), \(skill2) y \(skill3)"
+                                    configuresLabel(label: infoView.skillLabel, title: "Habilidades", details: mySkills)
+                            }
+                            if skillNameArray.count > 29 && skillNameArray.count < 41 {
+                                    guard let skill2 = skillNameArray[15] as String?,
+                                          let skill3 = skillNameArray[25] as String?,
+                                          let skill4 = skillNameArray[35] as String?
+                                    else { return }
+                                    let mySkills = "\(skill1), \(skill2), \(skill3) y \(skill4)"
+                                    configuresLabel(label: infoView.skillLabel, title: "Habilidades", details: mySkills)
+                            }
+                        }
+                    } else {
+                        if skill.language?.name == "en" {
+                            guard let skill1 = skillNameArray[7] as String? else { return }
+                            if skillNameArray.count > 9 && skillNameArray.count < 21 {
+                                guard let skill2 = skillNameArray[17] as String? else { return }
+
+                                let mySkills = "\(skill1) and \(skill2)"
+                                configuresLabel(label: infoView.skillLabel, title: "Skills", details: mySkills)
+                            } else {
+                                configuresLabel(label: infoView.skillLabel, title: "Skill", details: skill1)
+                            }
+                            if skillNameArray.count > 29 && skillNameArray.count < 41 {
+                                guard let skill2 = skillNameArray[17] as String?,
+                                      let skill3  = skillNameArray[27] as String?,
+                                      let skill4 = skillNameArray[37] as String?
+                                else { return }
+                                let mySkills = "\(skill1), \(skill2), \(skill3) and \(skill4)"
+                                configuresLabel(label: infoView.skillLabel, title: "Skills", details: mySkills)
+                            }
+                            if skillNameArray.count > 19 && skillNameArray.count < 31 {
+                                guard let skill2 = skillNameArray[17] as String?,
+                                      let skill3 = skillNameArray[27] as String?
+                                else { return }
+                                let mySkills = "\(skill1), \(skill2) and \(skill3)"
+                                configuresLabel(label: infoView.skillLabel, title: "Skills", details: mySkills)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     private func configuresLabel(label: UILabel, title: String, details: String) {
@@ -139,8 +217,6 @@ class InfoController: UIViewController {
                 shinyButton.setTitle("Return to it's normal version!",
                                      for: .normal)
             }
-            
-            print("Hi there, shiny!")
         } else {
             self.imageView.kf.setImage(with: URL(string: frontSprite))
             
@@ -151,7 +227,6 @@ class InfoController: UIViewController {
                 shinyButton.setTitle("See it's shiny version!",
                                      for: .normal)
             }
-            print("Image returned!")
         }
     }
 }

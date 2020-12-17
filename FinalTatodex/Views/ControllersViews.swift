@@ -38,29 +38,30 @@ extension TatodexController {
         visualEffectView.alpha = 0
         
         buttonChangeTheme.anchor(top: viewBigScreen.topAnchor, left: viewBigScreen.leftAnchor,
-                                 bottom: collectionViewPokemon.topAnchor, right: viewBigScreen.rightAnchor,
-                                 paddingTop: 30, paddingLeft: 0, paddingBottom: 30,
-                                 paddingRight: view.frame.width/2, width: 0, height: 70)
+                                 bottom: nil, right: viewBigScreen.rightAnchor,
+                                 paddingTop: 15, paddingLeft: 0, paddingBottom: 0,
+                                 paddingRight: view.frame.width/2, width: 0, height: view.frame.height/12)
         
         buttonChangeLanguage.anchor(top: viewBigScreen.topAnchor, left: viewBigScreen.leftAnchor,
-                                 bottom: collectionViewPokemon.topAnchor, right: viewBigScreen.rightAnchor,
-                                 paddingTop: 30, paddingLeft: view.frame.width/2, paddingBottom: 30,
-                                 paddingRight: 0, width: 0, height: buttonChangeTheme.frame.height)
+                                 bottom: nil, right: viewBigScreen.rightAnchor,
+                                 paddingTop: 15, paddingLeft: view.frame.width/2, paddingBottom: 0,
+                                 paddingRight: 0, width: 0, height: view.frame.height/12)
 
-        collectionViewPokemon.frame      = viewBigScreen.bounds
         collectionViewPokemon.dataSource = self
         collectionViewPokemon.delegate   = self
+        collectionViewPokemon.frame      = viewBigScreen.bounds
         
-        navigationItem.title                                = "Tatodex"
-        collectionViewPokemon.backgroundColor               = Colors.darkRed
-        navigationController?.navigationBar.barTintColor    = Colors.lightRed
-        navigationController?.navigationBar.barStyle        = .black
-        navigationController?.navigationBar.isTranslucent   = false
+        navigationItem.title                               = "Tatodex"
+        navigationController?.navigationBar.isTranslucent  = false
+        navigationController?.navigationBar.barTintColor   = Colors.lightRed
+        navigationController?.navigationBar.barStyle       = .black
+        collectionViewPokemon.backgroundColor              = Colors.darkRed
         
-        collectionViewPokemon.anchor(top: nil, paddingTop: 0, bottom: viewBigScreen.bottomAnchor,
-                                     paddingBottom: 0, left: viewBigScreen.leftAnchor,
-                                     paddingLeft: 0, right: viewBigScreen.rightAnchor,
-                                     paddingRight: 0, width: 0, height: view.frame.height/1.5)
+        collectionViewPokemon.anchor(top: nil, paddingTop: 0,
+                                     bottom: viewBigScreen.bottomAnchor, paddingBottom: 0,
+                                     left: viewBigScreen.leftAnchor, paddingLeft: 0,
+                                     right: viewBigScreen.rightAnchor, paddingRight: 0,
+                                     width: 0, height: view.frame.height/1.3)
     }
 }
 
@@ -75,22 +76,26 @@ extension InfoController {
                 
         ///  Set up for small devices (Height < 700pts)
         if view.frame.height <= 700 {
-            imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 150, height: 150)
-            
+            let size = view.frame.width/2.4
+            imageView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: size, height: size)
+
             shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
-            
+
             infoLabel.font = UIFont.systemFont(ofSize: 15)
-            
+
         } else {
-            imageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 200, height: 200)
+            let size = view.frame.width/2
+            imageView.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: size, height: size)
 
             shinyButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 80, paddingRight: 0, width: 0, height: 50)
 
             infoLabel.font = UIFont.systemFont(ofSize: 17)
         }
         
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
         view.addSubview(infoLabel)
-        infoLabel.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
+        infoLabel.anchor(top: imageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: view.frame.width/1.3, height: 0)
         infoLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
         
         view.addSubview(infoView)

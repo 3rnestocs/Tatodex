@@ -41,7 +41,7 @@ class TatodexCell: UICollectionViewCell {
     
     lazy var nameContainerView: UIView = {
         
-       let nameView              = UIView()
+       let nameView = UIView()
         nameView.addSubview(nameLabel)
         nameLabel.center(inView: nameView)
         return nameView
@@ -52,6 +52,7 @@ class TatodexCell: UICollectionViewCell {
         let pokeLabel       = UILabel()
         pokeLabel.text      = "Lucario"
         pokeLabel.textColor = Colors.mainWhite
+        pokeLabel.translatesAutoresizingMaskIntoConstraints = false
         pokeLabel.font = UIFont.systemFont(ofSize: 12,
                                            weight: .semibold)
         return pokeLabel

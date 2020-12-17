@@ -14,7 +14,8 @@ var infoController  = InfoController()
 
 /// API Calling code
 let service = Service()
-var namArray = [String]()
+var typeNameArray = [String]()
+var skillNameArray = [String]()
 
 /// Custom stuff
 var themeClickCkecker = false
