@@ -58,3 +58,14 @@ extension TatodexController {
         collectionViewPokemon?.reloadData()
     }
 }
+
+extension TatodexCell {
+    
+    @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            guard let pokemon = self.pokemon else { return }
+            delegate?.presentInfoView(withPokemon: pokemon)
+        }
+    }
+    
+}

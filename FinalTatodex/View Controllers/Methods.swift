@@ -7,9 +7,10 @@
 
 import UIKit
 
+//MARK: - TatodexController
 extension TatodexController {
-
-    //MARK: - Main settings
+    
+    //MARK: - - Main settings
     func configureViewStuff() {
         
         configureSearchBarButton()
@@ -23,13 +24,56 @@ extension TatodexController {
             self.visualEffectView.addGestureRecognizer(gesture)
     }
     
-    //MARK: - SearchBar
+    //MARK: - - Conditionals
+    func languageButtonConditionals() {
+        if languageClickChecker {
+            buttonChangeTheme?.setTitle("Activar tema azul", for: .normal)
+            buttonChangeLanguage?.setTitle("Back to English", for: .normal)
+        } else {
+            buttonChangeTheme?.setTitle("Load blue theme", for: .normal)
+            buttonChangeLanguage?.setTitle("Cambiar a español", for: .normal)
+        }
+    }
+
+    func trueThemeCheckConditionals() {
+        if themeClickCkecker && languageClickChecker {
+            buttonChangeTheme?.setTitle("Regresar al tema clasico", for: .normal)
+        } else {
+            buttonChangeTheme?.setTitle("Return to classic theme", for: .normal)
+        }
+    }
+
+    func falseThemeCheckConditionals() {
+        if !themeClickCkecker && languageClickChecker {
+            buttonChangeTheme?.setTitle("Activar tema azul", for: .normal)
+        } else {
+            buttonChangeTheme?.setTitle("Load blue theme", for: .normal)
+        }
+    }
+    
+    //MARK: - - SearchBar
     
     func configureSearchBarButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
                                                             target: self,
                                                             action: #selector(searchTapped))
         navigationItem.rightBarButtonItem?.tintColor = Colors.mainGray
+    }
+    
+    func searchBarConditionals() {
+        
+        if themeClickCkecker {
+            searchBar.tintColor = Colors.darkBlue
+        } else {
+            searchBar.tintColor = Colors.darkRed
+        }
+        
+        if languageClickChecker {
+            searchBar.placeholder = "Busca a tu pokemon favorito"
+        } else {
+            searchBar.placeholder = "Search your favorite pokemon"
+        }
+        
     }
     
     func configureSearchBar(showSearch: Bool) {
@@ -55,7 +99,7 @@ extension TatodexController {
         }
     }
     
-    //MARK: - Info stuff
+    //MARK: - - Info stuff
     func showInfoController(withPoke pokemon: Pokemon) {
         
         let controller      = InfoController()
@@ -78,7 +122,7 @@ extension TatodexController {
         }
     }
     
-    //MARK: - API Call
+    //MARK: - - API Call
     func fetchPokemons() {
         service.fetchPokes { (poke) in
             DispatchQueue.main.async {
@@ -95,6 +139,7 @@ extension TatodexController {
 // MARK: - InfoView
 extension InfoView {
     
+    //MARK: - - Labels
     func configureLabel(label: UILabel, title: String, details: String) {
         
         var attributedText = NSMutableAttributedString()
@@ -116,6 +161,7 @@ extension InfoView {
         label.attributedText = attributedText
     }
     
+    //MARK: - - Types parsing
     func getMytypes(typeUrl: [String]) {
         
         print("\(typeUrl.count) types registered. All working.")
@@ -159,5 +205,104 @@ extension InfoView {
             }
         }
     }
+}
+
+//MARK: - InfoController
+extension InfoController {
     
+    //MARK: - - Labels
+    func configuresLabel(label: UILabel, title: String, details: String) {
+        
+        var attributedText = NSMutableAttributedString()
+        
+        if themeClickCkecker {
+            attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkBlue!]))
+            
+            shinyButton.backgroundColor = Colors.darkBlue
+       } else {
+           attributedText = NSMutableAttributedString(attributedString: NSAttributedString(string: "\(title):  ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: Colors.darkRed!]))
+        
+        shinyButton.backgroundColor = Colors.darkRed
+       }
+        
+        attributedText.append(NSAttributedString(string: "\(details)", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+        
+        label.attributedText = attributedText
+    }
+    
+    //MARK: -  - Skills parsing
+    func getSkills(urls: [String]) {
+        
+        print("\(urls.count) skills registered. All working.")
+        
+        for url in urls {
+            service.getTypesOrSkills(url: url) { [self] (skills) in
+                
+                for skill in skills {
+                    
+                    guard let skillName = skill.name else { return }
+                    skillNameArray.append(skillName)
+                    
+                    /// COMENTARIO: Hay pokemones que tienen mas de 2 habilidades, debo crear el if-else que
+                    /// maneje ese caso y actualice el skillLabel con cada una de las habilidades. Verificar si puedo
+                    /// utilizar el compactMap con .joined(separatedBy: ", ") para registrarlos mas facil
+                    
+                    if languageClickChecker {
+                        if skill.language?.name == "es" {
+                            guard let skill1 = skillNameArray[5] as String? else { return }
+                            if skillNameArray.count > 9 && skillNameArray.count < 21 {
+                                guard let skill2 = skillNameArray[15] as String? else { return }
+                                let mySkills = "\(skill1) y \(skill2)"
+                                configuresLabel(label: infoView.skillLabel, title: "Habilidades", details: mySkills)
+                            } else {
+                                configuresLabel(label: infoView.skillLabel, title: "Habilidad", details: skill1)
+                            }
+                            if skillNameArray.count > 19 && skillNameArray.count < 31 {
+                                    guard let skill2 = skillNameArray[15] as String?,
+                                          let skill3 = skillNameArray[25] as String?
+                                    else { return }
+                                    let mySkills = "\(skill1), \(skill2) y \(skill3)"
+                                    configuresLabel(label: infoView.skillLabel, title: "Habilidades", details: mySkills)
+                            }
+                            if skillNameArray.count > 29 && skillNameArray.count < 41 {
+                                    guard let skill2 = skillNameArray[15] as String?,
+                                          let skill3 = skillNameArray[25] as String?,
+                                          let skill4 = skillNameArray[35] as String?
+                                    else { return }
+                                    let mySkills = "\(skill1), \(skill2), \(skill3) y \(skill4)"
+                                    configuresLabel(label: infoView.skillLabel, title: "Habilidades", details: mySkills)
+                            }
+                        }
+                    } else {
+                        if skill.language?.name == "en" {
+                            guard let skill1 = skillNameArray[7] as String? else { return }
+                            if skillNameArray.count > 9 && skillNameArray.count < 21 {
+                                guard let skill2 = skillNameArray[17] as String? else { return }
+
+                                let mySkills = "\(skill1) and \(skill2)"
+                                configuresLabel(label: infoView.skillLabel, title: "Skills", details: mySkills)
+                            } else {
+                                configuresLabel(label: infoView.skillLabel, title: "Skill", details: skill1)
+                            }
+                            if skillNameArray.count > 29 && skillNameArray.count < 41 {
+                                guard let skill2 = skillNameArray[17] as String?,
+                                      let skill3  = skillNameArray[27] as String?,
+                                      let skill4 = skillNameArray[37] as String?
+                                else { return }
+                                let mySkills = "\(skill1), \(skill2), \(skill3) and \(skill4)"
+                                configuresLabel(label: infoView.skillLabel, title: "Skills", details: mySkills)
+                            }
+                            if skillNameArray.count > 19 && skillNameArray.count < 31 {
+                                guard let skill2 = skillNameArray[17] as String?,
+                                      let skill3 = skillNameArray[27] as String?
+                                else { return }
+                                let mySkills = "\(skill1), \(skill2) and \(skill3)"
+                                configuresLabel(label: infoView.skillLabel, title: "Skills", details: mySkills)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

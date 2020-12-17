@@ -68,14 +68,6 @@ class TatodexCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Selectors
-    @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
-        if sender.state == .began {
-            guard let pokemon = self.pokemon else { return }
-            delegate?.presentInfoView(withPokemon: pokemon)
-        }
-    }
-    
     //MARK: - Configure views
     
     func configureViewComponents() {
