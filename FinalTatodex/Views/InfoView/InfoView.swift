@@ -30,7 +30,7 @@ class InfoView: UIView {
                   let weight    = pokemon.weight,
                   let id        = pokemon.id else { return }
             
-            getMytypes(typeUrl: typeUrl)
+            configureTypes(typeUrl: typeUrl)
             
             if id == pokemon.id {
                 imageView.kf.setImage(with: URL(string: imageUrl))

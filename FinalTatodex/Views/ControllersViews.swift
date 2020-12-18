@@ -51,12 +51,6 @@ extension TatodexController {
         collectionViewPokemon.delegate   = self
         collectionViewPokemon.frame      = viewBigScreen.bounds
         
-        navigationItem.title                               = "Tatodex"
-        navigationController?.navigationBar.isTranslucent  = false
-        navigationController?.navigationBar.barTintColor   = Colors.lightRed
-        navigationController?.navigationBar.barStyle       = .black
-        collectionViewPokemon.backgroundColor              = Colors.darkRed
-        
         collectionViewPokemon.anchor(top: nil, paddingTop: 0,
                                      bottom: viewBigScreen.bottomAnchor, paddingBottom: 0,
                                      left: viewBigScreen.leftAnchor, paddingLeft: 0,

@@ -93,7 +93,7 @@ class InfoController: UIViewController {
               let skillUrls = pokemon?.abilities?.compactMap({$0.ability?.url!}) else { return }
         
         DispatchQueue.main.async {
-            self.getSkills(urls: skillUrls)
+            self.configureSkills(urls: skillUrls)
             service.getSpecies(url: url) { (description) in
                 
                 self.infoLabel.text = description

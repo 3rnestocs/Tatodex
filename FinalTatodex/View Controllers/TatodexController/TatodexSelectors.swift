@@ -20,10 +20,15 @@ extension TatodexController {
     }
 
     //MARK: - Buttons
+    
+    @objc func handleMenuToggle() {
+            print("Menu activated")
+    }
+    
     @objc func langButtonClicked() {
         
         languageClickChecker = !languageClickChecker
-        languageButtonConditionals()
+        configureLanguageConditionals()
     }
     
     @objc func themeButtonClicked() {
@@ -40,7 +45,7 @@ extension TatodexController {
             collectionViewPokemon?.backgroundColor = Colors.darkBlue
             buttonChangeLanguage?.backgroundColor  = Colors.darkBlue
             buttonChangeTheme?.backgroundColor     = Colors.darkRed
-            trueThemeCheckConditionals()
+            configureTrueThemeConditionals()
             
         } else {
             navigationController?.navigationBar.barTintColor = Colors.lightRed
@@ -53,7 +58,7 @@ extension TatodexController {
             buttonChangeLanguage?.backgroundColor  = Colors.darkRed
             
             buttonChangeTheme?.backgroundColor     = Colors.darkBlue
-            falseThemeCheckConditionals()
+            configureFalseThemeConditionals()
         }
         collectionViewPokemon?.reloadData()
     }

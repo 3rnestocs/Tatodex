@@ -13,7 +13,7 @@ extension TatodexController {
     //MARK: - - Main settings
     func configureViewStuff() {
         
-        configureSearchBarButton()
+        configureNavigationBarButtons()
 
         collectionViewPokemon?.register(TatodexCell.self,
                                 forCellWithReuseIdentifier: reuseIdentifier)
@@ -25,7 +25,7 @@ extension TatodexController {
     }
     
     //MARK: - - Conditionals
-    func languageButtonConditionals() {
+    func configureLanguageConditionals() {
         if languageClickChecker {
             buttonChangeTheme?.setTitle("Activar tema azul", for: .normal)
             buttonChangeLanguage?.setTitle("Back to English", for: .normal)
@@ -35,7 +35,7 @@ extension TatodexController {
         }
     }
 
-    func trueThemeCheckConditionals() {
+    func configureTrueThemeConditionals() {
         if themeClickCkecker && languageClickChecker {
             buttonChangeTheme?.setTitle("Regresar al tema clasico", for: .normal)
         } else {
@@ -43,7 +43,7 @@ extension TatodexController {
         }
     }
 
-    func falseThemeCheckConditionals() {
+    func configureFalseThemeConditionals() {
         if !themeClickCkecker && languageClickChecker {
             buttonChangeTheme?.setTitle("Activar tema azul", for: .normal)
         } else {
@@ -51,16 +51,28 @@ extension TatodexController {
         }
     }
     
-    //MARK: - - SearchBar
+    //MARK: -  NavBar Buttons
     
-    func configureSearchBarButton() {
+    func configureNavigationBarButtons() {
+        
+        /// NavigationBar configuration
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor  = Colors.lightRed
+        navigationController?.navigationBar.barStyle      = .black
+        collectionViewPokemon!.backgroundColor            = Colors.darkRed
+        navigationItem.title                              = "Tatodex"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self,
+                                                           action: #selector(handleMenuToggle))
+        
+        /// SearchBar configuration
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
                                                             target: self,
                                                             action: #selector(searchTapped))
         navigationItem.rightBarButtonItem?.tintColor = Colors.mainGray
     }
     
-    func searchBarConditionals() {
+    func configureNavBarConditionals() {
         
         if themeClickCkecker {
             searchBar.tintColor = Colors.darkBlue
@@ -86,7 +98,7 @@ extension TatodexController {
             searchBar.delegate          = self
             searchBar.sizeToFit()
             searchBar.becomeFirstResponder()
-            searchBarConditionals()
+            configureNavBarConditionals()
             
             ///  This hides the search button when it's clicked, and the Search bar appears
             navigationItem.rightBarButtonItem = nil
@@ -94,7 +106,7 @@ extension TatodexController {
         } else {
             navigationItem.titleView = nil
             inSearchMode             = false
-            configureSearchBarButton()
+            configureNavigationBarButtons()
             collectionViewPokemon?.reloadData()
         }
     }
@@ -162,7 +174,7 @@ extension InfoView {
     }
     
     //MARK: - - Types parsing
-    func getMytypes(typeUrl: [String]) {
+    func configureTypes(typeUrl: [String]) {
         
         print("\(typeUrl.count) types registered. All working.")
         
@@ -231,7 +243,7 @@ extension InfoController {
     }
     
     //MARK: -  - Skills parsing
-    func getSkills(urls: [String]) {
+    func configureSkills(urls: [String]) {
         
         print("\(urls.count) skills registered. All working.")
         
@@ -242,10 +254,6 @@ extension InfoController {
                     
                     guard let skillName = skill.name else { return }
                     skillNameArray.append(skillName)
-                    
-                    /// COMENTARIO: Hay pokemones que tienen mas de 2 habilidades, debo crear el if-else que
-                    /// maneje ese caso y actualice el skillLabel con cada una de las habilidades. Verificar si puedo
-                    /// utilizar el compactMap con .joined(separatedBy: ", ") para registrarlos mas facil
                     
                     if languageClickChecker {
                         if skill.language?.name == "es" {

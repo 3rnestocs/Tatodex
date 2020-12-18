@@ -9,7 +9,7 @@
 let reuseIdentifier = "TatodexCell"
 
 /// All app's controller
-var controller: TatodexController?
+var tatodexController = TatodexController()
 var infoController  = InfoController()
 
 /// API Calling code

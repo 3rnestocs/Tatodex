@@ -25,9 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         //  Here we embed our CollectionViewController in a NavigationController
-        let navController = UINavigationController(rootViewController: TatodexController())
+//        let navController = UINavigationController(rootViewController: ContainerViewController())
         
-        window?.rootViewController = navController
+        window?.rootViewController = ContainerViewController()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
