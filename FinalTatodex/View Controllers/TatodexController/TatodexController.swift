@@ -16,10 +16,43 @@ class TatodexController: UIViewController, InfoViewDelegate, TatodexCellDelegate
     var inSearchMode = false
     
     var viewBigScreen: UIView? = {
-        
+
         let view = UIView()
         view.backgroundColor = Colors.mainBlack
         return view
+    }()
+    
+    lazy var emptyView: UIView? = {
+        
+        let view = UIView()
+        view.backgroundColor = Colors.mainWhite
+        view.addSubview(emptyLabel)
+        emptyLabel.center(inView: view)
+        return view
+    }()
+    
+    let refreshButton: UIButton? = {
+        let button = UIButton()
+        button.configureCustomButton()
+        button.tintColor = Colors.mainWhite
+        button.setTitle("Refresh", for: .normal)
+        button.addTarget(self, action: #selector(refreshButtonClicked), for: .touchUpInside)
+        button.backgroundColor = Colors.mainBlack
+       return button
+    }()
+    
+    let emptyLabel: UILabel = {
+       
+        let label = UILabel()
+        label.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        label.translatesAutoresizingMaskIntoConstraints             = false
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.textColor = .white
+        label.textColor = Colors.mainBlack
+        label.text = "We're sorry, couldn't get the data correctly. Please reload the app."
+        label.font = UIFont.systemFont(ofSize: 36, weight: .thin)
+        return label
     }()
     
     var collectionViewPokemon: UICollectionView? = {
@@ -27,6 +60,7 @@ class TatodexController: UIViewController, InfoViewDelegate, TatodexCellDelegate
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero,
                                   collectionViewLayout: layout)
+        cv.backgroundColor = Colors.darkRed
         cv.register(TatodexCell.self,
                     forCellWithReuseIdentifier: reuseIdentifier)
         return cv
@@ -56,6 +90,9 @@ class TatodexController: UIViewController, InfoViewDelegate, TatodexCellDelegate
        return button
     }()
     
+    let menuButton = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self,
+                                       action: #selector(handleMenuToggle))
+    
     ///  This blurs the CollectionView when InfoView shows up
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
@@ -68,8 +105,8 @@ class TatodexController: UIViewController, InfoViewDelegate, TatodexCellDelegate
         super.viewDidLoad()
 
         configureViewStuff()
-        fetchPokemons()
         setViews()
+        fetchPokemons()
     }
 }
     

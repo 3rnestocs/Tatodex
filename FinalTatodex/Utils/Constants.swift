@@ -17,6 +17,13 @@ let service = Service()
 var typeNameArray = [String]()
 var skillNameArray = [String]()
 
+enum NetworkResponse: String {
+    case badRequest = "Bad request"
+    case noJSON     = "You didn't get a JSON file"
+    case failed     = "Network request failed"
+    case noData     = "Response returned without data to decode"
+}
+
 /// Custom stuff
 var themeClickCkecker = false
 var languageClickChecker = false

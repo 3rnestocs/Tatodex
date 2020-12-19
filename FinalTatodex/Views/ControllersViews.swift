@@ -8,7 +8,10 @@
 import UIKit
 
 extension TatodexController {
+    
     func setViews() {
+
+        navigationController?.navigationBar.barTintColor  = Colors.lightRed
         
         /// Create the mainView and add it to the controller safely
         guard let viewBigScreen = viewBigScreen else { return }
@@ -25,6 +28,10 @@ extension TatodexController {
         /// Create the CollectionView and add it inside the viewBigScreen safely
         guard let collectionViewPokemon  = collectionViewPokemon else { return }
         viewBigScreen.addSubview(collectionViewPokemon)
+        
+        collectionViewPokemon.dataSource = self
+        collectionViewPokemon.delegate   = self
+        collectionViewPokemon.frame      = viewBigScreen.bounds
 
         viewBigScreen.anchor(top: view.topAnchor, paddingTop: 0, bottom: view.bottomAnchor,
                              paddingBottom: 0, left: view.leftAnchor, paddingLeft: 0,
@@ -47,15 +54,33 @@ extension TatodexController {
                                  paddingTop: 15, paddingLeft: view.frame.width/2, paddingBottom: 0,
                                  paddingRight: 0, width: 0, height: view.frame.height/12)
 
-        collectionViewPokemon.dataSource = self
-        collectionViewPokemon.delegate   = self
-        collectionViewPokemon.frame      = viewBigScreen.bounds
         
         collectionViewPokemon.anchor(top: nil, paddingTop: 0,
                                      bottom: viewBigScreen.bottomAnchor, paddingBottom: 0,
                                      left: viewBigScreen.leftAnchor, paddingLeft: 0,
                                      right: viewBigScreen.rightAnchor, paddingRight: 0,
                                      width: 0, height: view.frame.height/1.3)
+    }
+    
+    func getEmptyView() {
+        
+        if pokemons.count == 0 {
+            guard let emptyView = emptyView else { return }
+            viewBigScreen!.addSubview(emptyView)
+            
+            emptyView.anchor(top: nil, paddingTop: 0, bottom: viewBigScreen!.bottomAnchor,
+                             paddingBottom: 0, left: viewBigScreen!.leftAnchor,
+                             paddingLeft: 0, right: viewBigScreen!.rightAnchor,
+                             paddingRight: 0, width: 0, height: view.frame.height/1.2)
+            
+            guard let refreshButton = refreshButton else { return }
+            viewBigScreen!.addSubview(refreshButton)
+            refreshButton.anchor(top: nil, paddingTop: 0, bottom: view.bottomAnchor, paddingBottom: 100, left: nil, paddingLeft: 0, right: nil, paddingRight: 0, width: 200, height: 0)
+            refreshButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            refreshButton.layer.cornerRadius = 10
+            
+            collectionViewPokemon?.isHidden = true
+        }
     }
 }
 

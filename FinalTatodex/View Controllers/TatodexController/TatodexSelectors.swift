@@ -10,7 +10,7 @@ import UIKit
 extension TatodexController {
     
     //MARK: - Search button
-    @objc func searchTapped() {
+    @objc func searchButtonClicked() {
         configureSearchBar(showSearch: true)
     }
 
@@ -20,6 +20,16 @@ extension TatodexController {
     }
 
     //MARK: - Buttons
+    @objc func refreshButtonClicked() {
+        
+        if pokemons.count != 0 {
+            collectionViewPokemon?.isHidden = false
+            emptyView?.isHidden = true
+            refreshButton?.isHidden = true
+        }
+
+        print("Refreshed")
+    }
     
     @objc func handleMenuToggle() {
             print("Menu activated")
@@ -44,7 +54,8 @@ extension TatodexController {
             
             collectionViewPokemon?.backgroundColor = Colors.darkBlue
             buttonChangeLanguage?.backgroundColor  = Colors.darkBlue
-            buttonChangeTheme?.backgroundColor     = Colors.darkRed
+            
+            buttonChangeTheme?.backgroundColor = Colors.darkRed
             configureTrueThemeConditionals()
             
         } else {
@@ -57,7 +68,7 @@ extension TatodexController {
             collectionViewPokemon?.backgroundColor = Colors.darkRed
             buttonChangeLanguage?.backgroundColor  = Colors.darkRed
             
-            buttonChangeTheme?.backgroundColor     = Colors.darkBlue
+            buttonChangeTheme?.backgroundColor = Colors.darkBlue
             configureFalseThemeConditionals()
         }
         collectionViewPokemon?.reloadData()

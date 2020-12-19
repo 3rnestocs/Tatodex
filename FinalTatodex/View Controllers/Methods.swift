@@ -12,11 +12,8 @@ extension TatodexController {
     
     //MARK: - - Main settings
     func configureViewStuff() {
-        
-        configureNavigationBarButtons()
 
-        collectionViewPokemon?.register(TatodexCell.self,
-                                forCellWithReuseIdentifier: reuseIdentifier)
+        configureNavigationBarButtons()
         
         ///  This gestureRecognizer allows to dismiss the InfoView tapping outside
             let gesture = UITapGestureRecognizer(target: self,
@@ -26,6 +23,15 @@ extension TatodexController {
     
     //MARK: - - Conditionals
     func configureLanguageConditionals() {
+        
+        if languageClickChecker {
+            emptyLabel.text      = "Lo sentimos, no pudimos obtener la informacion correctamente. Por favor, reinicia la aplicacion."
+            refreshButton?.setTitle("Intentar de nuevo", for: .normal)
+        } else {
+            emptyLabel.text      = "We're sorry, couldn't get the data correctly. Please reload the app."
+            refreshButton?.setTitle("Try again", for: .normal)
+        }
+        
         if languageClickChecker {
             buttonChangeTheme?.setTitle("Activar tema azul", for: .normal)
             buttonChangeLanguage?.setTitle("Back to English", for: .normal)
@@ -57,20 +63,24 @@ extension TatodexController {
         
         /// NavigationBar configuration
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor  = Colors.lightRed
         navigationController?.navigationBar.barStyle      = .black
-        collectionViewPokemon!.backgroundColor            = Colors.darkRed
         navigationItem.title                              = "Tatodex"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self,
-                                                           action: #selector(handleMenuToggle))
         
-        /// SearchBar configuration
+        configureSearchBarButtons()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search,
-                                                            target: self,
-                                                            action: #selector(searchTapped))
-        navigationItem.rightBarButtonItem?.tintColor = Colors.mainGray
     }
+    
+    func configureSearchBarButtons() {
+        
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self,
+                                           action: #selector(searchButtonClicked))
+
+        navigationItem.setRightBarButton(searchButton, animated: true)
+        searchButton.tintColor  = Colors.mainGray
+        
+        navigationItem.setLeftBarButton(menuButton, animated: true)
+        menuButton.tintColor = Colors.mainGray
+        }
     
     func configureNavBarConditionals() {
         
@@ -96,6 +106,7 @@ extension TatodexController {
             searchBar.showsCancelButton = true
             searchBar.backgroundColor   = Colors.mainGray
             searchBar.delegate          = self
+            navigationItem.leftBarButtonItem = nil
             searchBar.sizeToFit()
             searchBar.becomeFirstResponder()
             configureNavBarConditionals()
@@ -107,7 +118,9 @@ extension TatodexController {
             navigationItem.titleView = nil
             inSearchMode             = false
             configureNavigationBarButtons()
+            navigationItem.setLeftBarButton(menuButton, animated: true)
             collectionViewPokemon?.reloadData()
+
         }
     }
     
@@ -136,13 +149,20 @@ extension TatodexController {
     
     //MARK: - - API Call
     func fetchPokemons() {
-        service.fetchPokes { (poke) in
-            DispatchQueue.main.async {
-                self.pokemons.append(poke)
-                self.pokemons.sort { (poke1, poke2) -> Bool in
-                    return poke1.name! < poke2.name!
+        
+        service.fetchPokes { (result) in
+            switch result {
+            case .success(let poke):
+                DispatchQueue.main.async {
+                    self.pokemons.append(poke)
+                    self.pokemons.sort { (poke1, poke2) -> Bool in
+                        return poke1.name! < poke2.name!
+                    }
+                    self.collectionViewPokemon?.reloadData()
                 }
-                self.collectionViewPokemon?.reloadData()
+            case .failure(let error):
+                print("DEBUG \(NetworkResponse.failed): \(error)" )
+                self.getEmptyView()
             }
         }
     }
@@ -179,40 +199,45 @@ extension InfoView {
         print("\(typeUrl.count) types registered. All working.")
         
         for url in typeUrl {
-            service.getTypesOrSkills(url: url) { [self] (names) in
+            service.getTypesOrSkills(url: url) { [self] (result) in
                 
-                for name in names {
-                    
-                    guard let types = name.name else { return }
-                    typeNameArray.append(types)
-                    
-                    if languageClickChecker {
-                        if name.language?.name == "es" {
-                            guard let firstType = typeNameArray[4] as String? else { return }
-                            if typeNameArray.count > 6 {
-                                guard let secondType = typeNameArray[11] as String? else { return }
+                switch result {
+                case .success(let names):
+                    for name in names {
+                        
+                        guard let types = name.name else { return }
+                        typeNameArray.append(types)
+                        
+                        if languageClickChecker {
+                            if name.language?.name == "es" {
+                                guard let firstType = typeNameArray[4] as String? else { return }
+                                if typeNameArray.count > 6 {
+                                    guard let secondType = typeNameArray[11] as String? else { return }
 
-                                let myTypes     = "\(firstType) y \(secondType)"
-                                configureLabel(label: typeLabel,  title: "Tipos", details: myTypes)
-                            } else {
-                                configureLabel(label: typeLabel, title: "Tipo", details: firstType)
-                            }
-                        }
-                    } else {
-                        if name.language?.name == "en" {
-                            
-                            guard let firstType = typeNameArray[6] as String? else { return }
-                            if typeNameArray.count > 6 {
-                                guard let secondType = typeNameArray.last else { return }
-                                if firstType == secondType {
-                                    configureLabel(label: typeLabel, title: "Type", details: firstType)
+                                    let myTypes     = "\(firstType) y \(secondType)"
+                                    configureLabel(label: typeLabel,  title: "Tipos", details: myTypes)
                                 } else {
-                                    let myTypes     = "\(firstType) and \(secondType)"
-                                    configureLabel(label: typeLabel,  title: "Types", details: myTypes)
+                                    configureLabel(label: typeLabel, title: "Tipo", details: firstType)
+                                }
+                            }
+                        } else {
+                            if name.language?.name == "en" {
+                                
+                                guard let firstType = typeNameArray[6] as String? else { return }
+                                if typeNameArray.count > 6 {
+                                    guard let secondType = typeNameArray.last else { return }
+                                    if firstType == secondType {
+                                        configureLabel(label: typeLabel, title: "Type", details: firstType)
+                                    } else {
+                                        let myTypes     = "\(firstType) and \(secondType)"
+                                        configureLabel(label: typeLabel,  title: "Types", details: myTypes)
+                                    }
                                 }
                             }
                         }
                     }
+                case .failure(let error):
+                    print("DEBUG \(NetworkResponse.failed): \(error)" )
                 }
             }
         }
@@ -248,8 +273,10 @@ extension InfoController {
         print("\(urls.count) skills registered. All working.")
         
         for url in urls {
-            service.getTypesOrSkills(url: url) { [self] (skills) in
+            service.getTypesOrSkills(url: url) { [self] (result) in
                 
+                switch result {
+                case .success(let skills):
                 for skill in skills {
                     
                     guard let skillName = skill.name else { return }
@@ -309,6 +336,9 @@ extension InfoController {
                             }
                         }
                     }
+                }
+                case .failure(let error):
+                    print("DEBUG \(NetworkResponse.failed): \(error)" )
                 }
             }
         }

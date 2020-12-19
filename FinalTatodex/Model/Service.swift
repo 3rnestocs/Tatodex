@@ -11,48 +11,74 @@ class Service: Codable {
     var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=800"
     
     // MARK: - MainAPI call
-    func fetchPokes(handler: @escaping (Pokemon) -> Void) {
+    func fetchPokes(handler: @escaping (Result<Pokemon, Error>) -> Void) {
         
         AF.request(mainAPI).validate().responsePokemon { (response) in
-            
-            guard let data            = response.value,
-                  let results   = data.results else { return }
-            
-            print("You've got \(results.count) pokemons successfully")
-            
-            for poke in results {
+
+            if let error = response.error {
                 
-                guard let pokeUrl = poke.url else { return }
+                print("DEBUG \(NetworkResponse.badRequest): \(error)")
+                handler(.failure(error))
+            }
+            
+            do {
+                guard let data            = response.value,
+                      let results   = data.results else { return }
                 
-                AF.request(pokeUrl).validate().responsePokemon { (pokes) in
+                print("You've got \(results.count) pokemons successfully")
+                
+                for poke in results {
                     
-                    guard let pokeData = pokes.value else { return }
+                    guard let pokeUrl = poke.url else { return }
                     
-                    /// PokeData already has the JSON response according to the Pokemon model, and this handler pass every
-                    /// poke on the API call
-                    handler(pokeData)
+                    AF.request(pokeUrl).validate().responsePokemon { (pokes) in
+                        
+                        guard let pokeData = pokes.value else { return }
+                        
+                        /// PokeData already has the JSON response according to the Pokemon model, and this handler pass every
+                        /// poke on the API call
+                        handler(.success(pokeData))
+                    }
                 }
+            } catch {
+                print("DEBUG \(NetworkResponse.noJSON): \(error)")
             }
         }.resume()
     }
     
-    func getTypesOrSkills(url: String, handler: @escaping([CustomDescription]) -> Void) {
+    func getTypesOrSkills(url: String, handler: @escaping(Result<[CustomDescription], Error>) -> Void) {
         
         typeNameArray = []
         skillNameArray = []
         
         AF.request(url).validate().responseTypesOrSkills { (types) in
             
-            guard let typeData = types.value,
-                  let anyNames = typeData.names else { return }
+            if let error = types.error {
+                
+                print("DEBUG \(NetworkResponse.badRequest): \(error)")
+                handler(.failure(error))
+            }
             
-            handler(anyNames)
+            do {
+                guard let typeData = types.value,
+                      let anyNames = typeData.names else { return }
+                
+                handler(.success(anyNames))
+            } catch {
+                print("DEBUG \(NetworkResponse.noJSON): \(error)")
+            }
         }
     }
     
-    func getSpecies(url: String, handler: @escaping(String) -> Void) {
+    func getSpecies(url: String, handler: @escaping(Result<String, Error>) -> Void) {
         
         AF.request(url).validate().responseSpecies { (response) in
+            
+            if let error = response.error {
+                
+                print("DEBUG \(NetworkResponse.badRequest): \(error)")
+                handler(.failure(error))
+            }
             
             do {
                 guard let data          = response.value,
@@ -65,21 +91,21 @@ class Service: Codable {
                     
                     /// This doesn't have an else statement because it runs all the descriptArray, and it would print a DEBUG msg for
                     /// every wrong case. This way the console remains clean.
-                    guard let description = desc.text!.components(separatedBy: .whitespacesAndNewlines) as? [String]? else { return }
-                    let fullword = description!.joined(separator: " ")
+                    guard let description = desc.text!.components(separatedBy: .whitespacesAndNewlines) as [String]? else { return }
+                    let fullword = description.joined(separator: " ")
                     
                     if languageClickChecker {
                         if desc.language?.name == "es" {
-                            handler(fullword)
+                            handler(.success(fullword))
                         }
                     } else {
                         if desc.language?.name == "en" {
-                            handler(fullword)
+                            handler(.success(fullword))
                         }
                     }
                 }
             } catch {
-                print("DEBUG: Error with the description. \(error.localizedDescription) ")
+                print("DEBUG \(NetworkResponse.noJSON): \(error)")
             }
         }.resume()
     }

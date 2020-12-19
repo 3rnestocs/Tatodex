@@ -21,7 +21,6 @@ class ContainerViewController: UIViewController {
         view.addSubview(controller.view)
         addChild(controller)
         controller.didMove(toParent: self)
-        
     }
     
     func configureMenuViewController() {

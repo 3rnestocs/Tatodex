@@ -94,9 +94,14 @@ class InfoController: UIViewController {
         
         DispatchQueue.main.async {
             self.configureSkills(urls: skillUrls)
-            service.getSpecies(url: url) { (description) in
+            service.getSpecies(url: url) { (result) in
                 
-                self.infoLabel.text = description
+                switch result {
+                case .success(let description):
+                    self.infoLabel.text = description
+                case .failure(let error):
+                    print("DEBUG \(NetworkResponse.failed): \(error)" )
+                }
             }
         }
     }

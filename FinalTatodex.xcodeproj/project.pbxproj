@@ -102,8 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				8DE9D9792553719200FF6ADA /* TatodexController.swift */,
-				8D790AEE255488D20089D069 /* TatodexCell.swift */,
 				8D77535025855F9200045E44 /* TatodexDelegates.swift */,
+				8D790AEE255488D20089D069 /* TatodexCell.swift */,
 				8DFD05B02585616C00CAD8DE /* TatodexSelectors.swift */,
 			);
 			path = TatodexController;
