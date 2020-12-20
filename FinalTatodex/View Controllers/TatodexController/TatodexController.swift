@@ -90,9 +90,6 @@ class TatodexController: UIViewController, InfoViewDelegate, TatodexCellDelegate
        return button
     }()
     
-    let menuButton = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self,
-                                       action: #selector(handleMenuToggle))
-    
     ///  This blurs the CollectionView when InfoView shows up
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)

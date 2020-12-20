@@ -7,6 +7,14 @@
 
 import UIKit
 
+// MARK: - Resource list
+struct Resource: Codable {
+    let count: Int?
+    let next: String?
+    let previous: Bool?
+    let results: Custom?
+}
+
 // MARK: - Pokemons
 struct Pokemon: Codable {
     var results: [Custom]?

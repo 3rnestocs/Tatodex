@@ -23,10 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow()
         window?.windowScene = windowScene
         window?.makeKeyAndVisible()
-        
-        //  Here we embed our CollectionViewController in a NavigationController
-//        let navController = UINavigationController(rootViewController: ContainerViewController())
-        
         window?.rootViewController = ContainerViewController()
     }
 

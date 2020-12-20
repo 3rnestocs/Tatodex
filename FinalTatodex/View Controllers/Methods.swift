@@ -67,7 +67,19 @@ extension TatodexController {
         navigationItem.title                              = "Tatodex"
         
         configureSearchBarButtons()
+        setUpMenuButton()
+    }
+    
+    func setUpMenuButton(){
+        let menuBtn = UIButton(type: .system)
+        menuBtn.setImage(UIImage(named:"menuicon"), for: .normal)
+        menuBtn.addTarget(self, action: #selector(handleMenuToggle), for: .touchUpInside)
+        menuBtn.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        menuBtn.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        menuBtn.tintColor = Colors.mainGray
         
+        let menu = UIBarButtonItem(customView: menuBtn)
+        navigationItem.setLeftBarButton(menu, animated: true)
     }
     
     func configureSearchBarButtons() {
@@ -77,9 +89,7 @@ extension TatodexController {
 
         navigationItem.setRightBarButton(searchButton, animated: true)
         searchButton.tintColor  = Colors.mainGray
-        
-        navigationItem.setLeftBarButton(menuButton, animated: true)
-        menuButton.tintColor = Colors.mainGray
+
         }
     
     func configureNavBarConditionals() {
@@ -118,7 +128,7 @@ extension TatodexController {
             navigationItem.titleView = nil
             inSearchMode             = false
             configureNavigationBarButtons()
-            navigationItem.setLeftBarButton(menuButton, animated: true)
+            setUpMenuButton()
             collectionViewPokemon?.reloadData()
 
         }

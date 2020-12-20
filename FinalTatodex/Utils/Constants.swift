@@ -10,23 +10,24 @@ let reuseIdentifier = "TatodexCell"
 
 /// All app's controller
 var tatodexController = TatodexController()
-var infoController  = InfoController()
+var infoController    = InfoController()
 
 /// API Calling code
 let service = Service()
-var typeNameArray = [String]()
+var typeNameArray  = [String]()
 var skillNameArray = [String]()
 
 enum NetworkResponse: String {
     case badRequest = "Bad request"
-    case noJSON     = "You didn't get a JSON file"
-    case failed     = "Network request failed"
-    case noData     = "Response returned without data to decode"
+    case noJSON = "You didn't get a JSON file"
+    case failed = "Network request failed"
+    case noData = "Response returned without data to decode"
 }
 
 /// Custom stuff
-var themeClickCkecker = false
 var languageClickChecker = false
+var shinyClickChecker    = false
+var themeClickCkecker    = false
 let tatodexCell = TatodexCell()
-let infoView = InfoView()
+let infoView    = InfoView()
 

@@ -8,7 +8,7 @@ import Alamofire
 
 class Service: Codable {
 
-    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=800"
+    var mainAPI = "https://pokeapi.co/api/v2/pokemon?limit=800&offset=50"
     
     // MARK: - MainAPI call
     func fetchPokes(handler: @escaping (Result<Pokemon, Error>) -> Void) {

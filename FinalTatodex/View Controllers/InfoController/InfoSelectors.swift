@@ -11,14 +11,15 @@ extension InfoController {
     
     @objc func shinyButtonClicked() {
         
-        pressedButton = !pressedButton
+        shinyClickChecker = !shinyClickChecker
+        imageView.kf.indicatorType = .activity
         
         guard let shiny         = self.pokemon?.sprites?.shiny,
               let frontSprite   = self.pokemon?.sprites?.front
         else { return }
 
-        if pressedButton {
-            self.imageView.kf.setImage(with: URL(string: shiny))
+        if shinyClickChecker {
+            imageView.kf.setImage(with: URL(string: shiny))
             
             if languageClickChecker {
                 shinyButton.setTitle("Vuelve a ver al original!",
@@ -28,7 +29,7 @@ extension InfoController {
                                      for: .normal)
             }
         } else {
-            self.imageView.kf.setImage(with: URL(string: frontSprite))
+            imageView.kf.setImage(with: URL(string: frontSprite))
             
             if languageClickChecker {
                 shinyButton.setTitle("Mira la version shiny!",

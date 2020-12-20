@@ -11,8 +11,6 @@ import Alamofire
 class InfoController: UIViewController {
     
     // MARK: - Properties
-
-    var pressedButton   = true
     var pokemon: Pokemon? {
         didSet {
             guard let pokemon = pokemon,
@@ -67,13 +65,10 @@ class InfoController: UIViewController {
     
     var shinyButton: UIButton = {
         let button = UIButton()
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .semibold)
         button.backgroundColor  = Colors.lightRed
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25,
-                                                    weight: .semibold)
         button.tintColor        = Colors.mainWhite
-        button.addTarget(self,
-                         action: #selector(shinyButtonClicked),
-                         for: .touchUpInside)
+        button.addTarget(self, action: #selector(shinyButtonClicked), for: .touchUpInside)
         if !languageClickChecker {
             button.setTitle("See it's shiny version!",
                             for: .normal)
