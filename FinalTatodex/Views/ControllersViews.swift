@@ -61,27 +61,6 @@ extension TatodexController {
                                      right: viewBigScreen.rightAnchor, paddingRight: 0,
                                      width: 0, height: view.frame.height/1.3)
     }
-    
-    func getEmptyView() {
-        
-        if pokemons.count == 0 {
-            guard let emptyView = emptyView else { return }
-            viewBigScreen!.addSubview(emptyView)
-            
-            emptyView.anchor(top: nil, paddingTop: 0, bottom: viewBigScreen!.bottomAnchor,
-                             paddingBottom: 0, left: viewBigScreen!.leftAnchor,
-                             paddingLeft: 0, right: viewBigScreen!.rightAnchor,
-                             paddingRight: 0, width: 0, height: view.frame.height/1.2)
-            
-            guard let refreshButton = refreshButton else { return }
-            viewBigScreen!.addSubview(refreshButton)
-            refreshButton.anchor(top: nil, paddingTop: 0, bottom: view.bottomAnchor, paddingBottom: 100, left: nil, paddingLeft: 0, right: nil, paddingRight: 0, width: 200, height: 0)
-            refreshButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-            refreshButton.layer.cornerRadius = 10
-            
-            collectionViewPokemon?.isHidden = true
-        }
-    }
 }
 
 extension InfoController {

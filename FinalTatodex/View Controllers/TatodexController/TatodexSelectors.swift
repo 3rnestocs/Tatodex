@@ -22,13 +22,14 @@ extension TatodexController {
     //MARK: - Buttons
     @objc func refreshButtonClicked() {
         
-        if pokemons.count != 0 {
-            collectionViewPokemon?.isHidden = false
-            emptyView?.isHidden = true
-            refreshButton?.isHidden = true
+        if tatodexController.pokemons.count != 0 {
+            tatodexController.collectionViewPokemon?.isHidden = false
+            emptyViewController.emptyView?.isHidden = true
+            self.refreshButton?.isHidden = true
+        } else {
+            fetchPokemons()
+            print("Trying to get the pokemons")
         }
-
-        print("Refreshed")
     }
     
     @objc func handleMenuToggle() {

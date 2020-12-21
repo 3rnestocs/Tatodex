@@ -25,14 +25,6 @@ extension TatodexController {
     func configureLanguageConditionals() {
         
         if languageClickChecker {
-            emptyLabel.text      = "Lo sentimos, no pudimos obtener la informacion correctamente. Por favor, reinicia la aplicacion."
-            refreshButton?.setTitle("Intentar de nuevo", for: .normal)
-        } else {
-            emptyLabel.text      = "We're sorry, couldn't get the data correctly. Please reload the app."
-            refreshButton?.setTitle("Try again", for: .normal)
-        }
-        
-        if languageClickChecker {
             buttonChangeTheme?.setTitle("Activar tema azul", for: .normal)
             buttonChangeLanguage?.setTitle("Back to English", for: .normal)
         } else {
@@ -83,13 +75,16 @@ extension TatodexController {
     }
     
     func configureSearchBarButtons() {
+
+        let searchBtn = UIButton(type: .system)
+        searchBtn.setImage(UIImage(named:"search"), for: .normal)
+        searchBtn.addTarget(self, action: #selector(searchButtonClicked), for: .touchUpInside)
+        searchBtn.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        searchBtn.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        searchBtn.tintColor = Colors.mainGray
         
-        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self,
-                                           action: #selector(searchButtonClicked))
-
-        navigationItem.setRightBarButton(searchButton, animated: true)
-        searchButton.tintColor  = Colors.mainGray
-
+        let search = UIBarButtonItem(customView: searchBtn)
+        navigationItem.setRightBarButton(search, animated: true)
         }
     
     func configureNavBarConditionals() {
@@ -166,13 +161,13 @@ extension TatodexController {
                 DispatchQueue.main.async {
                     self.pokemons.append(poke)
                     self.pokemons.sort { (poke1, poke2) -> Bool in
-                        return poke1.name! < poke2.name!
+                        return poke1.id! < poke2.id!
                     }
                     self.collectionViewPokemon?.reloadData()
                 }
             case .failure(let error):
                 print("DEBUG \(NetworkResponse.failed): \(error)" )
-                self.getEmptyView()
+                emptyViewController.getEmptyView()
             }
         }
     }
@@ -353,4 +348,43 @@ extension InfoController {
             }
         }
     }
+}
+
+extension EmptyViewController {
+    
+    func configureEmptyViews() {
+        
+        if languageClickChecker {
+            emptyLabel.text      = "Lo sentimos, no pudimos obtener la informacion correctamente. Por favor, reinicia la aplicacion."
+            tatodexController.refreshButton?.setTitle("Intentar de nuevo", for: .normal)
+        } else {
+            emptyLabel.text      = "We're sorry, couldn't get the data correctly. Please reload the app."
+            tatodexController.refreshButton?.setTitle("Try again", for: .normal)
+        }
+        
+    }
+    
+    func getEmptyView() {
+        
+        configureEmptyViews()
+        
+        if tatodexController.pokemons.count == 0 {
+            guard let emptyView = emptyView else { return }
+            tatodexController.viewBigScreen!.addSubview(emptyView)
+            
+            emptyView.anchor(top: nil, paddingTop: 0, bottom: tatodexController.viewBigScreen!.bottomAnchor,
+                             paddingBottom: 0, left: tatodexController.viewBigScreen!.leftAnchor,
+                             paddingLeft: 0, right: tatodexController.viewBigScreen!.rightAnchor,
+                             paddingRight: 0, width: 0, height: tatodexController.view.frame.height/1.2)
+            
+            guard let refreshButton = tatodexController.refreshButton else { return }
+            tatodexController.viewBigScreen!.addSubview(refreshButton)
+            refreshButton.anchor(top: nil, paddingTop: 0, bottom: tatodexController.view.bottomAnchor, paddingBottom: 100, left: nil, paddingLeft: 0, right: nil, paddingRight: 0, width: 200, height: 0)
+            refreshButton.centerXAnchor.constraint(equalTo: tatodexController.view.centerXAnchor).isActive = true
+            refreshButton.layer.cornerRadius = 10
+            
+            tatodexController.collectionViewPokemon?.isHidden = true
+        }
+    }
+    
 }

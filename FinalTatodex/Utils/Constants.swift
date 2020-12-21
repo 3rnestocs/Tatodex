@@ -11,6 +11,7 @@ let reuseIdentifier = "TatodexCell"
 /// All app's controller
 var tatodexController = TatodexController()
 var infoController    = InfoController()
+var emptyViewController = EmptyViewController()
 
 /// API Calling code
 let service = Service()

@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		8D266B8B2558447B00387107 /* InfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D266B8A2558447B00387107 /* InfoController.swift */; };
 		8D543E8A258420C700504B32 /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D543E89258420C700504B32 /* Themes.swift */; };
+		8D664A6A25914E2300309578 /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D664A6925914E2300309578 /* EmptyViewController.swift */; };
 		8D74C25C258AE70A00FD98AF /* Layouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D74C25B258AE70A00FD98AF /* Layouts.swift */; };
-		8D77534E25855F5D00045E44 /* Methods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77534D25855F5D00045E44 /* Methods.swift */; };
+		8D77534E25855F5D00045E44 /* AllControllerMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77534D25855F5D00045E44 /* AllControllerMethods.swift */; };
 		8D77535125855F9200045E44 /* TatodexDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D77535025855F9200045E44 /* TatodexDelegates.swift */; };
 		8D790AEF255488D20089D069 /* TatodexCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AEE255488D20089D069 /* TatodexCell.swift */; };
 		8D790AF225549D010089D069 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D790AF125549D010089D069 /* Extensions.swift */; };
@@ -36,8 +37,9 @@
 		6393FCA3FCDC41BFB6F30009 /* Pods-Tatodex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tatodex.release.xcconfig"; path = "Target Support Files/Pods-Tatodex/Pods-Tatodex.release.xcconfig"; sourceTree = "<group>"; };
 		8D266B8A2558447B00387107 /* InfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoController.swift; sourceTree = "<group>"; };
 		8D543E89258420C700504B32 /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
+		8D664A6925914E2300309578 /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
 		8D74C25B258AE70A00FD98AF /* Layouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layouts.swift; sourceTree = "<group>"; };
-		8D77534D25855F5D00045E44 /* Methods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Methods.swift; sourceTree = "<group>"; };
+		8D77534D25855F5D00045E44 /* AllControllerMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllControllerMethods.swift; sourceTree = "<group>"; };
 		8D77535025855F9200045E44 /* TatodexDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatodexDelegates.swift; sourceTree = "<group>"; };
 		8D790AEE255488D20089D069 /* TatodexCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatodexCell.swift; sourceTree = "<group>"; };
 		8D790AF125549D010089D069 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -87,6 +89,14 @@
 				4549A059EB0941DCEE601A6A /* Pods_Tatodex.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8D664A6D259156D900309578 /* EmptyController */ = {
+			isa = PBXGroup;
+			children = (
+				8D664A6925914E2300309578 /* EmptyViewController.swift */,
+			);
+			path = EmptyController;
 			sourceTree = "<group>";
 		};
 		8D74C25A258AE6FB00FD98AF /* InfoView */ = {
@@ -165,7 +175,8 @@
 			isa = PBXGroup;
 			children = (
 				8DACA1B4258BEBA40012D93C /* ContainerController.swift */,
-				8D77534D25855F5D00045E44 /* Methods.swift */,
+				8D77534D25855F5D00045E44 /* AllControllerMethods.swift */,
+				8D664A6D259156D900309578 /* EmptyController */,
 				8DACA1B3258BEB940012D93C /* MenuController */,
 				8D77534C25855F2C00045E44 /* TatodexController */,
 				8DFD05B3258561C900CAD8DE /* InfoController */,
@@ -317,7 +328,7 @@
 				8DB1D52F2583075000CAE981 /* ControllersViews.swift in Sources */,
 				8DE9D97A2553719200FF6ADA /* TatodexController.swift in Sources */,
 				8D266B8B2558447B00387107 /* InfoController.swift in Sources */,
-				8D77534E25855F5D00045E44 /* Methods.swift in Sources */,
+				8D77534E25855F5D00045E44 /* AllControllerMethods.swift in Sources */,
 				8DAA9966258BCFF70058DC2A /* InfoSelectors.swift in Sources */,
 				8D74C25C258AE70A00FD98AF /* Layouts.swift in Sources */,
 				8DFD05BB2585633900CAD8DE /* Constants.swift in Sources */,
@@ -329,6 +340,7 @@
 				8D790AEF255488D20089D069 /* TatodexCell.swift in Sources */,
 				8DACA1BB258BEBE20012D93C /* MenuController.swift in Sources */,
 				8D77535125855F9200045E44 /* TatodexDelegates.swift in Sources */,
+				8D664A6A25914E2300309578 /* EmptyViewController.swift in Sources */,
 				8D790AF225549D010089D069 /* Extensions.swift in Sources */,
 				8DACA1B5258BEBA40012D93C /* ContainerController.swift in Sources */,
 				8DE743932555628400D37A8E /* Service.swift in Sources */,
