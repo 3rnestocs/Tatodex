@@ -130,8 +130,29 @@ extension TatodexController: UICollectionViewDelegateFlowLayout,
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        if position > ((collectionViewPokemon?.contentSize.height)! - 100 - scrollView.frame.size.height) {
-            print("fetch more data")
+        if position > ((collectionViewPokemon?.contentSize.height)! - 70 - scrollView.frame.size.height) {
+            
+            guard !service.isPaginating else {
+                return
+                
+            }
+            
+            service.fetchFirstPokes(pagination: true) { [self] (result) in
+                switch result {
+                case .success(let morePokes):
+                    
+                    morePokemons = morePokes
+                    
+                    pokemons += morePokemons
+                    DispatchQueue.main.async {
+                        collectionViewPokemon?.reloadData()
+                    }
+                case .failure(let error):
+                    print("DEBUG \(NetworkResponse.failed): \(error)" )
+                    emptyViewController.getEmptyView()
+                }
+            }
+            
         }
     }
 }

@@ -154,20 +154,15 @@ extension TatodexController {
     
     //MARK: - - API Call
     func fetchPokemons() {
-        service.fetchFirstPokes { (result, next) in
+        
+        print("---FIRST API CALL---")
+        service.fetchFirstPokes(pagination: false) { [self] (result) in
             switch result {
             case .success(let pokes):
+
+                pokemons = pokes
                 DispatchQueue.main.async {
-                    self.pokemons = pokes
-                    
-                    print(next)
-//                    let correctNext = next.replacingOccurrences(of: "offset=200&", with: "")
-//                    service.getMorePokes(url: correctNext) { (pokemons) in
-//                        
-//                        
-//                        print(pokemons)
-//                    }
-                    self.collectionViewPokemon?.reloadData()
+                    collectionViewPokemon?.reloadData()
                 }
             case .failure(let error):
                 print("DEBUG \(NetworkResponse.failed): \(error)" )

@@ -9,19 +9,18 @@ import UIKit
 
 // MARK: - Resource list
 struct Resource: Codable {
-    let count: Int?
-    let next: String?
-    let previous: Bool?
-    let results: [Custom]?
+    var count: Int?
+    var next, previous: String?
+    var results: [Custom]?
 }
 
 // MARK: - Pokemons
 struct Pokemon: Codable {
     var results: [Custom]?
+    var name: String?
     var abilities, types: [AbilityAndType]?
     var height, weight, id: Int?
     var sprites: Sprite?
-    var name: String?
     var stats: [Stat]?
     var statNum: [Int]?
     var species: Custom?
