@@ -171,6 +171,11 @@ extension DataRequest {
     }
     
     @discardableResult
+    func responseResource(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<Resource>) -> Void) -> Self {
+        return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
+    }
+    
+    @discardableResult
     func responseTypesOrSkills(queue: DispatchQueue? = nil, completionHandler: @escaping (AFDataResponse<TypesAndSkillsLanguage>) -> Void) -> Self {
         return responseDecodable(queue: queue ?? .main, completionHandler: completionHandler)
     }

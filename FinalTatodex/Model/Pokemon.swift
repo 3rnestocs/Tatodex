@@ -12,7 +12,7 @@ struct Resource: Codable {
     let count: Int?
     let next: String?
     let previous: Bool?
-    let results: Custom?
+    let results: [Custom]?
 }
 
 // MARK: - Pokemons

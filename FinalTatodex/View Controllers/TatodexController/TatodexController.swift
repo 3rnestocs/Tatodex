@@ -7,10 +7,12 @@
 
 import UIKit
 
-class TatodexController: UIViewController, InfoViewDelegate, TatodexCellDelegate {
+class TatodexController: UIViewController, UIScrollViewDelegate,
+                         InfoViewDelegate, TatodexCellDelegate {
     
     //MARK: - Properties
     var pokemons = [Pokemon]()
+    var morePokemons = [Pokemon]()
     var filteredPokemon = [Pokemon]()
     var searchBar: UISearchBar!
     var inSearchMode = false
@@ -28,6 +30,7 @@ class TatodexController: UIViewController, InfoViewDelegate, TatodexCellDelegate
         let cv = UICollectionView(frame: .zero,
                                   collectionViewLayout: layout)
         cv.backgroundColor = Colors.darkRed
+        cv.alwaysBounceVertical = true
         cv.register(TatodexCell.self,
                     forCellWithReuseIdentifier: reuseIdentifier)
         return cv
@@ -123,6 +126,13 @@ extension TatodexController: UICollectionViewDelegateFlowLayout,
         
         let poke = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
         showInfoController(withPoke: poke)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if position > ((collectionViewPokemon?.contentSize.height)! - 100 - scrollView.frame.size.height) {
+            print("fetch more data")
+        }
     }
 }
 
