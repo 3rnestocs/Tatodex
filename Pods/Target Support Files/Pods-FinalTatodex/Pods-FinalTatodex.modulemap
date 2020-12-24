@@ -1,0 +1,6 @@
+framework module Pods_FinalTatodex {
+  umbrella header "Pods-FinalTatodex-umbrella.h"
+
+  export *
+  module * { export * }
+}
