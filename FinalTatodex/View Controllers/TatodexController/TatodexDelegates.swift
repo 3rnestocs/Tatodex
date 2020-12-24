@@ -20,7 +20,7 @@ extension TatodexController: UISearchBarDelegate {
             view.endEditing(true)
         } else {
             inSearchMode = true
-            filteredPokemon = pokemons.filter({ $0.name?.range(of: searchText.lowercased()) != nil })
+            filteredPokemon = generalList.filter({ $0.name?.range(of: searchText.lowercased()) != nil })
             collectionViewPokemon?.reloadData()
         }
     }

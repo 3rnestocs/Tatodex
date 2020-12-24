@@ -11,9 +11,13 @@ class TatodexController: UIViewController, UIScrollViewDelegate,
                          InfoViewDelegate, TatodexCellDelegate {
     
     //MARK: - Properties
+    private var shouldShowMorePokes = false
+
+    var generalList = [Pokemon]()
     var pokemons = [Pokemon]()
     var morePokemons = [Pokemon]()
     var filteredPokemon = [Pokemon]()
+    
     var searchBar: UISearchBar!
     var inSearchMode = false
     
@@ -104,13 +108,28 @@ extension TatodexController: UICollectionViewDelegateFlowLayout,
 
     //MARK: - CollectionView DataSource/Delegate
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return inSearchMode ? filteredPokemon.count : pokemons.count
+        return inSearchMode ? filteredPokemon.count : generalList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if indexPath.item == generalList.count - 1 {
+
+            service.getPokes(shouldPage: true) { [self] (morePokes) in
+                
+                morePokemons = morePokes
+                generalList += morePokemons
+                DispatchQueue.main.async {
+                    collectionViewPokemon?.reloadData()
+                }
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TatodexCell
         
-        cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
+        cell.pokemon = inSearchMode ? filteredPokemon[indexPath.row] : generalList[indexPath.row]
         cell.delegate = self
         
         if themeClickCkecker {
@@ -124,36 +143,8 @@ extension TatodexController: UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let poke = inSearchMode ? filteredPokemon[indexPath.row] : pokemons[indexPath.row]
+        let poke = inSearchMode ? filteredPokemon[indexPath.row] : generalList[indexPath.row]
         showInfoController(withPoke: poke)
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if position > ((collectionViewPokemon?.contentSize.height)! - 70 - scrollView.frame.size.height) {
-            
-            guard !service.isPaginating else {
-                return
-                
-            }
-            
-            service.fetchFirstPokes(pagination: true) { [self] (result) in
-                switch result {
-                case .success(let morePokes):
-                    
-                    morePokemons = morePokes
-                    
-                    pokemons += morePokemons
-                    DispatchQueue.main.async {
-                        collectionViewPokemon?.reloadData()
-                    }
-                case .failure(let error):
-                    print("DEBUG \(NetworkResponse.failed): \(error)" )
-                    emptyViewController.getEmptyView()
-                }
-            }
-            
-        }
     }
 }
 
